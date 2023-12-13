@@ -15,5 +15,7 @@ public class Car : MonoBehaviour
         rigidbody.AddRelativeForce(0, 0, 10 * Input.GetAxisRaw("Vertical"), ForceMode.Force);
 
         transform.Rotate(0, 5 * Input.GetAxisRaw("Horizontal") * Time.deltaTime, 0, Space.Self);
+
+        print(Inca.IncaData.Speed);
     }
 }
