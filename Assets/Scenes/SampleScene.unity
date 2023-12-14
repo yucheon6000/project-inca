@@ -611,7 +611,9 @@ GameObject:
   m_Component:
   - component: {fileID: 429920548}
   - component: {fileID: 429920549}
-  m_Layer: 0
+  - component: {fileID: 429920550}
+  - component: {fileID: 429920552}
+  m_Layer: 8
   m_Name: Inca
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -646,6 +648,73 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetCar: {fileID: 1660886703}
+  speed: 0
+--- !u!114 &429920550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 429920547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b918426b6ebf84d53bbcd766ff5e04bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetCar: {fileID: 1660886703}
+  lidarCollider: {fileID: 429920552}
+--- !u!135 &429920552
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 429920547}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 256
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 15
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &814749648
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 814749649}
+  m_Layer: 0
+  m_Name: Lidar Sensor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &814749649
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 814749648}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1660886704}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -875,6 +944,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcd696a78b9c74482a3edf74c7ae1213, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveSpeed: 30
+  ratateSpeed: 30
   rigidbody: {fileID: 1660886705}
 --- !u!4 &1660886704
 Transform:
@@ -892,6 +963,7 @@ Transform:
   - {fileID: 429920548}
   - {fileID: 30884365}
   - {fileID: 330585546}
+  - {fileID: 814749649}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &1660886705
@@ -919,8 +991,8 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  m_Constraints: 80
+  m_CollisionDetection: 3
 --- !u!1 &1690053535
 GameObject:
   m_ObjectHideFlags: 0

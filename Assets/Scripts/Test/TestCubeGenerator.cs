@@ -9,11 +9,11 @@ public class TestCubeGenerator : MonoBehaviour
 
     private void Awake()
     {
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < 300; i++)
         {
             Instantiate(
                 testCubePrefab,
-                new Vector3(Random.Range(-500, 500), 1f, Random.Range(-500, 500)),
+                new Vector3(Random.Range(-300, 300), 1f, Random.Range(-300, 300)),
                 Quaternion.identity
             );
         }

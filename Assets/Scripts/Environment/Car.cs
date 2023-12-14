@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class Car : MonoBehaviour
 {
-    private float moveSpeed;
+    [SerializeField]
+    private float moveSpeed = 10;
+    [SerializeField]
+    private float ratateSpeed = 10;
     private Vector3 moveDirection;
 
     [SerializeField]
@@ -12,10 +15,8 @@ public class Car : MonoBehaviour
 
     private void Update()
     {
-        rigidbody.AddRelativeForce(0, 0, 10 * Input.GetAxisRaw("Vertical"), ForceMode.Force);
+        rigidbody.AddRelativeForce(0, 0, moveSpeed * Input.GetAxisRaw("Vertical"), ForceMode.Force);
 
-        transform.Rotate(0, 5 * Input.GetAxisRaw("Horizontal") * Time.deltaTime, 0, Space.Self);
-
-        print(Inca.IncaData.Speed);
+        transform.Rotate(0, ratateSpeed * Input.GetAxisRaw("Horizontal") * Time.deltaTime, 0, Space.Self);
     }
 }

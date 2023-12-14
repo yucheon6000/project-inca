@@ -10,11 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 8069887498473244004}
   - component: {fileID: 9088733335111061554}
+  - component: {fileID: 5323118469893788856}
   - component: {fileID: 7168038687036782945}
   - component: {fileID: 4402026402525935443}
   - component: {fileID: 166114206288988260}
   - component: {fileID: 1625503933872953050}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Test Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53,6 +54,18 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 0e57fd9a3cefb4c8ea3af72f12f447dc, type: 2}
   - {fileID: 2100000, guid: 167c3623f82474465846f021507f2897, type: 2}
   - {fileID: 2100000, guid: d25acbbe1486f45699872eaa0feb4068, type: 2}
+--- !u!114 &5323118469893788856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2497038603861914177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf899e9c506504352a5b1ac54cf0b87f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!33 &7168038687036782945
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -149,5 +162,5 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 122
   m_CollisionDetection: 0
