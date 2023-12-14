@@ -44,9 +44,10 @@ namespace Inca
             Gizmos.color = Color.blue;
             Gizmos.DrawWireSphere(lidarCollider.transform.position, lidarCollider.radius);
 
+            Gizmos.color = Color.red;
             foreach (DetectableObject obj in detectableObjects)
             {
-                Gizmos.DrawCube(obj.transform.position, obj.transform.localScale);
+                Gizmos.DrawWireCube(obj.transform.position, obj.transform.localScale);
             }
         }
     }
