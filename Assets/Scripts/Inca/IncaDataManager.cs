@@ -24,7 +24,7 @@ namespace Inca
 
         private void Update()
         {
-            float speed = targetCar.GetComponent<Rigidbody>().velocity.magnitude;
+            float speed = targetCar.GetComponent<PrometeoCarController>().carSpeed;
             SetSpeed(speed);
         }
 
