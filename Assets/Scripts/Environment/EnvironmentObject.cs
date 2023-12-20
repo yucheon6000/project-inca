@@ -1,18 +1,25 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class EnvironmentObject : MonoBehaviour
 {
+    protected Guid guid = Guid.NewGuid();
+    public Guid GUID => guid;
+
     [Header("Bound Collider")]
     [SerializeField]
     protected BoxCollider boundCollider;
 
-    private bool isTurnedGizmos = false;
+    [Header("Gizmos")]
+    [SerializeField]
+    private bool drawGizmosSeleted = true;
+    private bool drawGizmos = false;
 
-    public void TurnGizmos(bool value)
+    public void DrawGizmos(bool value)
     {
-        isTurnedGizmos = value;
+        drawGizmos = value;
     }
 
     private void DrawGizmos(Color color)
@@ -31,13 +38,15 @@ public class EnvironmentObject : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (!isTurnedGizmos) return;
+        if (!drawGizmos) return;
 
         DrawGizmos(Color.blue);
     }
 
     private void OnDrawGizmosSelected()
     {
+        if (!drawGizmosSeleted) return;
+
         DrawGizmos(Color.red);
     }
 }
