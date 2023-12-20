@@ -4,9 +4,5 @@ using UnityEngine;
 
 namespace Inca
 {
-    public abstract class IncaManager : MonoBehaviour
-    {
-        [SerializeField]
-        protected Car targetCar;
-    }
+    public abstract class IncaManager : MonoBehaviour { }
 }

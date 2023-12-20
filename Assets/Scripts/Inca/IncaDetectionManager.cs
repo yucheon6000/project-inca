@@ -9,33 +9,35 @@ namespace Inca
         [SerializeField]
         private SphereCollider lidarCollider;
 
-        private List<DetectableObject> detectableObjects = new List<DetectableObject>();
+        private List<EnvironmentObject> environmentObjects = new List<EnvironmentObject>();
 
-        private void AddDetectableObeject(DetectableObject detectableObject)
+        private void AddDetectableObeject(EnvironmentObject environmentObject)
         {
-            if (detectableObjects.Contains(detectableObject)) return;
+            if (environmentObjects.Contains(environmentObject)) return;
 
-            detectableObjects.Add(detectableObject);
+            environmentObjects.Add(environmentObject);
         }
 
-        private void RemoveDetectableObject(DetectableObject detectableObject)
+        private void RemoveenvironmentObject(EnvironmentObject environmentObject)
         {
-            detectableObjects.Remove(detectableObject);
+            environmentObjects.Remove(environmentObject);
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.TryGetComponent<DetectableObject>(out DetectableObject obj))
+            if (other.TryGetComponent<EnvironmentObject>(out EnvironmentObject obj))
             {
+                obj.TurnGizmos(true);
                 AddDetectableObeject(obj);
             }
         }
 
         private void OnTriggerExit(Collider other)
         {
-            if (other.TryGetComponent<DetectableObject>(out DetectableObject obj))
+            if (other.TryGetComponent<EnvironmentObject>(out EnvironmentObject obj))
             {
-                RemoveDetectableObject(obj);
+                obj.TurnGizmos(false);
+                RemoveenvironmentObject(obj);
             }
         }
 
@@ -43,12 +45,6 @@ namespace Inca
         {
             Gizmos.color = Color.blue;
             Gizmos.DrawWireSphere(lidarCollider.transform.position, lidarCollider.radius);
-
-            Gizmos.color = Color.red;
-            foreach (DetectableObject obj in detectableObjects)
-            {
-                Gizmos.DrawWireCube(obj.transform.position, obj.transform.localScale);
-            }
         }
     }
 }

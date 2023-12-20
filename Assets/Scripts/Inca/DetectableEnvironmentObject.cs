@@ -2,4 +2,5 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class DetectableObject : MonoBehaviour { }
+public abstract class DetectableEnvironmentObject : MonoBehaviour
+{ }

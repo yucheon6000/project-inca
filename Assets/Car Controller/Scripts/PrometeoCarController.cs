@@ -14,7 +14,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PrometeoCarController : Car
+public class PrometeoCarController : MonoBehaviour
 {
 
     //CAR SETUP

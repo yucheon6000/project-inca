@@ -15,6 +15,9 @@ namespace Inca
         public static IncaDataManager Instance;
 
         [SerializeField]
+        private PrometeoCarController carController;
+
+        [SerializeField]
         private float speed = 0;
 
         private void Awake()
@@ -24,7 +27,7 @@ namespace Inca
 
         private void Update()
         {
-            float speed = targetCar.GetComponent<PrometeoCarController>().carSpeed;
+            float speed = carController.GetComponent<PrometeoCarController>().carSpeed;
             SetSpeed(speed);
         }
 
