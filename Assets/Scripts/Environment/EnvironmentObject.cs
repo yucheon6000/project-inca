@@ -11,6 +11,9 @@ public class EnvironmentObject : MonoBehaviour
     [Header("Bound Collider")]
     [SerializeField]
     protected BoxCollider boundCollider;
+    public Vector3 ColliderCenter => boundCollider.center;
+    public Vector3 ColliderSize => boundCollider.size;
+    public Bounds ColliderBounds => boundCollider.bounds;
 
     [Header("Gizmos")]
     [SerializeField]

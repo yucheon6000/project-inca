@@ -12,7 +12,7 @@ public class DetectedEnvironmentObject
 
     public Vector3 Position => originalTransform.position;
     public Quaternion Rotation => originalTransform.rotation;
-    public Vector3 Scale => originalTransform.lossyScale;
+    public Vector3 Scale => environmentObject.ColliderSize;
 
     private bool isVisible = false;
 

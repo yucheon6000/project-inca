@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 1575140922}
   - component: {fileID: 1575140923}
   m_Layer: 0
-  m_Name: Monster Spawner
+  m_Name: Building Spawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -167,6 +167,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 169dc46f8ddc543adb9bbc56c825ef8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buildingPrefab: {fileID: 6130924103249591565, guid: ed23d4d25e5f64bd3aa928885289c2ea,
+    type: 3}
 --- !u!1 &2057291200
 GameObject:
   m_ObjectHideFlags: 0

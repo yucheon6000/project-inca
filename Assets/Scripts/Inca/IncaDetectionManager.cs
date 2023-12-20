@@ -77,6 +77,7 @@ namespace Inca
         {
             if (other.TryGetComponent<EnvironmentObject>(out EnvironmentObject obj))
             {
+                print(obj);
                 obj.DrawGizmos(true);
                 EnterEnvironmentObject(obj);
             }
