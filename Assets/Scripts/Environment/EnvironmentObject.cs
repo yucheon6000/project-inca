@@ -3,53 +3,63 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnvironmentObject : MonoBehaviour
+namespace Environment
 {
-    protected Guid guid = Guid.NewGuid();
-    public Guid GUID => guid;
+    public enum EnvironmentObjectType { None = -1, Car = 100, Building = 200, Pedestrian = 300 }
 
-    [Header("Bound Collider")]
-    [SerializeField]
-    protected BoxCollider boundCollider;
-    public Vector3 ColliderCenter => boundCollider.center;
-    public Vector3 ColliderSize => boundCollider.size;
-    public Bounds ColliderBounds => boundCollider.bounds;
-
-    [Header("Gizmos")]
-    [SerializeField]
-    private bool drawGizmosSeleted = true;
-    private bool drawGizmos = false;
-
-    public void DrawGizmos(bool value)
+    public class EnvironmentObject : MonoBehaviour
     {
-        drawGizmos = value;
-    }
+        protected Guid guid = Guid.NewGuid();
+        public Guid GUID => guid;
 
-    private void DrawGizmos(Color color)
-    {
-        Gizmos.color = color;
+        [Header("Type")]
+        [SerializeField]
+        protected EnvironmentObjectType objectType = EnvironmentObjectType.None;
+        public EnvironmentObjectType ObjectType => objectType;
 
-        Vector3 c = boundCollider.transform.TransformPoint(boundCollider.center);
-        Matrix4x4 rotationMatrix = Matrix4x4.TRS(c, transform.rotation, transform.lossyScale);
-        Gizmos.matrix = rotationMatrix;
+        [Header("Bound Collider")]
+        [SerializeField]
+        protected BoxCollider boundCollider;
+        public Vector3 ColliderCenter => boundCollider.center;
+        public Vector3 ColliderSize => boundCollider.size;
+        public Bounds ColliderBounds => boundCollider.bounds;
 
-        Gizmos.DrawCube(Vector3.zero, boundCollider.size);
-        Gizmos.DrawWireCube(Vector3.zero, boundCollider.size);
+        [Header("Gizmos")]
+        [SerializeField]
+        private bool drawGizmosSeleted = true;
+        private bool drawGizmos = false;
 
-        Gizmos.matrix = Matrix4x4.zero;
-    }
+        public void DrawGizmos(bool value)
+        {
+            drawGizmos = value;
+        }
 
-    private void OnDrawGizmos()
-    {
-        if (!drawGizmos) return;
+        private void DrawGizmos(Color color)
+        {
+            Gizmos.color = color;
 
-        DrawGizmos(Color.blue);
-    }
+            Vector3 c = boundCollider.transform.TransformPoint(boundCollider.center);
+            Matrix4x4 rotationMatrix = Matrix4x4.TRS(c, transform.rotation, transform.lossyScale);
+            Gizmos.matrix = rotationMatrix;
 
-    private void OnDrawGizmosSelected()
-    {
-        if (!drawGizmosSeleted) return;
+            Gizmos.DrawCube(Vector3.zero, boundCollider.size);
+            Gizmos.DrawWireCube(Vector3.zero, boundCollider.size);
 
-        DrawGizmos(Color.red);
+            Gizmos.matrix = Matrix4x4.zero;
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (!drawGizmos) return;
+
+            DrawGizmos(Color.blue);
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            if (!drawGizmosSeleted) return;
+
+            DrawGizmos(Color.red);
+        }
     }
 }

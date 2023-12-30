@@ -14,7 +14,7 @@ public class BuildingSpawner : MonoBehaviour
         {
             print("EnterDetectedEnvironmentObject: " + obj.GUID.ToString() + ", " + first.ToString());
 
-            if (first)
+            if (first && obj.ObjectType == EnvironmentObjectType.Building)
             {
                 GameObject clone = Instantiate(buildingPrefab, obj.Position, obj.Rotation);
                 clone.transform.localScale = obj.Scale;

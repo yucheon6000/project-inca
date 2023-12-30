@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1625503933872953050}
   - component: {fileID: 7657327961340697057}
   m_Layer: 0
-  m_Name: Test Cube
+  m_Name: Environment Building
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -151,8 +151,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 10.62, y: 10.36, z: 10.1}
-  m_Center: {x: -0.2, y: 5.2, z: -0.28}
+  m_Size: {x: 16.89, y: 10.36, z: 8.29}
+  m_Center: {x: -0.2, y: 5.99, z: -0.28}
 --- !u!1 &4058469155191002841
 GameObject:
   m_ObjectHideFlags: 0
@@ -180,7 +180,7 @@ Transform:
   m_GameObject: {fileID: 4058469155191002841}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.21, y: 0, z: -0.5}
+  m_LocalPosition: {x: -0.21, y: 0, z: -0.26}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -205,7 +205,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 10.86, y: 11.32, z: 10.74}
+  m_Size: {x: 16.8, y: 11.2, z: 8.18}
   m_Center: {x: 0, y: 5.64, z: 0}
 --- !u!114 &5381090906541140838
 MonoBehaviour:
@@ -219,6 +219,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ef57bb13fcd4b6b994b7d88fbe9ef1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  objectType: 200
   boundCollider: {fileID: 7787910318207748265}
   drawGizmosSeleted: 1
 --- !u!1001 &5126899344521194783
@@ -239,15 +240,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: a34d72531d842a242bb8027f743b1947, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.014551
+      value: 1.6187
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: a34d72531d842a242bb8027f743b1947, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.5650027
+      value: 1.6187
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: a34d72531d842a242bb8027f743b1947, type: 3}
       propertyPath: m_LocalScale.z
-      value: 2.1177356
+      value: 1.6187
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: a34d72531d842a242bb8027f743b1947, type: 3}
       propertyPath: m_LocalPosition.x
