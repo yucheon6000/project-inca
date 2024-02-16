@@ -373,7 +373,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 26
+  field of view: 39
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -413,7 +413,7 @@ MonoBehaviour:
   - localPosition: {x: 0, y: 1.29, z: -0.63}
     localRotation: {x: -0.059211977, y: -0, z: -0, w: 0.9982455}
     orthographic: 0
-    fieldOfView: 36
+    fieldOfView: 32.4
 --- !u!4 &202401206
 Transform:
   m_ObjectHideFlags: 0
@@ -422,13 +422,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 202401201}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: -5.0398116, y: 241.22748, z: -52.7715}
+  m_LocalRotation: {x: 0.01378579, y: -0, z: -0, w: 0.999905}
+  m_LocalPosition: {x: 0, y: 1.43, z: -0.26}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 9.4, y: 0, z: 0}
+  m_Father: {fileID: 1970824282}
+  m_LocalEulerAnglesHint: {x: 1.58, y: 0, z: 0}
 --- !u!1 &507686483
 GameObject:
   m_ObjectHideFlags: 0
@@ -641,6 +641,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Road Block (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1438866460045392370, guid: b201fe768fe884786ad37545384c517d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5015536578572033352, guid: b201fe768fe884786ad37545384c517d,
         type: 3}
@@ -1041,6 +1046,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.19, y: 1.54, z: 5.29}
   m_Center: {x: 0, y: 0.75, z: 0}
+--- !u!114 &1408888220 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8616507441459571188, guid: b201fe768fe884786ad37545384c517d,
+    type: 3}
+  m_PrefabInstance: {fileID: 3237509640326437131}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3ed5822b1ec34feb89b01ab3544f2a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1422149223 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 642287924342879162, guid: 79d0ca8b77e301442afdb49f102e8aed,
@@ -1073,6 +1090,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 10
   rotateSpeed: 100
+  rotateCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   startLanePoint: {fileID: 1201813154}
   nextLanePoint: {fileID: 0}
   targetLaneIndex: 1
@@ -1445,7 +1468,7 @@ PrefabInstance:
     - target: {fileID: 261786959625234688, guid: 79d0ca8b77e301442afdb49f102e8aed,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -15.2
+      value: 1.8
       objectReference: {fileID: 0}
     - target: {fileID: 261786959625234688, guid: 79d0ca8b77e301442afdb49f102e8aed,
         type: 3}
@@ -1455,7 +1478,7 @@ PrefabInstance:
     - target: {fileID: 261786959625234688, guid: 79d0ca8b77e301442afdb49f102e8aed,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1
+      value: -88.5
       objectReference: {fileID: 0}
     - target: {fileID: 261786959625234688, guid: 79d0ca8b77e301442afdb49f102e8aed,
         type: 3}
@@ -1513,12 +1536,64 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 2036710214}
+    - targetCorrespondingSourceObject: {fileID: 261786959625234688, guid: 79d0ca8b77e301442afdb49f102e8aed,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 202401206}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 642287924342879162, guid: 79d0ca8b77e301442afdb49f102e8aed,
         type: 3}
       insertIndex: 1
       addedObject: {fileID: 1970824281}
   m_SourcePrefab: {fileID: 100100000, guid: 79d0ca8b77e301442afdb49f102e8aed, type: 3}
+--- !u!1 &1672029648
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1672029650}
+  - component: {fileID: 1672029649}
+  m_Layer: 0
+  m_Name: Road Block Spawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1672029649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1672029648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 295f3663843684f2096b5cfe693e1db2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetObject: {fileID: 1970824278}
+  roadBlockPrefabs:
+  - {fileID: 8616507441459571188, guid: b201fe768fe884786ad37545384c517d, type: 3}
+  presetedRoadBlock: {fileID: 1408888220}
+--- !u!4 &1672029650
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1672029648}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1837269975 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 642287924342879162, guid: 79d0ca8b77e301442afdb49f102e8aed,
@@ -1551,6 +1626,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 10
   rotateSpeed: 100
+  rotateCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   startLanePoint: {fileID: 124758636}
   nextLanePoint: {fileID: 0}
   targetLaneIndex: 1
@@ -1591,7 +1672,40 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 10
-  rotateSpeed: 100
+  rotateSpeed: 4.13
+  rotateCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.9245611
+      outSlope: -0.9245611
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.7030462
+      value: 0.34999084
+      inSlope: 0.10564904
+      outSlope: 0.10564904
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33548382
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2.1889236
+      outSlope: 2.1889236
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   startLanePoint: {fileID: 1057103512}
   nextLanePoint: {fileID: 0}
   targetLaneIndex: 1
@@ -1912,7 +2026,6 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 615241742}
-  - {fileID: 202401206}
   - {fileID: 1617885274}
   - {fileID: 1480608789}
   - {fileID: 1510157154}
@@ -1920,3 +2033,4 @@ SceneRoots:
   - {fileID: 692956597}
   - {fileID: 1344647204}
   - {fileID: 1183693756}
+  - {fileID: 1672029650}

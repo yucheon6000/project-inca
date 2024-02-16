@@ -9,6 +9,8 @@ public class CarMovement : MonoBehaviour
     private float moveSpeed;
     [SerializeField]
     private float rotateSpeed;
+    [SerializeField]
+    private AnimationCurve rotateCurve;
 
     [Header("Road Information")]
     [SerializeField]
@@ -54,12 +56,15 @@ public class CarMovement : MonoBehaviour
 
         Quaternion targetRotation = Quaternion.LookRotation(moveDir);
 
+        float timer = 0;
         while (true)
         {
+            timer += Time.deltaTime;
             Vector3 newPosition = transform.position + moveDir * moveSpeed * Time.deltaTime;
             transform.position = newPosition;
 
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotateSpeed * Time.deltaTime);
+            float rSpeed = rotateCurve.Evaluate(Mathf.Lerp(0, 1, timer / 1)) * rotateSpeed;
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rSpeed * Time.deltaTime);
 
             // 정확히 계산해서 넘어가면 최대 위치로 지정해주는 것도 필요
             if (Vector3.Distance(transform.position, nextLanePoint.Position) > 1)
@@ -67,12 +72,14 @@ public class CarMovement : MonoBehaviour
             else
                 break;
         }
+
+        print(timer);
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         if (nextLanePoint)
-            Gizmos.DrawSphere(nextLanePoint.Position, 1);
+            Gizmos.DrawSphere(nextLanePoint.Position, 0.3f);
     }
 }
