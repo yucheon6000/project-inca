@@ -72,6 +72,7 @@ public class CarMovement : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawSphere(nextLanePoint.Position, 1);
+        if (nextLanePoint)
+            Gizmos.DrawSphere(nextLanePoint.Position, 1);
     }
 }

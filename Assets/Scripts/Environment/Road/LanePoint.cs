@@ -8,9 +8,16 @@ public class LanePoint : MonoBehaviour
     private int laneIndex;
 
     [SerializeField]
-    private List<LanePoint> accessibleLanePoints;
+    private bool isStartPoint = false;
+    [SerializeField]
+    private bool isEndPoint = false;
+
+    [SerializeField]
+    private List<LanePoint> accessibleLanePoints = new List<LanePoint>();
 
     public int LaneIndex => laneIndex;
+    public bool IsStartPoint => isStartPoint;
+    public bool IsEndPoint => isEndPoint;
     public Vector3 Position => transform.position;
 
     public LanePoint GetNextLanePoint(int targetLaneIndex = 0)
@@ -27,11 +34,17 @@ public class LanePoint : MonoBehaviour
         return accessibleLanePoints[0];
     }
 
+    public void AddAccessibleLanePoint(LanePoint accessibleLanePoint)
+    {
+        accessibleLanePoints.Add(accessibleLanePoint);
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;
         foreach (var nextPoint in accessibleLanePoints)
         {
+            if (!nextPoint) continue;
             Gizmos.DrawLine(this.transform.position, nextPoint.transform.position);
         }
     }
