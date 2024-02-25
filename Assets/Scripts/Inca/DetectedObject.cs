@@ -32,6 +32,18 @@ namespace Inca
             // transform.localScale = Scale;    // ??
         }
 
+        private void Update()
+        {
+            UpdatePosition();
+        }
+
+        private void UpdatePosition()
+        {
+            if (!environmentObject) return;
+
+            transform.position = Position;
+        }
+
         public bool IsVisible() => isVisible;
 
         public void IsVisible(bool value)
