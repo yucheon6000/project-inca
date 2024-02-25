@@ -52,7 +52,10 @@ namespace Environment
         {
             if (!drawGizmos) return;
 
-            DrawGizmos(Color.blue);
+            if (objectType == EnvironmentObjectType.Car)
+                DrawGizmos(Color.yellow);
+            if (objectType == EnvironmentObjectType.Building)
+                DrawGizmos(Color.blue);
         }
 
         private void OnDrawGizmosSelected()
