@@ -10,18 +10,18 @@ public class BuildingSpawner : MonoBehaviour
 
     private void Start()
     {
-        IncaDetectionManager.AddOnTriggerEnterDetectedEnvironmentObject((DetectedEnvironmentObject obj, bool first) =>
+        IncaDetectionManager.AddOnTriggerEnterDetectedObject((DetectedObject obj, bool first) =>
         {
             print("EnterDetectedEnvironmentObject: " + obj.GUID.ToString() + ", " + first.ToString());
 
-            if (first && obj.ObjectType == EnvironmentObjectType.Building)
+            if (first && obj.ObjectType == DetectedObjectType.Building)
             {
                 GameObject clone = Instantiate(buildingPrefab, obj.Position, obj.Rotation);
                 clone.transform.localScale = obj.Scale;
             }
         });
 
-        IncaDetectionManager.AddOnTriggerExitDetectedEnvironmentObject((DetectedEnvironmentObject obj) =>
+        IncaDetectionManager.AddOnTriggerExitDetectedObject((DetectedObject obj) =>
         {
             print("ExitDetectedEnvironmentObject: " + obj.GUID.ToString());
         });
