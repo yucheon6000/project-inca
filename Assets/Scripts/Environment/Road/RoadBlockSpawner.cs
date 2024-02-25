@@ -10,8 +10,11 @@ public class RoadBlockSpawner : MonoBehaviour
     [SerializeField]
     private List<RoadBlock> roadBlockPrefabs = new List<RoadBlock>();
 
+    [SerializeField]
+    private int trigerGap = 90;     // trigerGap is gap between end line and limit line;
+
     private int currentIndex = 0;
-    private int currentLimit = -50;
+    private int currentLimit = 0;
 
     [Header("Preset")]
     [SerializeField]
@@ -26,6 +29,8 @@ public class RoadBlockSpawner : MonoBehaviour
             Debug.LogError("Please input your preseted RoadBlock.");
 
         currentRoadBlock = presetedRoadBlock;
+
+        currentLimit = -trigerGap;
     }
 
     private void Update()
@@ -40,7 +45,7 @@ public class RoadBlockSpawner : MonoBehaviour
             previousRoadBlock.gameObject.SetActive(false);
 
         currentIndex++;
-        currentLimit = 100 * currentIndex - 50; // 50 is gap between end line and limit line;
+        currentLimit = 100 * currentIndex - trigerGap;
 
         RoadBlock prefab = roadBlockPrefabs[Random.Range(0, roadBlockPrefabs.Count)];
         Vector3 pos = new Vector3(0, 0, 100 * currentIndex);
