@@ -12,89 +12,94 @@ namespace Inca
         [SerializeField]
         private SphereCollider lidarCollider;
 
-        private Dictionary<Guid, DetectedEnvironmentObject> detectedEnvironmentObjects = new Dictionary<Guid, DetectedEnvironmentObject>();
+        [Header("Detected Object Prefab")]
+        [SerializeField]
+        private DetectedObject detectedObjectPrefab;
+
+        private Dictionary<Guid, DetectedObject> detectedObjects = new Dictionary<Guid, DetectedObject>();
 
         #region Methods related on UnityAction
 
-        /* onTriggerEnterDetectedEnvironmentObject */
-        private static List<UnityAction<DetectedEnvironmentObject, bool>> onTriggerEnterDetectedEnvironmentObject
-            = new List<UnityAction<DetectedEnvironmentObject, bool>>();
+        /* onTriggerEnterDetectedObject */
+        private static List<UnityAction<DetectedObject, bool>> onTriggerEnterDetectedObject
+            = new List<UnityAction<DetectedObject, bool>>();
 
-        public static UnityAction<DetectedEnvironmentObject, bool> AddOnTriggerEnterDetectedEnvironmentObject
-            (UnityAction<DetectedEnvironmentObject, bool> action)
+        public static UnityAction<DetectedObject, bool> AddOnTriggerEnterDetectedObject
+            (UnityAction<DetectedObject, bool> action)
         {
-            onTriggerEnterDetectedEnvironmentObject.Add(action);
+            onTriggerEnterDetectedObject.Add(action);
             return action;
         }
 
-        public static bool RemoveOnTriggerEnterDetectedEnvironmentObject(UnityAction<DetectedEnvironmentObject, bool> action)
-            => onTriggerEnterDetectedEnvironmentObject.Remove(action);
+        public static bool RemoveOnTriggerEnterDetectedObject(UnityAction<DetectedObject, bool> action)
+            => onTriggerEnterDetectedObject.Remove(action);
 
-        /* onTriggerExitDetectedEnvironmentObject */
-        private static List<UnityAction<DetectedEnvironmentObject>> onTriggerExitDetectedEnvironmentObject = new List<UnityAction<DetectedEnvironmentObject>>();
+        /* onTriggerExitDetectedObject */
+        private static List<UnityAction<DetectedObject>> onTriggerExitDetectedObject = new List<UnityAction<DetectedObject>>();
 
-        public static UnityAction<DetectedEnvironmentObject> AddOnTriggerExitDetectedEnvironmentObject
-            (UnityAction<DetectedEnvironmentObject> action)
+        public static UnityAction<DetectedObject> AddOnTriggerExitDetectedObject
+            (UnityAction<DetectedObject> action)
         {
-            onTriggerExitDetectedEnvironmentObject.Add(action);
+            onTriggerExitDetectedObject.Add(action);
             return action;
         }
 
-        public static bool RemoveOnTriggerExitDetectedEnvironmentObject(UnityAction<DetectedEnvironmentObject> action)
-            => onTriggerExitDetectedEnvironmentObject.Remove(action);
+        public static bool RemoveOnTriggerExitDetectedObject(UnityAction<DetectedObject> action)
+            => onTriggerExitDetectedObject.Remove(action);
 
         #endregion
 
         private void EnterEnvironmentObject(EnvironmentObject environmentObject)
         {
             Guid guid = environmentObject.GUID;
-            bool firstTime = !detectedEnvironmentObjects.ContainsKey(guid);
+            bool firstTime = !detectedObjects.ContainsKey(guid);
 
-            // If there is no DetectedEnvironmentObject, create a new DetectedEnvironmentObject.
+            // If there is no existed DetectedObject in Dictionary, create a new DetectedObject.
             if (firstTime)
             {
-                DetectedEnvironmentObject newObj = new DetectedEnvironmentObject(environmentObject);
-                detectedEnvironmentObjects.Add(guid, newObj);
+                DetectedObject newObj = Instantiate<DetectedObject>(detectedObjectPrefab);
+                detectedObjects.Add(guid, newObj);
             }
 
-            DetectedEnvironmentObject obj = detectedEnvironmentObjects[guid];
+            DetectedObject obj = detectedObjects[guid];
 
+            obj.Initialize(environmentObject);
             obj.IsVisible(true);
 
-            foreach (var action in onTriggerEnterDetectedEnvironmentObject)
+            foreach (var action in onTriggerEnterDetectedObject)
                 action.Invoke(obj, firstTime);
         }
 
         private void ExitEnvironmentObject(EnvironmentObject environmentObject)
         {
-            DetectedEnvironmentObject obj = new DetectedEnvironmentObject(environmentObject);
+            DetectedObject obj = detectedObjects[environmentObject.GUID];
+            if (!obj) return;
+
             obj.IsVisible(false);
 
-            foreach (var action in onTriggerExitDetectedEnvironmentObject)
+            foreach (var action in onTriggerExitDetectedObject)
                 action.Invoke(obj);
         }
 
+        /* Lidar Events */
         private void OnTriggerEnter(Collider other)
         {
             if (other.TryGetComponent<EnvironmentObject>(out EnvironmentObject obj))
-            {
-                print(obj);
-                obj.DrawGizmos(true);
                 EnterEnvironmentObject(obj);
-            }
         }
 
         private void OnTriggerExit(Collider other)
         {
             if (other.TryGetComponent<EnvironmentObject>(out EnvironmentObject obj))
             {
-                obj.DrawGizmos(false);
+                print("IncaDetectionManager.OnTriggerExit: " + obj.gameObject.name);
                 ExitEnvironmentObject(obj);
             }
         }
 
         private void OnDrawGizmos()
         {
+            // Draw Lidar range
             Gizmos.color = Color.blue;
             Gizmos.DrawWireSphere(lidarCollider.transform.position, lidarCollider.radius);
         }

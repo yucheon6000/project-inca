@@ -8,6 +8,7 @@ namespace Inca
     public class IncaData
     {
         public static float Speed => IncaDataManager.Instance.GetSpeed();
+        public static Vector3 PlayerPosition => IncaDataManager.Instance.GetPlayerPosition();
     }
 
     public class IncaDataManager : IncaManager
@@ -19,6 +20,9 @@ namespace Inca
 
         [SerializeField]
         private float speed = 0;
+
+        [SerializeField]
+        private Transform player;
 
         private void Awake()
         {
@@ -37,6 +41,8 @@ namespace Inca
         }
 
         public float GetSpeed() => this.speed;
+
+        public Vector3 GetPlayerPosition() => this.player.transform.position;
     }
 }
 
