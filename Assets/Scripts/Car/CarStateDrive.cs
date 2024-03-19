@@ -1,0 +1,95 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class CarStateDrive : CarState
+{
+    [SerializeField]
+    private float originalMoveSpeed;
+    [SerializeField]
+    private float currentMoveSpeed = 20;
+
+    [Header("Is Starting")]
+    [SerializeField]
+    private float startDelayTime;
+    private bool isStarting = false;
+    private float startDelayTimer = 0;
+    [SerializeField]
+    private AnimationCurve stopAccelerationCurve;
+
+    [Header("Is Stopping")]
+    [SerializeField]
+    private float stopDelayTime;
+    private bool isStopping = false;
+    private float stopDelayTimer = 0;
+    [SerializeField]
+    private AnimationCurve stopDecelerationCurve;
+
+    private void Awake()
+    {
+        originalMoveSpeed = currentMoveSpeed;
+    }
+
+    public override void Enter(Car car)
+    {
+        currentMoveSpeed = originalMoveSpeed;
+        isStarting = true;
+        isStopping = false;
+        startDelayTimer = 0;
+        stopDelayTimer = 0;
+    }
+
+    public void ChangeMoveSpeed(float moveSpeed)
+    {
+        originalMoveSpeed = moveSpeed;
+        currentMoveSpeed = moveSpeed;
+    }
+
+    public override void Excute(Car car)
+    {
+        // If car has to stop
+        if (!isStopping && car.ShouldStop)
+        {
+            isStopping = true;
+            return;
+        }
+
+        UpdateStarting(car);
+        UpdateStopping(car);
+        UpdateMove(car);
+    }
+
+    private void UpdateStarting(Car car)
+    {
+        if (!isStarting) return;
+
+        startDelayTimer += Time.deltaTime;
+
+        currentMoveSpeed = Mathf.Lerp(0, originalMoveSpeed, stopDecelerationCurve.Evaluate(startDelayTimer / startDelayTime));
+
+        if (startDelayTimer >= startDelayTime)
+            isStarting = false;
+    }
+
+    private void UpdateStopping(Car car)
+    {
+        if (!isStopping) return;
+
+        stopDelayTimer += Time.deltaTime;
+
+        currentMoveSpeed = Mathf.Lerp(originalMoveSpeed, 0, stopDecelerationCurve.Evaluate(stopDelayTimer / stopDelayTime));
+
+        if (stopDelayTimer >= stopDelayTime)
+            car.ChangeState(Car.CarStates.Stop);
+    }
+
+    private void UpdateMove(Car car)
+    {
+        Vector3 moveDir = car.NextLanePoint.Position - car.CurrentLanePoint.Position;
+        moveDir.Normalize();
+
+        transform.position += moveDir * currentMoveSpeed * Time.deltaTime;
+    }
+
+    public override void Exit(Car car) { }
+}

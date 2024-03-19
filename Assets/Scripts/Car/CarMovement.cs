@@ -283,18 +283,18 @@ public class CarMovement : MonoBehaviour
     }
 
     /* Gizmo */
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = hasSafetyProblem ? Color.red : Color.green;
-        Gizmos.DrawLine(transform.position, transform.position + (transform.forward * safetyDistance));
+    // private void OnDrawGizmos()
+    // {
+    //     Gizmos.color = hasSafetyProblem ? Color.red : Color.green;
+    //     Gizmos.DrawLine(transform.position, transform.position + (transform.forward * safetyDistance));
 
-        Gizmos.color = isWaitingForLanePoint ? Color.red : Color.green;
-        Gizmos.DrawSphere(transform.position + transform.up * 3, 1f);
+    //     Gizmos.color = isWaitingForLanePoint ? Color.red : Color.green;
+    //     Gizmos.DrawSphere(transform.position + transform.up * 3, 1f);
 
 
-        if (nextLanePoint == null) return;
+    //     if (nextLanePoint == null) return;
 
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(nextLanePoint.Position, 0.3f);
-    }
+    //     Gizmos.color = Color.red;
+    //     Gizmos.DrawSphere(nextLanePoint.Position, 0.3f);
+    // }
 }

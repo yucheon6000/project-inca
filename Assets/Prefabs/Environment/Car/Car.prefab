@@ -210,11 +210,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2576061713299665916}
+  - component: {fileID: 4340539166932372885}
+  - component: {fileID: 7878026328411857022}
+  - component: {fileID: 8642431855880083735}
   - component: {fileID: 5035215371469777085}
   - component: {fileID: 4862468214488286356}
   - component: {fileID: 6512772320220542366}
   - component: {fileID: 1911348117088054748}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Car
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -238,7 +241,7 @@ Transform:
   - {fileID: 5672502246355429733}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5035215371469777085
+--- !u!114 &4340539166932372885
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -247,11 +250,111 @@ MonoBehaviour:
   m_GameObject: {fileID: 1802015732265816608}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 219bcd2fb6af04160afa2ba655d52041, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  states:
+  - {fileID: 7878026328411857022}
+  - {fileID: 8642431855880083735}
+  currentState: {fileID: 0}
+  currentLanePoint: {fileID: 0}
+  nextLanePoint: {fileID: 0}
+  previousLanePoint: {fileID: 0}
+  targetLaneIndex: 0
+  safetyDistance: 15
+  isWaitingUserOfNextLanePoint: 0
+  hasSafetyDistanceProblem: 0
+--- !u!114 &7878026328411857022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1802015732265816608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b35b39d6a55045d387fb8ae46736599, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startDriveWaitTime: 0
+--- !u!114 &8642431855880083735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1802015732265816608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85b0094f486fb444c9d0b0939db063aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  originalMoveSpeed: 0
+  currentMoveSpeed: 20
+  startDelayTime: 1
+  stopAccelerationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  stopDelayTime: 1
+  stopDecelerationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &5035215371469777085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1802015732265816608}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c7a4daffa1f8e43b7986b090f55e561e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentMoveSpeed: 0
-  targetMoveSpeed: 20
+  currentMoveSpeed: 25
+  targetMoveSpeed: 30
   moveSpeedAccelerationTime: 1
   moveSpeedAccelerationCurve:
     serializedVersion: 2

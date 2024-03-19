@@ -24,18 +24,17 @@ public class CarActionTrigger : MonoBehaviour
     {
         print(other);
 
-        if (!other.TryGetComponent<CarMovement>(out CarMovement carMovement)) return;
-
-        if (triggerSpeedChange)
+        if (other.TryGetComponent<CarStateDrive>(out CarStateDrive carStateDrive) && triggerSpeedChange)
         {
             float targetMoveSpeed = Random.Range(minTargetSpeed, maxTargetSpeed);
-            carMovement.ChangeMoveSpeed(targetMoveSpeed);
+            carStateDrive.ChangeMoveSpeed(targetMoveSpeed);
         }
 
-        if (triggerLaneChange)
+        if (other.TryGetComponent<Car>(out Car car) && triggerLaneChange)
         {
+            print("aaa");
             int targetLaneIndex = Random.Range(minTargetLaneIndex, maxTargetLaneIndex);
-            carMovement.ChangeTargetLane(targetLaneIndex);
+            car.ChangeTargetLane(targetLaneIndex);
         }
     }
 }
