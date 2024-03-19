@@ -20,6 +20,13 @@ public class LanePoint : MonoBehaviour
     public bool IsEndPoint => isEndPoint;
     public Vector3 Position => transform.position;
 
+    // To check which vehicles want to come to this point.
+    private GameObject user = null;
+    public GameObject User => user;
+    public bool HasUser => user ? true : false;
+
+    private List<GameObject> users = new List<GameObject>();
+
     public LanePoint GetNextLanePoint(int targetLaneIndex = 0)
     {
         if (targetLaneIndex == 0)
@@ -31,7 +38,7 @@ public class LanePoint : MonoBehaviour
                 return nextPoint;
         }
 
-        return accessibleLanePoints[0];
+        return accessibleLanePoints.Count == 0 ? null : accessibleLanePoints[0];
     }
 
     public void AddAccessibleLanePoint(LanePoint accessibleLanePoint)
@@ -47,5 +54,23 @@ public class LanePoint : MonoBehaviour
             if (!nextPoint) continue;
             Gizmos.DrawLine(this.transform.position, nextPoint.transform.position);
         }
+    }
+
+    public bool CanICome(GameObject user)
+    {
+        if (users.Count == 0) return false;
+        return users[0] == user;
+    }
+
+    public void RegisterUser(GameObject user)
+    {
+        if (!users.Contains(user))
+            users.Add(user);
+    }
+
+    public void DeregisterUser(GameObject user)
+    {
+        if (users.Contains(user))
+            users.Remove(user);
     }
 }
