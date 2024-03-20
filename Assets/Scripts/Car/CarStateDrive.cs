@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CarStateDrive : CarState
+public class CarStateDrive : State<Car>
 {
     [SerializeField]
     private float originalMoveSpeed;
@@ -45,7 +45,7 @@ public class CarStateDrive : CarState
         currentMoveSpeed = moveSpeed;
     }
 
-    public override void Excute(Car car)
+    public override void Execute(Car car)
     {
         // If car has to stop
         if (!isStopping && car.ShouldStop)
@@ -80,7 +80,7 @@ public class CarStateDrive : CarState
         currentMoveSpeed = Mathf.Lerp(originalMoveSpeed, 0, stopDecelerationCurve.Evaluate(stopDelayTimer / stopDelayTime));
 
         if (stopDelayTimer >= stopDelayTime)
-            car.ChangeState(Car.CarStates.Stop);
+            car.ChangeState(CarStates.Stop);
     }
 
     private void UpdateMove(Car car)

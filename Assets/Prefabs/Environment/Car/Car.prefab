@@ -213,7 +213,7 @@ GameObject:
   - component: {fileID: 4340539166932372885}
   - component: {fileID: 7878026328411857022}
   - component: {fileID: 8642431855880083735}
-  - component: {fileID: 5035215371469777085}
+  - component: {fileID: 3047947773350339065}
   - component: {fileID: 4862468214488286356}
   - component: {fileID: 6512772320220542366}
   - component: {fileID: 1911348117088054748}
@@ -256,7 +256,7 @@ MonoBehaviour:
   states:
   - {fileID: 7878026328411857022}
   - {fileID: 8642431855880083735}
-  currentState: {fileID: 0}
+  - {fileID: 3047947773350339065}
   currentLanePoint: {fileID: 0}
   nextLanePoint: {fileID: 0}
   previousLanePoint: {fileID: 0}
@@ -341,108 +341,18 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &5035215371469777085
+--- !u!114 &3047947773350339065
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1802015732265816608}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7a4daffa1f8e43b7986b090f55e561e, type: 3}
+  m_Script: {fileID: 11500000, guid: fcf7122129997446db55c22e46887462, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentMoveSpeed: 25
-  targetMoveSpeed: 30
-  moveSpeedAccelerationTime: 1
-  moveSpeedAccelerationCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  moveSpeedDecelerationTime: 1
-  moveSpeedDecelerationCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  rotateSpeed: 20
-  rotateCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: -0.9245611
-      outSlope: -0.9245611
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.7030462
-      value: 0.34999084
-      inSlope: 0.10564904
-      outSlope: 0.10564904
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33548382
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 2.1889236
-      outSlope: 2.1889236
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  safetyDistance: 10
-  startLanePoint: {fileID: 0}
-  nextLanePoint: {fileID: 0}
-  targetLaneIndex: 1
 --- !u!54 &4862468214488286356
 Rigidbody:
   m_ObjectHideFlags: 0

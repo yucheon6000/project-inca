@@ -32,7 +32,6 @@ public class CarActionTrigger : MonoBehaviour
 
         if (other.TryGetComponent<Car>(out Car car) && triggerLaneChange)
         {
-            print("aaa");
             int targetLaneIndex = Random.Range(minTargetLaneIndex, maxTargetLaneIndex);
             car.ChangeTargetLane(targetLaneIndex);
         }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CarStateStop : CarState
+public class CarStateStop : State<Car>
 {
     [SerializeField]
     private float startDriveWaitTime;
@@ -13,7 +13,7 @@ public class CarStateStop : CarState
         startDriveWaitTimer = 0;
     }
 
-    public override void Excute(Car car)
+    public override void Execute(Car car)
     {
         if (car.ShouldStop)
         {
@@ -24,7 +24,7 @@ public class CarStateStop : CarState
         startDriveWaitTimer += Time.deltaTime;
 
         if (startDriveWaitTimer >= startDriveWaitTime)
-            car.ChangeState(Car.CarStates.Drive);
+            car.ChangeState(CarStates.Drive);
     }
 
     public override void Exit(Car car) { }
