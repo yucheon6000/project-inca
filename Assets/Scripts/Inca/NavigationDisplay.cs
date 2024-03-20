@@ -39,6 +39,8 @@ public class NavigationDisplay : MonoBehaviour
 
     private void Update()
     {
+        List<DetectedObject> removedDetectedObjs = new List<DetectedObject>();
+
         foreach (var obj in detectedObjects.Keys)
         {
 
@@ -47,8 +49,7 @@ public class NavigationDisplay : MonoBehaviour
 
             if (!obj.IsVisible())
             {
-                detectedObjects.Remove(obj);
-                Destroy(objTransform.gameObject);
+                removedDetectedObjs.Add(obj);
                 continue;
             }
 
@@ -62,9 +63,16 @@ public class NavigationDisplay : MonoBehaviour
             }
             catch (MissingReferenceException)
             {
-                detectedObjects.Remove(obj);
-                Destroy(objTransform.gameObject);
+                removedDetectedObjs.Add(obj);
             }
+        }
+
+
+        foreach (var obj in removedDetectedObjs)
+        {
+            Transform objTransform = detectedObjects[obj];
+            detectedObjects.Remove(obj);
+            Destroy(objTransform.gameObject);
         }
     }
 }

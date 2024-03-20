@@ -22,8 +22,6 @@ public class CarActionTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        print(other);
-
         if (other.TryGetComponent<CarStateDrive>(out CarStateDrive carStateDrive) && triggerSpeedChange)
         {
             float targetMoveSpeed = Random.Range(minTargetSpeed, maxTargetSpeed);

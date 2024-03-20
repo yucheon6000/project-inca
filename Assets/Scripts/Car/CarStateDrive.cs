@@ -85,6 +85,8 @@ public class CarStateDrive : State<Car>
 
     private void UpdateMove(Car car)
     {
+        if (car.NextLanePoint == null || car.CurrentLanePoint == null) return;
+
         Vector3 moveDir = car.NextLanePoint.Position - car.CurrentLanePoint.Position;
         moveDir.Normalize();
 
