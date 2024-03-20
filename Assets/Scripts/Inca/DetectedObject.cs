@@ -34,6 +34,9 @@ namespace Inca
 
         private void Update()
         {
+            if (originalTransform == null || !originalTransform.gameObject.activeSelf || !originalTransform.gameObject.activeInHierarchy)
+                IsVisible(false);
+
             UpdatePosition();
         }
 
@@ -49,6 +52,14 @@ namespace Inca
         public void IsVisible(bool value)
         {
             isVisible = value;
+
+            if (value) return;
+
+            var colliders = GetComponents<Collider>();
+            foreach (var col in colliders)
+            {
+                col.enabled = false;
+            }
         }
 
         /* Gizmos */

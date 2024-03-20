@@ -84,7 +84,7 @@ public class Car : MonoBehaviour
     {
         float dist = Vector3.Distance(transform.position, NextLanePoint.Position);
 
-        if (dist < 2)
+        if (dist < 1)
         {
             SetNextLanePoint();
             return;
