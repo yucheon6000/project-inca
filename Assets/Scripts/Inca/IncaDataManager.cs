@@ -31,8 +31,8 @@ namespace Inca
 
         private void Update()
         {
-            float speed = carController.GetComponent<PrometeoCarController>().carSpeed;
-            SetSpeed(speed);
+            // float speed = carController.GetComponent<PrometeoCarController>().carSpeed;
+            // SetSpeed(speed);
         }
 
         private void SetSpeed(float speed)

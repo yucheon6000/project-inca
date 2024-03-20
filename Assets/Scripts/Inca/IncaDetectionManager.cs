@@ -91,10 +91,7 @@ namespace Inca
         private void OnTriggerExit(Collider other)
         {
             if (other.TryGetComponent<EnvironmentObject>(out EnvironmentObject obj))
-            {
-                print("IncaDetectionManager.OnTriggerExit: " + obj.gameObject.name);
                 ExitEnvironmentObject(obj);
-            }
         }
 
         private void OnDrawGizmos()
