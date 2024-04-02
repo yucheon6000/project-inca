@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -51,23 +52,29 @@ public class CarStateGlobal : State<Car>
 
     /* Update Next Lane Point */
     private float distanceToNextLanePoint = float.MaxValue;
+    bool checkIsInLine = false;
     public void UpdateNextLanePoint(Car car)
     {
-        float dist = Vector3.Distance(transform.position, car.NextLanePoint.Position);
+        checkIsInLine = CheckPointIsBetweenTwoPoints(transform.position, car.CurrentLanePoint.Position, car.NextLanePoint.Position);
 
-        if (dist < 1)
+        if (!checkIsInLine)
         {
             SetNextLanePoint(car);
             return;
         }
+    }
 
-        if (dist > distanceToNextLanePoint)
-        {
-            SetNextLanePoint(car);
-            return;
-        }
+    private bool CheckPointIsBetweenTwoPoints(Vector3 targetPoint, Vector3 point1, Vector3 point2)
+    {
+        Vector2 V2point1 = new Vector2(point1.x, point1.z);
+        Vector2 V2point2 = new Vector2(point2.x, point2.z);
+        Vector2 V2targetPoint = new Vector2(targetPoint.x, targetPoint.z);
 
-        distanceToNextLanePoint = dist;
+        float distA = Vector2.Distance(V2point1, V2point2);
+        float distB = Vector2.Distance(V2targetPoint, V2point2);
+        float distC = Vector2.Distance(V2targetPoint, V2point1);
+
+        return Math.Pow(distA, 2) + Math.Pow(distB, 2) >= Math.Pow(distC, 2) && Math.Pow(distA, 2) + Math.Pow(distC, 2) >= Math.Pow(distB, 2);
     }
 
     private void SetNextLanePoint(Car car)
