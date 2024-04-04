@@ -1,18 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class GameController : MonoBehaviour
+public abstract class GameController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [Header("UI")]
+    [SerializeField]
+    protected RectTransform rectTransform;
+    [SerializeField]
+    protected Image image;
+    [SerializeField]
+    protected Material materialGreen;
+    [SerializeField]
+    protected Material materialRed;
+    [SerializeField]
+    protected AnimationCurve sizeChangingCurve;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [Header("Target Layermask")]
+    [SerializeField]
+    protected LayerMask targetLayermask;
 }

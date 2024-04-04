@@ -4,24 +4,9 @@ using UnityEngine.UI;
 public class MouseBasedGameController : GameController
 {
     [SerializeField]
-    private RectTransform rectTransform;
-    [SerializeField]
-    private Image image;
-
-    [SerializeField]
     private Transform ballTransfrom;
     [SerializeField]
     private Transform hitBallTransfrom;
-
-    [SerializeField]
-    private LayerMask targetLayermask;
-    [SerializeField]
-    private AnimationCurve curve;
-
-    [SerializeField]
-    private Material materialGreen;
-    [SerializeField]
-    private Material materialRed;
 
     Vector3 dir = Vector3.zero;
     float prevScale = 0;
@@ -65,7 +50,7 @@ public class MouseBasedGameController : GameController
         }
 
         timer += Time.deltaTime;
-        rectTransform.localScale = Vector3.one * Mathf.Lerp(startScale, targetScale, curve.Evaluate(timer / 0.5f));
+        rectTransform.localScale = Vector3.one * Mathf.Lerp(startScale, targetScale, sizeChangingCurve.Evaluate(timer / 0.5f));
         prevScale = rectTransform.localScale.x;
 
     }

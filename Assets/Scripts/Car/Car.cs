@@ -9,6 +9,8 @@ public class Car : MonoBehaviour
     [SerializeField]
     private List<State<Car>> states = new List<State<Car>>();
     private StateMachine<Car> stateMachine = new StateMachine<Car>();
+    private CarStates currentState = CarStates.Stop;
+    public CarStates CurrentState => currentState;
 
     [Header("Lane Information")]
     [Space]
@@ -91,6 +93,7 @@ public class Car : MonoBehaviour
 
     public void ChangeState(CarStates newState)
     {
+        currentState = newState;
         stateMachine.ChangeState(states[(int)newState]);
     }
 
