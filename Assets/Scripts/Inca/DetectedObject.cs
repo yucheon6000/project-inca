@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Environment;
+using UnityEngine.Events;
 
 namespace Inca
 {
@@ -29,6 +30,7 @@ namespace Inca
             this.originalTransform = environmentObject.transform;
             transform.position = Position;
             transform.rotation = Rotation;
+            environmentObject.RegisterOnDistroyAction(() => IsVisible(false));
             // transform.localScale = Scale;    // ??
         }
 
@@ -51,15 +53,32 @@ namespace Inca
 
         public void IsVisible(bool value)
         {
+            if (isVisible == value) return;
+
             isVisible = value;
 
             if (value) return;
 
+            // if this is hided
+            OnHide();
+        }
+
+        public void OnHide()
+        {
+            // Deactivate colliders
             var colliders = GetComponents<Collider>();
             foreach (var col in colliders)
-            {
                 col.enabled = false;
-            }
+
+            // call OnHide events
+            foreach (var action in onHideActions)
+                action.Invoke();
+        }
+
+        private List<UnityAction> onHideActions = new List<UnityAction>();
+        public void RegisterOnHideAction(UnityAction action)
+        {
+            onHideActions.Add(action);
         }
 
         /* Gizmos */

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Environment
 {
@@ -23,5 +24,18 @@ namespace Environment
         public Vector3 ColliderCenter => boundCollider.center;
         public Vector3 ColliderSize => boundCollider.size;
         public Bounds ColliderBounds => boundCollider.bounds;
+
+        public List<UnityAction> onDistroyActions = new List<UnityAction>();
+
+        public void RegisterOnDistroyAction(UnityAction action)
+        {
+            onDistroyActions.Add(action);
+        }
+
+        private void OnDestroy()
+        {
+            foreach (var action in onDistroyActions)
+                action.Invoke();
+        }
     }
 }

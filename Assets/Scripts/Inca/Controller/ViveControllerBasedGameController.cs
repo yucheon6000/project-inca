@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using HTC.UnityPlugin.Vive;
 using UnityEngine;
 
 public class ViveControllerBasedGameController : GameController
@@ -22,13 +23,29 @@ public class ViveControllerBasedGameController : GameController
     float targetScale = 1;
     float timer = 0;
 
+    private Enemy pointedEnemy;
+
+    private void Awake()
+    {
+        ViveInput.AddListenerEx(HandRole.RightHand, ControllerButton.FullTrigger, ButtonEventType.Down, () =>
+        {
+            if (pointedEnemy == null) return;
+
+            pointedEnemy.Hit(1);
+            targetScale = 1;
+        });
+    }
+
     private void Update()
     {
         // print(Input.mousePosition);
 
         Ray ray = new Ray(controllerTransform.position, controllerTransform.forward);
-        if (Physics.Raycast(ray, out RaycastHit hitInfo, 100000, targetLayermask))
+        if (Physics.Raycast(ray, out RaycastHit hitInfo, 100000, targetLayermask)
+            && hitInfo.collider.TryGetComponent<Enemy>(out Enemy enemy)
+            && enemy.IsInteractableType(InteractableType.Hitable))
         {
+            pointedEnemy = enemy;
             rectTransform.position = Vector3.Lerp(rectTransform.position, camera.WorldToScreenPoint(hitInfo.point), Time.deltaTime * aaaa);
             float dist = Vector3.Distance(controllerTransform.position, hitInfo.point);
             targetScale = Mathf.Lerp(0.1f, 2.4f, 5f / dist);
@@ -42,6 +59,7 @@ public class ViveControllerBasedGameController : GameController
         }
         else
         {
+            pointedEnemy = null;
             rayT.localScale = new Vector3(1, 1, aaa);
             rectTransform.position = Vector3.Lerp(rectTransform.position, camera.WorldToScreenPoint(controllerTransform.position + controllerTransform.forward * aaa), Time.deltaTime * aaaa);
             targetScale = 1;
