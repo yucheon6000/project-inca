@@ -67,8 +67,10 @@ namespace Inca
         {
             // Deactivate colliders
             var colliders = GetComponents<Collider>();
-            foreach (var col in colliders)
-                col.enabled = false;
+
+            if (colliders.Length != 0)
+                foreach (var col in colliders)
+                    col.enabled = false;
 
             // call OnHide events
             foreach (var action in onHideActions)

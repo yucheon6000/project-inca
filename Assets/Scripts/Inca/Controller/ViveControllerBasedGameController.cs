@@ -15,39 +15,27 @@ public class ViveControllerBasedGameController : GameController
     [SerializeField]
     private Transform rayT;
 
-    [SerializeField]
-    private Camera camera;
-
     float prevScale = 0;
     float startScale = 0;
     float targetScale = 1;
     float timer = 0;
 
-    private Enemy pointedEnemy;
-
     private void Awake()
     {
         ViveInput.AddListenerEx(HandRole.RightHand, ControllerButton.FullTrigger, ButtonEventType.Down, () =>
         {
-            if (pointedEnemy == null) return;
-
-            pointedEnemy.Hit(1);
-            targetScale = 1;
+            TriggerShoot();
         });
     }
 
     private void Update()
     {
-        // print(Input.mousePosition);
-
         Ray ray = new Ray(controllerTransform.position, controllerTransform.forward);
-        if (Physics.Raycast(ray, out RaycastHit hitInfo, 100000, targetLayermask)
-            && hitInfo.collider.TryGetComponent<Enemy>(out Enemy enemy)
-            && enemy.IsInteractableType(InteractableType.Hitable))
+        if (CheckTarget(ray))
         {
-            pointedEnemy = enemy;
-            rectTransform.position = Vector3.Lerp(rectTransform.position, camera.WorldToScreenPoint(hitInfo.point), Time.deltaTime * aaaa);
-            float dist = Vector3.Distance(controllerTransform.position, hitInfo.point);
+            rectTransform.position = Vector3.Lerp(rectTransform.position, targetCamera.WorldToScreenPoint(hitPoint), Time.deltaTime * aaaa);
+
+            float dist = Vector3.Distance(controllerTransform.position, hitPoint);
             targetScale = Mathf.Lerp(0.1f, 2.4f, 5f / dist);
 
             if (prevScale == 1)
@@ -59,9 +47,9 @@ public class ViveControllerBasedGameController : GameController
         }
         else
         {
-            pointedEnemy = null;
+            target = null;
             rayT.localScale = new Vector3(1, 1, aaa);
-            rectTransform.position = Vector3.Lerp(rectTransform.position, camera.WorldToScreenPoint(controllerTransform.position + controllerTransform.forward * aaa), Time.deltaTime * aaaa);
+            rectTransform.position = Vector3.Lerp(rectTransform.position, targetCamera.WorldToScreenPoint(controllerTransform.position + controllerTransform.forward * aaa), Time.deltaTime * aaaa);
             targetScale = 1;
             if (prevScale < 0.95)
             {
@@ -75,6 +63,12 @@ public class ViveControllerBasedGameController : GameController
         rectTransform.localScale = Vector3.one * Mathf.Lerp(startScale, targetScale, sizeChangingCurve.Evaluate(timer / 0.5f));
         prevScale = rectTransform.localScale.x;
 
+    }
+
+    protected override void SpawnShootEffect()
+    {
+        GameObject cloneEffect = Instantiate(shootEffect, shootEffectSpawnTransform.position, Quaternion.identity);
+        cloneEffect.transform.rotation = controllerTransform.rotation;
     }
 
     private void OnDrawGizmos()
