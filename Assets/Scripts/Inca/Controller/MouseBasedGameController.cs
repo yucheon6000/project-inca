@@ -4,6 +4,9 @@ using UnityEngine.UI;
 
 public class MouseBasedGameController : GameController
 {
+    [Header("Debug")]
+    [SerializeField]
+    private bool debugMode;
     [SerializeField]
     private Transform mouseBallTransfrom;
     [SerializeField]
@@ -25,6 +28,13 @@ public class MouseBasedGameController : GameController
 
     private void Update()
     {
+        // On or off debug mode
+        if (mouseBallTransfrom.gameObject.activeSelf != debugMode)
+        {
+            mouseBallTransfrom.gameObject.SetActive(debugMode);
+            hitBallTransfrom.gameObject.SetActive(debugMode);
+        }
+
         // Update mouse's positions
         mouseScreenPosition = Input.mousePosition + new Vector3(0, 0, 10f);
         mouseWorldPosition = targetCamera.ScreenToWorldPoint(mouseScreenPosition);
