@@ -1,18 +1,81 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class GameController : MonoBehaviour
+public abstract class GameController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [Header("Camera")]
+    [SerializeField]
+    protected Camera targetCamera;
+
+    [Header("UI")]
+    [SerializeField]
+    protected RectTransform rectTransform;
+    [SerializeField]
+    protected Image image;
+    [SerializeField]
+    protected Material materialGreen;
+    [SerializeField]
+    protected Material materialRed;
+    [SerializeField]
+    protected AnimationCurve sizeChangingCurve;
+
+    [Header("Target Layermask")]
+    [SerializeField]
+    protected LayerMask targetLayermask;
+
+    [Header("Hit Information (for debug)")]
+    [SerializeField]
+    protected Vector3 hitPoint = Vector3.zero;
+    [SerializeField]
+    protected Enemy target = null;
+
+    [Header("Effects")]
+    [SerializeField]
+    protected Transform shootEffectSpawnTransform;
+    [SerializeField]
+    protected GameObject shootEffect;
+    [SerializeField]
+    protected GameObject hitEffect;
+
+    protected bool CheckTarget(Ray ray)
     {
-        
+        bool flag = false;
+
+        if (Physics.Raycast(ray, out RaycastHit hitInfo, 100000, targetLayermask)
+            && hitInfo.collider.TryGetComponent<Enemy>(out Enemy enemy)
+            && enemy.IsInteractableType(InteractableType.Hitable))
+        {
+            flag = true;
+            hitPoint = hitInfo.point;
+            target = enemy;
+        }
+
+        else
+        {
+            target = null;
+        }
+
+        return flag;
     }
 
-    // Update is called once per frame
-    void Update()
+    protected abstract void SpawnShootEffect();
+
+    private void SpawnHitEffect()
     {
-        
+        Instantiate(hitEffect, hitPoint, Quaternion.identity);
+    }
+
+    public void TriggerShoot()
+    {
+        SpawnShootEffect();
+
+        if (target == null) return;
+
+        target.Hit(1);
+
+        SpawnHitEffect();
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class LanePoint : MonoBehaviour
@@ -26,6 +27,40 @@ public class LanePoint : MonoBehaviour
     public bool HasUser => user ? true : false;
 
     private List<GameObject> users = new List<GameObject>();
+
+    private float allStopTimer = 0;
+
+    private void Update()
+    {
+        if (users.Count == 0)
+        {
+            allStopTimer = 0;
+            return;
+        }
+
+        foreach (var user in users)
+        {
+            if (user.GetComponent<Car>()?.CurrentState != CarStates.Stop)
+            {
+                allStopTimer = 0;
+                return;
+            }
+        }
+
+        allStopTimer += Time.deltaTime;
+
+        if (allStopTimer >= 1)
+        {
+            OrderUsersByDistance();
+            print("Ordered");
+            allStopTimer = 0;
+        }
+    }
+
+    public void OrderUsersByDistance()
+    {
+        users.OrderBy((GameObject x) => (x.transform.position - transform.position).sqrMagnitude);
+    }
 
     public LanePoint GetNextLanePoint(int targetLaneIndex = 0)
     {

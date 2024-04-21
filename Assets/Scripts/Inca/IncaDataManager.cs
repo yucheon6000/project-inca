@@ -9,6 +9,9 @@ namespace Inca
     {
         public static float Speed => IncaDataManager.Instance.GetSpeed();
         public static Vector3 PlayerPosition => IncaDataManager.Instance.GetPlayerPosition();
+        public static Vector3 PlayerForward => IncaDataManager.Instance.GetPlayerForward();
+
+        // [ASSUME] Player와 Car의 구분이 필요할 수 있음
     }
 
     public class IncaDataManager : IncaManager
@@ -43,6 +46,7 @@ namespace Inca
         public float GetSpeed() => this.speed;
 
         public Vector3 GetPlayerPosition() => this.player.transform.position;
+        public Vector3 GetPlayerForward() => this.player.transform.forward;
     }
 }
 
