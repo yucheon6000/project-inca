@@ -411,6 +411,55 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1680442286}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &506835195
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 506835196}
+  - component: {fileID: 506835197}
+  m_Layer: 0
+  m_Name: UI Hider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &506835196
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 506835195}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &506835197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 506835195}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2235eb5cf8c6e04bb9d69810b9e65a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  show: 1
+  targetGameObjects:
+  - {fileID: 1148664901}
+  - {fileID: 1121915864}
+  - {fileID: 973338385}
 --- !u!1 &612996405
 GameObject:
   m_ObjectHideFlags: 0
@@ -3008,6 +3057,7 @@ SceneRoots:
   - {fileID: 615241742}
   - {fileID: 1148664905}
   - {fileID: 1183693756}
+  - {fileID: 506835196}
   - {fileID: 2001311235}
   - {fileID: 973338386}
   - {fileID: 1243242159}
