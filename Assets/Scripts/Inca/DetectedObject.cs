@@ -68,7 +68,7 @@ namespace Inca
             // Deactivate colliders
             var colliders = GetComponents<Collider>();
 
-            if (colliders.Length != 0)
+            if (colliders != null && colliders.Length != 0)
                 foreach (var col in colliders)
                     col.enabled = false;
 

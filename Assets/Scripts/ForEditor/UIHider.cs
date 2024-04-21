@@ -14,13 +14,11 @@ public class UIHider : MonoBehaviour
 
     private void Awake()
     {
-        print("asdfasdfa");
         UpdateActivation(true);
     }
 
     private void Update()
     {
-        print("a");
         if (targetGameObjects.Count != prevCount)
         {
             prevCount = targetGameObjects.Count;
@@ -42,7 +40,6 @@ public class UIHider : MonoBehaviour
 
     private void UpdateActivation()
     {
-        print("aaa");
         foreach (var target in targetGameObjects)
             target.gameObject.SetActive(show);
     }

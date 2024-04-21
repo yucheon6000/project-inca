@@ -15,7 +15,7 @@ public class RoadBlock : MonoBehaviour
     private RoadBlock test_nextRoadBlock = null;
 
     [ContextMenu("Sync Lane Points")]
-    private void SyncLanePoints()
+    public void SyncLanePoints()
     {
         lanePoints = new List<LanePoint>(GetComponentsInChildren<LanePoint>());
 

@@ -7,18 +7,18 @@ public class LanePoint : MonoBehaviour
 {
     [SerializeField]
     private int laneIndex;
+    public int LaneIndex { set { laneIndex = value; } get => laneIndex; }
 
     [SerializeField]
     private bool isStartPoint = false;
+    public bool IsStartPoint { set { isStartPoint = value; } get => isStartPoint; }
     [SerializeField]
     private bool isEndPoint = false;
+    public bool IsEndPoint { set { isEndPoint = value; } get => isEndPoint; }
 
     [SerializeField]
     private List<LanePoint> accessibleLanePoints = new List<LanePoint>();
 
-    public int LaneIndex => laneIndex;
-    public bool IsStartPoint => isStartPoint;
-    public bool IsEndPoint => isEndPoint;
     public Vector3 Position => transform.position;
 
     // To check which vehicles want to come to this point.

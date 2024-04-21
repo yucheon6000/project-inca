@@ -45,10 +45,10 @@ public class RoadBlockSpawner : MonoBehaviour
             previousRoadBlock.gameObject.SetActive(false);
 
         currentIndex++;
-        currentLimit = 100 * currentIndex - trigerGap;
+        currentLimit = 500 * currentIndex - trigerGap;
 
         RoadBlock prefab = roadBlockPrefabs[Random.Range(0, roadBlockPrefabs.Count)];
-        Vector3 pos = new Vector3(0, 0, 100 * currentIndex);
+        Vector3 pos = new Vector3(0, 0, 500 * currentIndex);
         RoadBlock nextRoadBlock = Instantiate<RoadBlock>(prefab, pos, Quaternion.identity);
 
         currentRoadBlock.SetNextRoadBlock(nextRoadBlock);
