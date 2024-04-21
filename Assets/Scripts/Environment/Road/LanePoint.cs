@@ -20,6 +20,7 @@ public class LanePoint : MonoBehaviour
     private List<LanePoint> accessibleLanePoints = new List<LanePoint>();
 
     public Vector3 Position => transform.position;
+    public Vector3 Forward => transform.forward;
 
     // To check which vehicles want to come to this point.
     private GameObject user = null;

@@ -9,6 +9,10 @@ public class CarStateDrive : State<Car>
     [SerializeField]
     private float currentMoveSpeed = 20;
 
+    [Space]
+    [SerializeField]
+    private float rotateSpeed = 10;
+
     [Header("Is Starting")]
     [SerializeField]
     private float startDelayTime;
@@ -57,6 +61,7 @@ public class CarStateDrive : State<Car>
         UpdateStarting(car);
         UpdateStopping(car);
         UpdateMove(car);
+        UpdateRotate(car);
     }
 
     private void UpdateStarting(Car car)
@@ -91,6 +96,16 @@ public class CarStateDrive : State<Car>
         moveDir.Normalize();
 
         transform.position += moveDir * currentMoveSpeed * Time.deltaTime;
+    }
+
+    private void UpdateRotate(Car car)
+    {
+
+        // float t = (transform.position - car.CurrentLanePoint.Position).magnitude / (car.NextLanePoint.Position - car.CurrentLanePoint.Position).magnitude;
+
+        transform.rotation = Quaternion.Slerp(
+           transform.rotation, Quaternion.LookRotation(car.NextLanePoint.Position - car.CurrentLanePoint.Position), Time.deltaTime * rotateSpeed
+        );
     }
 
     public override void Exit(Car car) { }
