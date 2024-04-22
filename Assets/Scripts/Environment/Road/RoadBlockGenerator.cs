@@ -8,8 +8,7 @@ using UnityEngine;
 [RequireComponent(typeof(RoadBlock))]
 public class RoadBlockGenerator : MonoBehaviour
 {
-    [Header("Raod Block Information")]
-    public Vector3 roadBlockSize = new Vector3(500, 1, 500);
+    public Vector3 roadBlockSize => RoadBlock.road_block_size;
 
     [Header("Prefab")]
     public GameObject lanePointPrefab;
@@ -30,7 +29,7 @@ public class RoadBlockGenerator : MonoBehaviour
             GameObject lane = new GameObject($"Lane {laneIndex}");
 
             lane.transform.SetParent(gameObject.transform);
-            lane.transform.localPosition = new Vector3(ri.laneInitialGapX + ri.laneGapX * i, 0, 0);
+            lane.transform.localPosition = new Vector3(ri.laneInitialGapX + ri.laneGapX * i, 0, roadBlockSize.z / 2);
 
             float length = roadBlockSize.z - ri.lanePointInitialGapZ;
             float lanePointGap = length / (ri.lanePointCount - 1);
@@ -58,7 +57,7 @@ public class RoadBlockGenerator : MonoBehaviour
             if (ri.reverse)
             {
                 lane.transform.rotation = Quaternion.Euler(0, 180, 0);
-                lane.transform.localPosition = new Vector3(-ri.laneInitialGapX + ri.laneGapX * -i, 0, -roadBlockSize.z);
+                lane.transform.localPosition = new Vector3(-ri.laneInitialGapX + ri.laneGapX * -i, 0, -roadBlockSize.z / 2);
             }
         }
 

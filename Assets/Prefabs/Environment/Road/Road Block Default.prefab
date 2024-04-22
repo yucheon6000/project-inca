@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 1688158052725243198}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -250}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 500, y: 1, z: 500}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -101,7 +101,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -152,10 +152,66 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3ed5822b1ec34feb89b01ab3544f2a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lanePoints: []
-  startLanePoints: []
-  endLanePoints: []
+  lanePoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  startLanePoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  endLanePoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   test_nextRoadBlock: {fileID: 0}
+  accessibleRoadBlocks: []
+  roadBlockDirections: 
+  canBeFowardRoadBlock: 0
+  canBeBackwardRoadBlock: 0
+  canBeRightRoadBlock: 0
+  canBeLeftRoadBlock: 0
+  currentDirection: 0
+  nextDirection: 0
 --- !u!114 &4624943241676772664
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,8 +229,8 @@ MonoBehaviour:
     type: 3}
   roadInformation:
     laneCount: 2
-    laneGapX: 0
-    laneInitialGapX: 0
+    laneGapX: 10
+    laneInitialGapX: 10
     lanePointCount: 10
     lanePointInitialGapZ: 0
     reverse: 0
@@ -194,9 +250,9 @@ MonoBehaviour:
   lanePointPrefab: {fileID: 3489842056337085410, guid: c95f351077ab44b9cb456dc26012b401,
     type: 3}
   roadInformation:
-    laneCount: 1
-    laneGapX: 0
-    laneInitialGapX: 0
-    lanePointCount: 2
+    laneCount: 2
+    laneGapX: 10
+    laneInitialGapX: 10
+    lanePointCount: 10
     lanePointInitialGapZ: 0
     reverse: 1
