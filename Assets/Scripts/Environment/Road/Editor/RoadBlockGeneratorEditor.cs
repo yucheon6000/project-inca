@@ -12,7 +12,7 @@ public class RoadBlockGeneratorEditor : Editor
 
         RoadBlockGenerator generator = (RoadBlockGenerator)target;
 
-        if (GUILayout.Button("Generate Road Black", new GUILayoutOption[] { GUILayout.Height(50) }))
+        if (GUILayout.Button("Generate Road Block", new GUILayoutOption[] { GUILayout.Height(50) }))
         {
             generator.GenerateRoadBlock();
         }

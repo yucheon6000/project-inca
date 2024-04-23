@@ -18,6 +18,10 @@ public class LanePoint : MonoBehaviour
     public bool IsEndPoint { set { isEndPoint = value; } get => isEndPoint; }
 
     [SerializeField]
+    private RoadBlockDirection roadBlockDirection = RoadBlockDirection.North;
+    public RoadBlockDirection RoadBlockDirection => roadBlockDirection;
+
+    [SerializeField]
     private List<LanePoint> accessibleLanePoints = new List<LanePoint>();
 
     public Vector3 Position => transform.position;
@@ -87,10 +91,12 @@ public class LanePoint : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = laneIndex >= 0 ? Color.blue : Color.red;
+        // Gizmos.color = laneIndex >= 0 ? Color.blue : Color.red;
         foreach (var nextPoint in accessibleLanePoints)
         {
             if (!nextPoint) continue;
+            if (nextPoint.laneIndex >= 0) Gizmos.color = Color.blue;
+            else Gizmos.color = Color.red;
             Gizmos.DrawLine(this.transform.position, nextPoint.transform.position);
         }
 
