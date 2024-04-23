@@ -111,11 +111,11 @@ public class RoadBlock : MonoBehaviour
 
         if (currentDirection == RoadBlockDirection.North || currentDirection == RoadBlockDirection.South)
         {
-            Debug.DrawLine(new Vector3(transform.position.x, 1, a), targetWorldPosition, Color.red);
+            Debug.DrawLine(new Vector3(transform.position.x, 1, a), new Vector3(transform.position.x, 1, b), Color.red);
         }
         else
         {
-            Debug.DrawLine(new Vector3(a, 1, transform.position.z), targetWorldPosition, Color.red);
+            Debug.DrawLine(new Vector3(a, 1, transform.position.z), new Vector3(b, 1, transform.position.z), Color.red);
         }
 
         return triggerEnter;
