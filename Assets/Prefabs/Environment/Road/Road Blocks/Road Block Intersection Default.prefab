@@ -444,6 +444,78 @@ Transform:
   - {fileID: 1404734523997784250}
   m_Father: {fileID: 4139857465254332377}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5118815484263464952
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4166690660575664174}
+  - component: {fileID: 880258157351743688}
+  - component: {fileID: 665575434105872750}
+  m_Layer: 8
+  m_Name: Action Trigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4166690660575664174
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5118815484263464952}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 4.1, z: -74.9}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4139857465254332377}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &880258157351743688
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5118815484263464952}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 25, y: 10, z: 10}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &665575434105872750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5118815484263464952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd15946200b79461f945b8b713caf130, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggerSpeedChange: 0
+  minTargetSpeed: 0
+  maxTargetSpeed: 0
+  triggerLaneChange: 1
+  minTargetLaneIndex: 0
+  maxTargetLaneIndex: 0
 --- !u!1 &6775729562688904041
 GameObject:
   m_ObjectHideFlags: 0
@@ -13510,6 +13582,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 63203366153846073}
+    - targetCorrespondingSourceObject: {fileID: 1593450950292286967, guid: 849b5f4e228027246934ddbc28115711,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4166690660575664174}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 849b5f4e228027246934ddbc28115711, type: 3}
 --- !u!4 &4139857465254332377 stripped
@@ -14937,13 +15013,13 @@ PrefabInstance:
     - target: {fileID: 430965544126987306, guid: c95f351077ab44b9cb456dc26012b401,
         type: 3}
       propertyPath: accessibleLanePoints.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 430965544126987306, guid: c95f351077ab44b9cb456dc26012b401,
         type: 3}
       propertyPath: accessibleLanePoints.Array.data[0]
       value: 
-      objectReference: {fileID: 3633844708274832390}
+      objectReference: {fileID: 8563110196488616153}
     - target: {fileID: 430965544126987306, guid: c95f351077ab44b9cb456dc26012b401,
         type: 3}
       propertyPath: accessibleLanePoints.Array.data[1]
@@ -20034,13 +20110,13 @@ PrefabInstance:
     - target: {fileID: 430965544126987306, guid: c95f351077ab44b9cb456dc26012b401,
         type: 3}
       propertyPath: accessibleLanePoints.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 430965544126987306, guid: c95f351077ab44b9cb456dc26012b401,
         type: 3}
       propertyPath: accessibleLanePoints.Array.data[0]
       value: 
-      objectReference: {fileID: 9087863837226954595}
+      objectReference: {fileID: 3281641245064766284}
     - target: {fileID: 430965544126987306, guid: c95f351077ab44b9cb456dc26012b401,
         type: 3}
       propertyPath: accessibleLanePoints.Array.data[1]
@@ -32071,13 +32147,13 @@ PrefabInstance:
     - target: {fileID: 430965544126987306, guid: c95f351077ab44b9cb456dc26012b401,
         type: 3}
       propertyPath: accessibleLanePoints.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 430965544126987306, guid: c95f351077ab44b9cb456dc26012b401,
         type: 3}
       propertyPath: accessibleLanePoints.Array.data[0]
       value: 
-      objectReference: {fileID: 831943182991258199}
+      objectReference: {fileID: 152339612652868298}
     - target: {fileID: 430965544126987306, guid: c95f351077ab44b9cb456dc26012b401,
         type: 3}
       propertyPath: accessibleLanePoints.Array.data[1]
@@ -34226,13 +34302,13 @@ PrefabInstance:
     - target: {fileID: 430965544126987306, guid: c95f351077ab44b9cb456dc26012b401,
         type: 3}
       propertyPath: accessibleLanePoints.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 430965544126987306, guid: c95f351077ab44b9cb456dc26012b401,
         type: 3}
       propertyPath: accessibleLanePoints.Array.data[0]
       value: 
-      objectReference: {fileID: 151912182433252336}
+      objectReference: {fileID: 4098129841566046278}
     - target: {fileID: 430965544126987306, guid: c95f351077ab44b9cb456dc26012b401,
         type: 3}
       propertyPath: accessibleLanePoints.Array.data[1]
