@@ -61,7 +61,15 @@ public class Car : MonoBehaviour
         get => hasSafetyDistanceProblem;
     }
 
-    public bool ShouldStop => IsWaitingUserOfNextLanePoint || HasSafetyDistanceProblem;
+    [SerializeField]
+    private bool isWaitingTrafficLight = false;
+    public bool IsWaitingTrafficLight
+    {
+        set => isWaitingTrafficLight = value;
+        get => isWaitingTrafficLight;
+    }
+
+    public bool ShouldStop => IsWaitingUserOfNextLanePoint || HasSafetyDistanceProblem || isWaitingTrafficLight;
 
     public Vector3 MiddlePosition => transform.position + Vector3.up * 1;
 
