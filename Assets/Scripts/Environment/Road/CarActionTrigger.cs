@@ -20,6 +20,14 @@ public class CarActionTrigger : MonoBehaviour
     [SerializeField]
     private int maxTargetLaneIndex;
 
+    [Header("Traffic Light")]
+    [SerializeField]
+    private bool triggerTrafficLightWait;
+    [SerializeField]
+    private bool trafficLightGo;
+    [SerializeField]
+    private bool trafficLightStop;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent<CarStateDrive>(out CarStateDrive carStateDrive) && triggerSpeedChange)
@@ -28,10 +36,21 @@ public class CarActionTrigger : MonoBehaviour
             carStateDrive.ChangeMoveSpeed(targetMoveSpeed);
         }
 
-        if (other.TryGetComponent<Car>(out Car car) && triggerLaneChange)
+        if (other.TryGetComponent<Car>(out Car car))
         {
-            int targetLaneIndex = Random.Range(minTargetLaneIndex, maxTargetLaneIndex);
-            car.ChangeTargetLane(targetLaneIndex);
+            if (triggerLaneChange)
+            {
+                int targetLaneIndex = Random.Range(minTargetLaneIndex, maxTargetLaneIndex);
+                car.ChangeTargetLane(targetLaneIndex);
+            }
+
+            if (triggerTrafficLightWait)
+            {
+                if (trafficLightGo)
+                    car.IsWaitingTrafficLight = false;
+                else if (trafficLightStop)
+                    car.IsWaitingTrafficLight = true;
+            }
         }
     }
 }

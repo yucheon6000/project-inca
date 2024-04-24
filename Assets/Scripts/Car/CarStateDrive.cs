@@ -9,6 +9,12 @@ public class CarStateDrive : State<Car>
     [SerializeField]
     private float currentMoveSpeed = 20;
 
+    private Vector3 correctPosition = Vector3.zero;
+
+    [Space]
+    [SerializeField]
+    private float rotateSpeed = 10;
+
     [Header("Is Starting")]
     [SerializeField]
     private float startDelayTime;
@@ -57,6 +63,7 @@ public class CarStateDrive : State<Car>
         UpdateStarting(car);
         UpdateStopping(car);
         UpdateMove(car);
+        UpdateRotate(car);
     }
 
     private void UpdateStarting(Car car)
@@ -87,10 +94,54 @@ public class CarStateDrive : State<Car>
     {
         if (car.NextLanePoint == null || car.CurrentLanePoint == null) return;
 
+        // Make the car's position more accurate
+        UpdateCorrectPosition(car);
+        Vector3 offset = (correctPosition - transform.position).normalized;
+
         Vector3 moveDir = car.NextLanePoint.Position - car.CurrentLanePoint.Position;
         moveDir.Normalize();
 
-        transform.position += moveDir * currentMoveSpeed * Time.deltaTime;
+        transform.position += (moveDir * currentMoveSpeed + (offset * 0.3f)) * Time.deltaTime;
+    }
+
+    private void UpdateCorrectPosition(Car car)
+    {
+        float cX = car.CurrentLanePoint.transform.position.x;
+        float cZ = car.CurrentLanePoint.transform.position.z;
+        float nX = car.NextLanePoint.transform.position.x;
+        float nZ = car.NextLanePoint.transform.position.z;
+
+        float mX = transform.position.x;
+        float mZ = transform.position.z;
+
+        if (cX == nX)
+        {
+            correctPosition = new Vector3(cX, 0, mZ);
+            return;
+        }
+        if (cZ == nZ)
+        {
+            correctPosition = new Vector3(mX, 0, cZ);
+            return;
+        }
+
+        float m1 = (nZ - cZ) / (nX - cX);
+        float m2 = -1 / m1;
+
+        float x = (m1 * cX - m2 * mX + mZ - cZ) / (m1 - m2);
+        float z = m2 * (cX - mX) + mZ;
+
+        correctPosition = new Vector3(x, 0, z);
+    }
+
+    private void UpdateRotate(Car car)
+    {
+
+        // float t = (transform.position - car.CurrentLanePoint.Position).magnitude / (car.NextLanePoint.Position - car.CurrentLanePoint.Position).magnitude;
+
+        transform.rotation = Quaternion.Slerp(
+           transform.rotation, Quaternion.LookRotation(car.NextLanePoint.Position - car.CurrentLanePoint.Position), Time.deltaTime * rotateSpeed
+        );
     }
 
     public override void Exit(Car car) { }

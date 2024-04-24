@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,19 +8,24 @@ public class LanePoint : MonoBehaviour
 {
     [SerializeField]
     private int laneIndex;
+    public int LaneIndex { set { laneIndex = value; } get => laneIndex; }
 
     [SerializeField]
     private bool isStartPoint = false;
+    public bool IsStartPoint { set { isStartPoint = value; } get => isStartPoint; }
     [SerializeField]
     private bool isEndPoint = false;
+    public bool IsEndPoint { set { isEndPoint = value; } get => isEndPoint; }
+
+    [SerializeField]
+    private RoadBlockDirection roadBlockDirection = RoadBlockDirection.North;
+    public RoadBlockDirection RoadBlockDirection => roadBlockDirection;
 
     [SerializeField]
     private List<LanePoint> accessibleLanePoints = new List<LanePoint>();
 
-    public int LaneIndex => laneIndex;
-    public bool IsStartPoint => isStartPoint;
-    public bool IsEndPoint => isEndPoint;
     public Vector3 Position => transform.position;
+    public Vector3 Forward => transform.forward;
 
     // To check which vehicles want to come to this point.
     private GameObject user = null;
@@ -67,13 +73,15 @@ public class LanePoint : MonoBehaviour
         if (targetLaneIndex == 0)
             targetLaneIndex = this.laneIndex;
 
-        foreach (var nextPoint in accessibleLanePoints)
+        LanePoint nextPoint = accessibleLanePoints[0];
+
+        foreach (var point in accessibleLanePoints)
         {
-            if (nextPoint.LaneIndex == targetLaneIndex)
-                return nextPoint;
+            if (Mathf.Abs(targetLaneIndex - point.laneIndex) <= Mathf.Abs(targetLaneIndex - nextPoint.laneIndex))
+                nextPoint = point;
         }
 
-        return accessibleLanePoints.Count == 0 ? null : accessibleLanePoints[0];
+        return nextPoint;
     }
 
     public void AddAccessibleLanePoint(LanePoint accessibleLanePoint)
@@ -83,11 +91,24 @@ public class LanePoint : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.blue;
+        // Gizmos.color = laneIndex >= 0 ? Color.blue : Color.red;
         foreach (var nextPoint in accessibleLanePoints)
         {
             if (!nextPoint) continue;
+            if (nextPoint.laneIndex >= 0) Gizmos.color = Color.blue;
+            else Gizmos.color = Color.red;
             Gizmos.DrawLine(this.transform.position, nextPoint.transform.position);
+        }
+
+        if (isStartPoint)
+        {
+            Gizmos.color = Color.white;
+            Gizmos.DrawCube(transform.position, Vector3.one);
+        }
+        if (isEndPoint)
+        {
+            Gizmos.color = Color.black;
+            Gizmos.DrawCube(transform.position, Vector3.one);
         }
     }
 
