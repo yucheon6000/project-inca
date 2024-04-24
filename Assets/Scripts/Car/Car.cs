@@ -117,7 +117,7 @@ public class Car : MonoBehaviour
         Gizmos.DrawLine(MiddlePosition, MiddlePosition + (transform.forward * safetyDistance));
 
         Gizmos.color = isWaitingUserOfNextLanePoint ? Color.red : Color.green;
-        Gizmos.DrawSphere(transform.position + transform.up * 3, 1f);
+        Gizmos.DrawSphere(transform.position + transform.up * 3 + transform.forward * 2, 0.3f);
 
         if (nextLanePoint == null) return;
 

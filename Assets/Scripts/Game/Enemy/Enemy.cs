@@ -5,17 +5,21 @@ using Inca;
 using UnityEngine;
 using UnityEngine.Events;
 
+public enum EnemyState { Idle, Attack, Die }
+
 public abstract class Enemy : MonoBehaviour, InteractableObject
 {
+    private EnemyState state = EnemyState.Idle;
+
     [SerializeField]
     private int maxHp;
     [SerializeField]
     private int currentHp;
     [SerializeField]
-    private bool isDead = false;
+    protected bool isDead = false;
 
     [SerializeField]
-    private Animator animator;
+    protected Animator animator;
 
     [SerializeField]
     private UnityEvent onDie = new UnityEvent();
@@ -55,6 +59,6 @@ public abstract class Enemy : MonoBehaviour, InteractableObject
 
     public virtual bool IsInteractableType(InteractableType type)
     {
-        throw new NotImplementedException();
+        return type == InteractableType.Hitable;
     }
 }
