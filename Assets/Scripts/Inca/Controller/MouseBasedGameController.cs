@@ -107,5 +107,9 @@ public class MouseBasedGameController : GameController
     {
         Gizmos.color = Color.green;
         Gizmos.DrawLine(CameraPosition, CameraPosition + (dir * 100));
+
+        Gizmos.color = Color.red;
+        if (target != null)
+            Gizmos.DrawSphere(hitPoint, 0.2f);
     }
 }

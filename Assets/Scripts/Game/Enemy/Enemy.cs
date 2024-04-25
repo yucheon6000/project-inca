@@ -61,4 +61,7 @@ public abstract class Enemy : MonoBehaviour, InteractableObject
     {
         return type == InteractableType.Hitable;
     }
+
+    public virtual void OnHoverStart() { }
+    public virtual void OnHoverEnd() { }
 }
