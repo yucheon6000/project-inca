@@ -78,10 +78,13 @@ public class Car : MonoBehaviour
         Setup();
     }
 
+    [SerializeField]
+    private bool startWithPositioning = true;
     private void Setup()
     {
         transform.SetParent(null);
-        transform.position = CurrentLanePoint.Position;
+        if (startWithPositioning)
+            transform.position = CurrentLanePoint.Position;
 
         NextLanePoint = CurrentLanePoint.GetNextLanePoint(TargetLaneIndex);
         NextLanePoint.RegisterUser(this.gameObject);

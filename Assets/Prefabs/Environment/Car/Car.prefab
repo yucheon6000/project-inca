@@ -229,6 +229,7 @@ MonoBehaviour:
   isWaitingUserOfNextLanePoint: 0
   hasSafetyDistanceProblem: 0
   isWaitingTrafficLight: 0
+  startWithPositioning: 1
 --- !u!114 &7878026328411857022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -255,8 +256,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   originalMoveSpeed: 0
-  currentMoveSpeed: 20
-  rotateSpeed: 10
+  currentMoveSpeed: 30
+  rotateSpeed: 3
   startDelayTime: 1
   stopAccelerationCurve:
     serializedVersion: 2
