@@ -398,6 +398,7 @@ MonoBehaviour:
   debugMode: 0
   mouseBallTransfrom: {fileID: 438456137136684667}
   hitBallTransfrom: {fileID: 8280855541366485319}
+  audioSource: {fileID: 0}
 --- !u!114 &5439552189889691705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1359,6 +1360,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2888951653575159045, guid: 28463aa8c3c274778b145b1fb44818dd,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2888951653575159045, guid: 28463aa8c3c274778b145b1fb44818dd,
+        type: 3}
+      propertyPath: m_audioClip
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 4582288404272683916, guid: 28463aa8c3c274778b145b1fb44818dd,
         type: 3}
