@@ -94,44 +94,10 @@ public class CarStateDrive : State<Car>
     {
         if (car.NextLanePoint == null || car.CurrentLanePoint == null) return;
 
-        // Make the car's position more accurate
-        UpdateCorrectPosition(car);
-        Vector3 offset = (correctPosition - transform.position).normalized;
-
-        Vector3 moveDir = car.NextLanePoint.Position - car.CurrentLanePoint.Position;
+        Vector3 moveDir = car.NextLanePoint.Position - transform.position;
         moveDir.Normalize();
 
-        transform.position += (moveDir * currentMoveSpeed + (offset * 0.3f)) * Time.deltaTime;
-    }
-
-    private void UpdateCorrectPosition(Car car)
-    {
-        float cX = car.CurrentLanePoint.transform.position.x;
-        float cZ = car.CurrentLanePoint.transform.position.z;
-        float nX = car.NextLanePoint.transform.position.x;
-        float nZ = car.NextLanePoint.transform.position.z;
-
-        float mX = transform.position.x;
-        float mZ = transform.position.z;
-
-        if (cX == nX)
-        {
-            correctPosition = new Vector3(cX, 0, mZ);
-            return;
-        }
-        if (cZ == nZ)
-        {
-            correctPosition = new Vector3(mX, 0, cZ);
-            return;
-        }
-
-        float m1 = (nZ - cZ) / (nX - cX);
-        float m2 = -1 / m1;
-
-        float x = (m1 * cX - m2 * mX + mZ - cZ) / (m1 - m2);
-        float z = m2 * (cX - mX) + mZ;
-
-        correctPosition = new Vector3(x, 0, z);
+        transform.position += moveDir * currentMoveSpeed * Time.deltaTime;
     }
 
     private void UpdateRotate(Car car)
