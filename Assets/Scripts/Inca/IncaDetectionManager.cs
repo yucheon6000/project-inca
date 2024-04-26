@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using Environment;
+using System.Linq;
 
 namespace Inca
 {
@@ -16,7 +17,12 @@ namespace Inca
         [SerializeField]
         private DetectedObject detectedObjectPrefab;
 
-        private Dictionary<Guid, DetectedObject> detectedObjects = new Dictionary<Guid, DetectedObject>();
+        private static Dictionary<Guid, DetectedObject> detectedObjects = new Dictionary<Guid, DetectedObject>();
+
+        public static List<DetectedObject> GetAllDetectedObjects()
+        {
+            return detectedObjects.Values.ToList();
+        }
 
         #region Methods related on UnityAction
 

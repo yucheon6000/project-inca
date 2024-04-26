@@ -61,7 +61,15 @@ public class Car : MonoBehaviour
         get => hasSafetyDistanceProblem;
     }
 
-    public bool ShouldStop => IsWaitingUserOfNextLanePoint || HasSafetyDistanceProblem;
+    [SerializeField]
+    private bool isWaitingTrafficLight = false;
+    public bool IsWaitingTrafficLight
+    {
+        set => isWaitingTrafficLight = value;
+        get => isWaitingTrafficLight;
+    }
+
+    public bool ShouldStop => IsWaitingUserOfNextLanePoint || HasSafetyDistanceProblem || isWaitingTrafficLight;
 
     public Vector3 MiddlePosition => transform.position + Vector3.up * 1;
 
@@ -70,10 +78,13 @@ public class Car : MonoBehaviour
         Setup();
     }
 
+    [SerializeField]
+    private bool startWithPositioning = true;
     private void Setup()
     {
         transform.SetParent(null);
-        transform.position = CurrentLanePoint.Position;
+        if (startWithPositioning)
+            transform.position = CurrentLanePoint.Position;
 
         NextLanePoint = CurrentLanePoint.GetNextLanePoint(TargetLaneIndex);
         NextLanePoint.RegisterUser(this.gameObject);
@@ -109,7 +120,7 @@ public class Car : MonoBehaviour
         Gizmos.DrawLine(MiddlePosition, MiddlePosition + (transform.forward * safetyDistance));
 
         Gizmos.color = isWaitingUserOfNextLanePoint ? Color.red : Color.green;
-        Gizmos.DrawSphere(transform.position + transform.up * 3, 1f);
+        Gizmos.DrawSphere(transform.position + transform.up * 3 + transform.forward * 2, 0.3f);
 
         if (nextLanePoint == null) return;
 

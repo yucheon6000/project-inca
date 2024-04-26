@@ -73,6 +73,9 @@ public class LanePoint : MonoBehaviour
         if (targetLaneIndex == 0)
             targetLaneIndex = this.laneIndex;
 
+        if (accessibleLanePoints.Count == 0)
+            return null;
+
         LanePoint nextPoint = accessibleLanePoints[0];
 
         foreach (var point in accessibleLanePoints)

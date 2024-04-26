@@ -48,6 +48,16 @@ public abstract class GameController : MonoBehaviour
             && hitInfo.collider.TryGetComponent<Enemy>(out Enemy enemy)
             && enemy.IsInteractableType(InteractableType.Hitable))
         {
+            if (target == null)
+            {
+                enemy.OnHoverStart();
+            }
+            else if (target != enemy)
+            {
+                target.OnHoverEnd();
+                enemy.OnHoverStart();
+            }
+
             flag = true;
             hitPoint = hitInfo.point;
             target = enemy;
@@ -55,6 +65,8 @@ public abstract class GameController : MonoBehaviour
 
         else
         {
+            if (target != null) target?.OnHoverEnd();
+
             target = null;
         }
 
