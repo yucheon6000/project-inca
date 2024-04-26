@@ -26,6 +26,10 @@ public class MouseBasedGameController : GameController
     private Vector3 CameraPosition => targetCamera.transform.position;
     private Vector3 PlayerPosition => IncaData.PlayerPosition;
 
+    [Header("Audios")]
+    [SerializeField]
+    private AudioSource audioSource;
+
     private void Update()
     {
         // On or off debug mode

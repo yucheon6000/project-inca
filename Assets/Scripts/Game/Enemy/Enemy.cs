@@ -24,6 +24,14 @@ public abstract class Enemy : MonoBehaviour, InteractableObject
     [SerializeField]
     private UnityEvent onDie = new UnityEvent();
 
+    [Header("Audio")]
+    [SerializeField]
+    private AudioSource audioSource;
+    [SerializeField]
+    private AudioClip hitAudioClip;
+    [SerializeField]
+    private AudioClip dieAudioClip;
+
     public virtual void Setup(DetectedObject detectedObject)
     {
         detectedObject?.RegisterOnHideAction(() => Destroy(gameObject));
@@ -40,6 +48,8 @@ public abstract class Enemy : MonoBehaviour, InteractableObject
 
         currentHp -= power;
 
+        audioSource.PlayOneShot(hitAudioClip);
+
         if (currentHp <= 0)
         {
             Die();
@@ -53,6 +63,7 @@ public abstract class Enemy : MonoBehaviour, InteractableObject
     {
         isDead = true;
         animator.Play(Constants.animation_enemy_death);
+        audioSource.PlayOneShot(dieAudioClip);
 
         onDie.Invoke();
     }
