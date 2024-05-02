@@ -56,14 +56,14 @@ public abstract class Enemy : MonoBehaviour, InteractableObject
             return;
         }
 
-        animator.Play(Constants.animation_enemy_hit);
+        animator?.Play(Constants.animation_enemy_hit);
     }
 
     protected virtual void Die()
     {
         isDead = true;
-        animator.Play(Constants.animation_enemy_death);
-        audioSource.PlayOneShot(dieAudioClip);
+        if (animator != null) animator?.Play(Constants.animation_enemy_death);
+        audioSource?.PlayOneShot(dieAudioClip);
 
         onDie.Invoke();
     }
