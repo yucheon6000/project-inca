@@ -19,6 +19,8 @@ public class Enemy_Bird : Enemy
     [SerializeField]
     private UnityEvent onInit = new UnityEvent();
 
+    private float maxY = 0;
+
     protected override void Awake()
     {
         base.Awake();
@@ -26,6 +28,8 @@ public class Enemy_Bird : Enemy
         attackTimer = 0;
 
         StartCoroutine(UpdateMove());
+
+        maxY = transform.localPosition.y;
     }
 
     public void Init()
@@ -73,6 +77,8 @@ public class Enemy_Bird : Enemy
             Vector3 newPos = originalPos;
             newPos.x += moveLength * progress * currentMoveDirection;
             newPos.y += -Mathf.Sin(progress * Mathf.PI) * moveDepth;
+
+            newPos.y = Mathf.Max(maxY, newPos.y);
 
             transform.localPosition = newPos;
 
