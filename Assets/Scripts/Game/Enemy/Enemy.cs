@@ -5,11 +5,11 @@ using Inca;
 using UnityEngine;
 using UnityEngine.Events;
 
-public enum EnemyState { Idle, Attack, Die }
+public enum EnemyState { Idle, Move, Attack, Die }
 
 public abstract class Enemy : MonoBehaviour, InteractableObject
 {
-    private EnemyState state = EnemyState.Idle;
+    protected EnemyState state = EnemyState.Idle;
 
     [SerializeField]
     private int maxHp;

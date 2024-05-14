@@ -11,6 +11,8 @@ public class LookAtPlayer : MonoBehaviour
 
     private void Update()
     {
+        if (look == false) return;
+
         transform.LookAt(IncaData.PlayerPosition, Vector3.up);
     }
 }
