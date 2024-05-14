@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -18,8 +19,12 @@ public class Dialog : MonoBehaviour
     [Header("Components")]
     [SerializeField]
     private TextMeshProUGUI dialogTMP;
+    [SerializeField]
+    private GameObject dialogCanvas;
+    [SerializeField]
+    private GameObject nextButtonTMP;
 
-    [Header("Debug")]
+    [Header("Index")]
     [SerializeField]
     private int targetMessageIndex = 0;
 
@@ -27,20 +32,94 @@ public class Dialog : MonoBehaviour
     [SerializeField]
     private List<DialogMessage> dialogMessages = new List<DialogMessage>();
 
-    [ContextMenu("Debug_PrintMessageByTargetIndex")]
-    private void PrintMessageByTargetIndex()
+    [Header("Global Events")]
+    [SerializeField]
+    private UnityEvent onStartPrintMessageGlobal = new UnityEvent();
+    [SerializeField]
+    private UnityEvent onEndPrintMessageGlobal = new UnityEvent();
+    [SerializeField]
+    private UnityEvent onPressNextButtonGlobal = new UnityEvent();
+
+    private bool isPrintingMessage = false;
+    private bool isWaitingForPressNextButton = false;
+    private bool skipPrintMessage = false;              // If the player wants to skip the message which is printing now.
+    private bool pressNextButton = false;               // If the player wants to see the following message.
+    private Coroutine printMessageCoroutine = null;
+
+    private void Update()
+    {
+        if (!Input.GetMouseButtonDown(0)) return;
+
+        if (isPrintingMessage)
+            SkipPrintMessage();
+
+        else if (isWaitingForPressNextButton)
+            PressNextButton();
+    }
+
+    public void SetActiveDialogCanvas(bool value)
+    {
+        dialogCanvas.gameObject.SetActive(value);
+    }
+
+    public void SetActiveNextButtonTMP(bool value)
+    {
+        nextButtonTMP.gameObject.SetActive(value);
+    }
+
+    public void SkipPrintMessage()
+    {
+        if (printMessageCoroutine == null) return;
+
+        skipPrintMessage = true;
+    }
+
+    public void PressNextButton()
+    {
+        if (printMessageCoroutine == null) return;
+
+        pressNextButton = true;
+    }
+
+    public int GetTargetMessageIndex() => targetMessageIndex;
+    public void SetTargetMessageIndex(int index) => targetMessageIndex = index;
+
+    public void PrintNextMessage()
+    {
+        targetMessageIndex++;
+        PrintMessageByTargetIndex();
+    }
+
+    [ContextMenu("PrintMessageByTargetIndex")]
+    public void PrintMessageByTargetIndex()
     {
         PrintMessage(targetMessageIndex);
     }
 
-    public void PrintMessage(int targetMessageIndex) => StartCoroutine(PrintMessageRoutine(targetMessageIndex));
+    public void PrintMessage(int targetMessageIndex)
+    {
+        this.targetMessageIndex = targetMessageIndex;
+        printMessageCoroutine = StartCoroutine(PrintMessageRoutine(targetMessageIndex));
+    }
 
     private IEnumerator PrintMessageRoutine(int targetMessageIndex)
     {
         DialogMessage message = dialogMessages[targetMessageIndex];
-        if (message == null) yield break;
 
-        message.OnStartPrintMessage.Invoke();
+        if (message == null)
+        {
+            isPrintingMessage = false;
+            isWaitingForPressNextButton = false;
+            skipPrintMessage = false;
+            pressNextButton = false;
+            printMessageCoroutine = null;
+            yield break;
+        }
+
+        isPrintingMessage = true;
+
+        onStartPrintMessageGlobal.Invoke();
+        message.onStartPrintMessage.Invoke();
 
         int length = message.text.Length;
         bool isTag = false;
@@ -53,6 +132,13 @@ public class Dialog : MonoBehaviour
 
             // Add character to TMP
             dialogTMP.text += c;
+
+            // When player press a button to skip printing message
+            if (!message.blockSkipPrintMessage && skipPrintMessage)
+            {
+                dialogTMP.text = message.text;
+                break;
+            }
 
             // Check if this is a tag
             if (c == '<')
@@ -77,7 +163,36 @@ public class Dialog : MonoBehaviour
                 yield return new WaitForSeconds(charDelay);
         }
 
-        message.OnEndPrintMessage.Invoke();
+        onEndPrintMessageGlobal.Invoke();
+        message.onEndPrintMessage.Invoke();
+
+        skipPrintMessage = false;
+        isPrintingMessage = false;
+
+        isWaitingForPressNextButton = true;
+
+        if (message.nextTime > 0)
+        {
+            yield return new WaitForSeconds(message.nextTime);
+        }
+        else
+        {
+            while (true)
+            {
+                if (pressNextButton)
+                    break;
+
+                yield return null;
+            }
+        }
+
+        printMessageCoroutine = null;
+
+        pressNextButton = false;
+        isWaitingForPressNextButton = false;
+
+        onPressNextButtonGlobal.Invoke();
+        message.onPressNextButton.Invoke();
     }
 
     [Serializable]
@@ -87,8 +202,13 @@ public class Dialog : MonoBehaviour
         [TextArea]
         public string text;
 
+        [Header("Properties")]
+        public bool blockSkipPrintMessage = true;   // The players can't skip printing a message.
+        public float nextTime = 0;                  // If it is greater than 0, it will be skipped based on time.
+
         [Header("Events")]
-        public UnityEvent OnStartPrintMessage = new UnityEvent();
-        public UnityEvent OnEndPrintMessage = new UnityEvent();
+        public UnityEvent onStartPrintMessage = new UnityEvent();
+        public UnityEvent onEndPrintMessage = new UnityEvent();
+        public UnityEvent onPressNextButton = new UnityEvent();
     }
 }
