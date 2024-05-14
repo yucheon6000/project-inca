@@ -132,11 +132,11 @@ Transform:
   m_GameObject: {fileID: 591010938010084228}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.05, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5181951125882991224}
+  m_Father: {fileID: 4933879341587271065}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &892015506986729708
 GameObject:
@@ -253,7 +253,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2090098196619204021}
   - {fileID: 1893975328850722382}
   m_Father: {fileID: 4105056245064183078}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -398,6 +397,7 @@ MonoBehaviour:
   debugMode: 0
   mouseBallTransfrom: {fileID: 438456137136684667}
   hitBallTransfrom: {fileID: 8280855541366485319}
+  audioSource: {fileID: 0}
 --- !u!114 &5439552189889691705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1164,6 +1164,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3404606479279422109}
+  - {fileID: 2090098196619204021}
   m_Father: {fileID: 4105056245064183078}
   m_LocalEulerAnglesHint: {x: 1.58, y: 0, z: 0}
 --- !u!114 &3876906069022322519
@@ -1359,6 +1360,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2888951653575159045, guid: 28463aa8c3c274778b145b1fb44818dd,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2888951653575159045, guid: 28463aa8c3c274778b145b1fb44818dd,
+        type: 3}
+      propertyPath: m_audioClip
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 4582288404272683916, guid: 28463aa8c3c274778b145b1fb44818dd,
         type: 3}

@@ -40,6 +40,12 @@ public abstract class GameController : MonoBehaviour
     [SerializeField]
     protected GameObject hitEffect;
 
+    [Header("Audios")]
+    [SerializeField]
+    private AudioSource audioSource;
+    [SerializeField]
+    private AudioClip shootAudioClip;
+
     protected bool CheckTarget(Ray ray)
     {
         bool flag = false;
@@ -83,6 +89,8 @@ public abstract class GameController : MonoBehaviour
     public void TriggerShoot()
     {
         SpawnShootEffect();
+
+        audioSource.PlayOneShot(shootAudioClip);
 
         if (target == null) return;
 

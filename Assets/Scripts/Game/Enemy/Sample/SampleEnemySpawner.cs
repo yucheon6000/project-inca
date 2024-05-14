@@ -17,7 +17,7 @@ public class SampleEnemySpawner : MonoBehaviour
 
         IncaDetectionManager.AddOnTriggerEnterDetectedObject((DetectedObject detectedObject, bool first) =>
         {
-            SpawnEnemy(detectedObject);
+            if (first) SpawnEnemy(detectedObject);
         });
     }
 

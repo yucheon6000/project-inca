@@ -5,11 +5,11 @@ using Inca;
 using UnityEngine;
 using UnityEngine.Events;
 
-public enum EnemyState { Idle, Attack, Die }
+public enum EnemyState { Idle, Move, Attack, Die }
 
 public abstract class Enemy : MonoBehaviour, InteractableObject
 {
-    private EnemyState state = EnemyState.Idle;
+    protected EnemyState state = EnemyState.Idle;
 
     [SerializeField]
     private int maxHp;
@@ -56,14 +56,14 @@ public abstract class Enemy : MonoBehaviour, InteractableObject
             return;
         }
 
-        animator.Play(Constants.animation_enemy_hit);
+        animator?.Play(Constants.animation_enemy_hit);
     }
 
     protected virtual void Die()
     {
         isDead = true;
-        animator.Play(Constants.animation_enemy_death);
-        audioSource.PlayOneShot(dieAudioClip);
+        if (animator != null) animator?.Play(Constants.animation_enemy_death);
+        audioSource?.PlayOneShot(dieAudioClip);
 
         onDie.Invoke();
     }
