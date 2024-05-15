@@ -13,10 +13,6 @@ namespace Inca
         [SerializeField]
         private SphereCollider lidarCollider;
 
-        [Header("Detected Object Prefab")]
-        [SerializeField]
-        private DetectedObject detectedObjectPrefab;
-
         private static Dictionary<Guid, DetectedObject> detectedObjects = new Dictionary<Guid, DetectedObject>();
 
         public static List<DetectedObject> GetAllDetectedObjects()
@@ -41,6 +37,7 @@ namespace Inca
             => onTriggerEnterDetectedObject.Remove(action);
 
         /* onTriggerExitDetectedObject */
+        [SerializeField]
         private static List<UnityAction<DetectedObject>> onTriggerExitDetectedObject = new List<UnityAction<DetectedObject>>();
 
         public static UnityAction<DetectedObject> AddOnTriggerExitDetectedObject
@@ -60,17 +57,16 @@ namespace Inca
             Guid guid = environmentObject.GUID;
             bool firstTime = !detectedObjects.ContainsKey(guid);
 
-            // If there is no existed DetectedObject in Dictionary, create a new DetectedObject.
-            if (firstTime)
-            {
-                DetectedObject newObj = Instantiate<DetectedObject>(detectedObjectPrefab);
-                detectedObjects.Add(guid, newObj);
-            }
+            GameObject newGameObj = DetectedWorldMemoryPool.Instance.ActivatePoolItem(DetectedWorldPrefab.DetectedObject);
+            DetectedObject newDetObj = newGameObj.GetComponent<DetectedObject>();
 
+            if (firstTime)
+                detectedObjects.Add(guid, newDetObj);
+
+            detectedObjects[guid] = newDetObj;
             DetectedObject obj = detectedObjects[guid];
 
             obj.Initialize(environmentObject);
-            obj.IsVisible(true);
 
             foreach (var action in onTriggerEnterDetectedObject)
                 action.Invoke(obj, firstTime);
@@ -78,13 +74,15 @@ namespace Inca
 
         private void ExitEnvironmentObject(EnvironmentObject environmentObject)
         {
-            DetectedObject obj = detectedObjects[environmentObject.GUID];
-            if (!obj) return;
+            Guid guid = environmentObject.GUID;
 
-            obj.IsVisible(false);
+            DetectedObject detObj = detectedObjects[guid];
+            if (!detObj) return;
 
             foreach (var action in onTriggerExitDetectedObject)
-                action.Invoke(obj);
+                action.Invoke(detObj);
+
+            DetectedWorldMemoryPool.Instance.DeactivatePoolItem(detObj.gameObject);
         }
 
         /* Lidar Events */
@@ -97,7 +95,10 @@ namespace Inca
         private void OnTriggerExit(Collider other)
         {
             if (other.TryGetComponent<EnvironmentObject>(out EnvironmentObject obj))
+            {
+                print("afdasdf");
                 ExitEnvironmentObject(obj);
+            }
         }
 
         private void OnDrawGizmos()

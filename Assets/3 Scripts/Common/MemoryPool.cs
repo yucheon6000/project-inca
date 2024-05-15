@@ -9,7 +9,9 @@ public class MemoryPool
     private int activeCount = 0;        // Number of active objects
 
     private GameObject poolGameObject;
-    private List<PoolItem> poolItems;
+    private List<PoolItem> poolItems = new List<PoolItem>();
+
+    private Transform parentTransform;
 
     public int MaxCount => maxCount;
     public int ActiveCount => activeCount;
@@ -24,10 +26,15 @@ public class MemoryPool
         this.increaesCount = increaesCount;
     }
 
+    public void SetParent(Transform parentTransform)
+    {
+        this.parentTransform = parentTransform;
+    }
+
     /// <summary>
     /// Create as many pool objects as increaseCount
     /// </summary>
-    private void InstatiateObjects()
+    public void InstatiateObjects()
     {
         maxCount += increaesCount;
 
@@ -38,6 +45,9 @@ public class MemoryPool
             item.isActive = false;
             item.gameObject = GameObject.Instantiate(poolGameObject);
             item.gameObject.SetActive(false);
+
+            if (parentTransform != null)
+                item.gameObject.transform.SetParent(parentTransform);
 
             poolItems.Add(item);
         }

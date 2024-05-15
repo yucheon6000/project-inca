@@ -30,9 +30,9 @@ public class NavigationDisplayManager : IncaManager
 
         IncaDetectManager.AddOnTriggerExitDetectedObject((DetectedObject detectedObject) =>
         {
-            GameObject clone = detectedObjects[detectedObject].gameObject;
-            Destroy(clone);
-            detectedObjects.Remove(detectedObject);
+            // GameObject clone = detectedObjects[detectedObject].gameObject;
+            // Destroy(clone);
+            // detectedObjects.Remove(detectedObject);
 
         });
     }

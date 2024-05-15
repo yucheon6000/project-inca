@@ -30,7 +30,7 @@ namespace Inca
             this.originalTransform = environmentObject.transform;
             transform.position = Position;
             transform.rotation = Rotation;
-            environmentObject.RegisterOnDistroyAction(() => IsVisible(false));
+            // environmentObject.RegisterOnDistroyAction(() => IsVisible(false));
             // transform.localScale = Scale;    // ??
         }
 
@@ -86,12 +86,18 @@ namespace Inca
         /* Gizmos */
         private void OnDrawGizmos()
         {
-            if (!isVisible) return;
+            // if (!isVisible) return;
 
             if (ObjectType == DetectedObjectType.Car)
-                DrawMyGizmos(Color.red);
+                DrawMyGizmos(Color.green);
+
             if (ObjectType == DetectedObjectType.Building)
-                DrawMyGizmos(Color.blue);
+            {
+                if (gameObject.activeSelf)
+                    DrawMyGizmos(Color.blue);
+                else
+                    DrawMyGizmos(Color.red);
+            }
         }
 
         private void DrawMyGizmos(Color color)
