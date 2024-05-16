@@ -58,7 +58,6 @@ public class LanePoint : MonoBehaviour
         if (allStopTimer >= 1)
         {
             OrderUsersByDistance();
-            print("Ordered");
             allStopTimer = 0;
         }
     }
@@ -85,6 +84,11 @@ public class LanePoint : MonoBehaviour
         }
 
         return nextPoint;
+    }
+
+    public void ClearAccessibleLanePoints()
+    {
+        accessibleLanePoints.Clear();
     }
 
     public void AddAccessibleLanePoint(LanePoint accessibleLanePoint)

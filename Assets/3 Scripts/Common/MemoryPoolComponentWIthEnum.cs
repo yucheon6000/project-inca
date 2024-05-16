@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public abstract class MemoryPoolComponent<T> : MonoBehaviour where T : Enum
+public abstract class MemoryPoolComponentWithEnum<T> : MonoBehaviour where T : Enum
 {
-    public static MemoryPoolComponent<T> Instance { private set; get; }
+    public static MemoryPoolComponentWithEnum<T> Instance { private set; get; }
 
     [SerializeField]
     private List<MemoryPoolPrefab<T>> prefabs;

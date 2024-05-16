@@ -96,7 +96,6 @@ namespace Inca
         {
             if (other.TryGetComponent<EnvironmentObject>(out EnvironmentObject obj))
             {
-                print("afdasdf");
                 ExitEnvironmentObject(obj);
             }
         }

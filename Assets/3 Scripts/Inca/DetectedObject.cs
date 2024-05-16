@@ -40,6 +40,7 @@ namespace Inca
                 IsVisible(false);
 
             UpdatePosition();
+            UpdateRoatation();
         }
 
         private void UpdatePosition()
@@ -47,6 +48,13 @@ namespace Inca
             if (!environmentObject) return;
 
             transform.position = Position;
+        }
+
+        private void UpdateRoatation()
+        {
+            if (!environmentObject) return;
+
+            transform.rotation = Rotation;
         }
 
         public bool IsVisible() => isVisible;
@@ -81,6 +89,17 @@ namespace Inca
         public void RegisterOnHideAction(UnityAction action)
         {
             onHideActions.Add(action);
+        }
+
+        private void OnDisable()
+        {
+            int childCount = transform.childCount;
+
+            for (int i = 0; i < childCount; ++i)
+            {
+                var child = transform.GetChild(i);
+                Destroy(child);
+            }
         }
 
         /* Gizmos */

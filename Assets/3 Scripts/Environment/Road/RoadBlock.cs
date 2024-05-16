@@ -16,27 +16,7 @@ public class RoadBlock : MonoBehaviour
 
     [SerializeField]
     private RoadBlock test_nextRoadBlock = null;
-
-    [Header("Setting")]
-    [SerializeField]
-    private List<RoadBlock> accessibleRoadBlocks = new List<RoadBlock>();
-    public List<RoadBlock> AccessibleRoadBlocks => accessibleRoadBlocks;
-
-    [Space]
-    [SerializeField]
-    private List<RoadBlockDirection> roadBlockDirections = new List<RoadBlockDirection>();
-    [SerializeField]
-    private bool canBeFowardRoadBlock = false;
-    public bool CanBeFowardRoadBlock => canBeFowardRoadBlock;
-    [SerializeField]
-    private bool canBeBackwardRoadBlock = false;
-    public bool CanBeBackwardRoadBlock => canBeBackwardRoadBlock;
-    [SerializeField]
-    private bool canBeRightRoadBlock = false;
-    public bool CanBeRightRoadBlock => canBeRightRoadBlock;
-    [SerializeField]
-    private bool canBeLeftRoadBlock = false;
-    public bool CanBeLeftRoadBlock => canBeLeftRoadBlock;
+    private RoadBlock nextRoadBlock = null;
 
     [Space]
     [SerializeField]
@@ -46,6 +26,11 @@ public class RoadBlock : MonoBehaviour
     private RoadBlockDirection nextDirection = RoadBlockDirection.North;        // 상대 방향
     public RoadBlockDirection NextDirection => nextDirection;
 
+    /// <summary>
+    /// Find start lane points and end lane points. And it is added to each lists.
+    /// It is a feature for only Inspector or only RoadBlockGenerator!
+    /// You must not call this method inside normal methods.
+    /// </summary>
     [ContextMenu("Sync Lane Points")]
     public void SyncLanePoints()
     {
@@ -140,5 +125,15 @@ public class RoadBlock : MonoBehaviour
                     endLanePoint.AddAccessibleLanePoint(startLanePoint);
                     break;
                 }
+    }
+
+    private void OnDisable()
+    {
+        // For next using this road block, It remove linking between this road block and next road blcok.
+        foreach (var point in endLanePoints)
+            point.ClearAccessibleLanePoints();
+
+        foreach (var point in nextRoadBlock.endLanePoints)
+            point.ClearAccessibleLanePoints();
     }
 }
