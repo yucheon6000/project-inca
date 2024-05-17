@@ -11,6 +11,9 @@ namespace Inca
     public class IncaDetectManager : IncaManager
     {
         [SerializeField]
+        private GameObject detectedObjectPrefab;
+
+        [SerializeField]
         private SphereCollider lidarCollider;
 
         private static Dictionary<Guid, DetectedObject> detectedObjects = new Dictionary<Guid, DetectedObject>();
@@ -57,7 +60,10 @@ namespace Inca
             Guid guid = environmentObject.GUID;
             bool firstTime = !detectedObjects.ContainsKey(guid);
 
-            GameObject newGameObj = DetectedWorldMemoryPool.Instance.ActivatePoolItem(DetectedWorldPrefab.DetectedObject);
+            GameObject newGameObj = MemoryPool
+                                        .Instance(MemoryPoolType.DetectedObject)
+                                        .ActivatePoolItem(detectedObjectPrefab);
+
             DetectedObject newDetObj = newGameObj.GetComponent<DetectedObject>();
 
             if (firstTime)
@@ -82,7 +88,7 @@ namespace Inca
             foreach (var action in onTriggerExitDetectedObject)
                 action.Invoke(detObj);
 
-            DetectedWorldMemoryPool.Instance.DeactivatePoolItem(detObj.gameObject);
+            MemoryPool.Instance(MemoryPoolType.DetectedObject).DeactivatePoolItem(detObj.gameObject);
         }
 
         /* Lidar Events */

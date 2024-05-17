@@ -404,6 +404,7 @@ GameObject:
   m_Component:
   - component: {fileID: 361655497}
   - component: {fileID: 361655498}
+  - component: {fileID: 361655499}
   m_Layer: 0
   m_Name: Sample Enemy Spawner
   m_TagString: Untagged
@@ -440,6 +441,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sampleEnemyPrefab: {fileID: 3337080805184279109, guid: f79d864f762214da7ba0d5d71f3ac83d,
     type: 3}
+--- !u!320 &361655499
+PlayableDirector:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 361655496}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_PlayableAsset: {fileID: 11400000, guid: 780def7fed1cb49019ec14bfc46748ed, type: 2}
+  m_InitialState: 1
+  m_WrapMode: 2
+  m_DirectorUpdateMode: 1
+  m_InitialTime: 0
+  m_SceneBindings: []
+  m_ExposedReferences:
+    m_References: []
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

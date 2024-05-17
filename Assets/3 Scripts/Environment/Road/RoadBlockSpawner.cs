@@ -49,7 +49,9 @@ public class RoadBlockSpawner : MonoBehaviour
             if (previousRoadBlock == presetedRoadBlock)
                 previousRoadBlock.gameObject.SetActive(false);
             else
-                RoadBlockMemoryPool.Instance.DeactivatePoolItem(previousRoadBlock.gameObject);
+                MemoryPool
+                    .Instance(MemoryPoolType.RoadBlocks)
+                    .DeactivatePoolItem(previousRoadBlock.gameObject);
         }
 
         RoadBlock prefab = roadBlockPrefabs[Random.Range(0, roadBlockPrefabs.Count)];
@@ -86,7 +88,10 @@ public class RoadBlockSpawner : MonoBehaviour
         if (angle == 180) nextRoadBlockDirection = RoadBlockDirection.South;
         if (angle == 270) nextRoadBlockDirection = RoadBlockDirection.West;
 
-        GameObject clone = RoadBlockMemoryPool.Instance.ActivatePoolItem(prefab.gameObject);
+        GameObject clone = MemoryPool
+                                .Instance(MemoryPoolType.RoadBlocks)
+                                .ActivatePoolItem(prefab.gameObject);
+
         clone.transform.position = pos;
         RoadBlock nextRoadBlock = clone.GetComponent<RoadBlock>();
         nextRoadBlock.Setup(nextRoadBlockDirection);

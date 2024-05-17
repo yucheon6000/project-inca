@@ -36,7 +36,7 @@ public class LanePoint : MonoBehaviour
 
     private float allStopTimer = 0;
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (users.Count == 0)
         {
@@ -46,14 +46,14 @@ public class LanePoint : MonoBehaviour
 
         foreach (var user in users)
         {
-            if (user.GetComponent<Car>()?.CurrentState != CarStates.Stop)
+            if (user.GetComponent<Car>().CurrentState != CarStates.Stop)
             {
                 allStopTimer = 0;
                 return;
             }
         }
 
-        allStopTimer += Time.deltaTime;
+        allStopTimer += Time.fixedDeltaTime;
 
         if (allStopTimer >= 1)
         {

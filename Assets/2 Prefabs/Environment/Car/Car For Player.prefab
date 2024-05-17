@@ -283,9 +283,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b918426b6ebf84d53bbcd766ff5e04bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lidarCollider: {fileID: 5267466791816052961}
-  detectedObjectPrefab: {fileID: -2128921117705734611, guid: b92a65fa5cd6f4ed79f12b90cd6abb6e,
+  detectedObjectPrefab: {fileID: 1692761491679996080, guid: b92a65fa5cd6f4ed79f12b90cd6abb6e,
     type: 3}
+  lidarCollider: {fileID: 5267466791816052961}
 --- !u!135 &5267466791816052961
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -394,10 +394,11 @@ MonoBehaviour:
     type: 3}
   hitEffect: {fileID: 3836726219069090429, guid: f1d2de64eaadf3740ab024ef5b48a260,
     type: 3}
+  audioSource: {fileID: 0}
+  shootAudioClip: {fileID: 0}
   debugMode: 0
   mouseBallTransfrom: {fileID: 438456137136684667}
   hitBallTransfrom: {fileID: 8280855541366485319}
-  audioSource: {fileID: 0}
 --- !u!114 &5439552189889691705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -449,6 +450,8 @@ MonoBehaviour:
     type: 3}
   hitEffect: {fileID: 3836726219069090429, guid: f1d2de64eaadf3740ab024ef5b48a260,
     type: 3}
+  audioSource: {fileID: 0}
+  shootAudioClip: {fileID: 0}
   controllerTransform: {fileID: 5946721061841662961}
   aaa: 100
   aaaa: 15

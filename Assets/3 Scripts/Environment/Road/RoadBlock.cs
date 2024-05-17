@@ -133,6 +133,8 @@ public class RoadBlock : MonoBehaviour
         foreach (var point in endLanePoints)
             point.ClearAccessibleLanePoints();
 
+        if (nextRoadBlock == null) return;
+
         foreach (var point in nextRoadBlock.endLanePoints)
             point.ClearAccessibleLanePoints();
     }
