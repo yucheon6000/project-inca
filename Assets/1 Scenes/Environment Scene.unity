@@ -140,7 +140,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &151198322
 RectTransform:
@@ -224,7 +224,7 @@ Canvas:
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_TargetDisplay: 2
+  m_TargetDisplay: 0
 --- !u!1 &250112169
 GameObject:
   m_ObjectHideFlags: 0
@@ -237,7 +237,7 @@ GameObject:
   - component: {fileID: 250112172}
   - component: {fileID: 250112171}
   - component: {fileID: 250112170}
-  m_Layer: 0
+  m_Layer: 25
   m_Name: Navigation_Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -452,7 +452,7 @@ GameObject:
   - component: {fileID: 612996406}
   - component: {fileID: 612996408}
   - component: {fileID: 612996407}
-  m_Layer: 5
+  m_Layer: 25
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -532,7 +532,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!108 &615241741
 Light:
@@ -583,7 +583,7 @@ Light:
   m_RenderMode: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 33587607
   m_RenderingLayerMask: 1
   m_Lightmapping: 4
   m_LightShadowCasterMode: 0
@@ -676,7 +676,7 @@ GameObject:
   - component: {fileID: 702341315}
   - component: {fileID: 702341314}
   - component: {fileID: 702341312}
-  m_Layer: 0
+  m_Layer: 25
   m_Name: Navigation_Camera_Nothing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -736,7 +736,7 @@ Camera:
   m_GameObject: {fileID: 702341311}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 4
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -805,7 +805,7 @@ GameObject:
   - component: {fileID: 711809278}
   - component: {fileID: 711809277}
   - component: {fileID: 711809276}
-  m_Layer: 5
+  m_Layer: 25
   m_Name: Navigation_Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1092,7 +1092,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 973338386}
-  m_Layer: 0
+  m_Layer: 25
   m_Name: Navigation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1128,7 +1128,7 @@ GameObject:
   - component: {fileID: 1054042130}
   - component: {fileID: 1054042129}
   - component: {fileID: 1054042127}
-  m_Layer: 0
+  m_Layer: 25
   m_Name: Navigation_Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1218,7 +1218,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 33554432
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 2021e4d8a94ca4945a6ca365cac20fb9, type: 2}
   m_TargetDisplay: 2
@@ -1265,7 +1265,7 @@ GameObject:
   - component: {fileID: 1127995188}
   - component: {fileID: 1127995187}
   - component: {fileID: 1127995186}
-  m_Layer: 0
+  m_Layer: 25
   m_Name: Navigation_My Car
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1391,7 +1391,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!114 &1148664902
 MonoBehaviour:
@@ -1405,7 +1405,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RenderShadows: 1
+  m_RenderShadows: 0
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
@@ -1454,7 +1454,7 @@ Camera:
   m_GameObject: {fileID: 1148664901}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
+  m_ClearFlags: 4
   m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -1484,16 +1484,16 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 32
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
-  m_TargetDisplay: 2
+  m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
-  m_OcclusionCulling: 1
+  m_OcclusionCulling: 0
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
 --- !u!4 &1148664905
@@ -1563,7 +1563,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!114 &1183693754
 MonoBehaviour:
@@ -1675,7 +1675,7 @@ GameObject:
   - component: {fileID: 1326456895}
   - component: {fileID: 1326456897}
   - component: {fileID: 1326456896}
-  m_Layer: 5
+  m_Layer: 25
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1773,7 +1773,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &1462909492
 RectTransform:
@@ -1979,8 +1979,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2090098196619204021, guid: a3c5e2806af374c9fa137d2d524a79b6,
         type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.079
+      objectReference: {fileID: 0}
+    - target: {fileID: 2090098196619204021, guid: a3c5e2806af374c9fa137d2d524a79b6,
+        type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.7
+      value: -0.033
+      objectReference: {fileID: 0}
+    - target: {fileID: 2090098196619204021, guid: a3c5e2806af374c9fa137d2d524a79b6,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.464
       objectReference: {fileID: 0}
     - target: {fileID: 2118533437447215817, guid: a3c5e2806af374c9fa137d2d524a79b6,
         type: 3}
@@ -2090,7 +2100,7 @@ PrefabInstance:
     - target: {fileID: 5070842164255094323, guid: a3c5e2806af374c9fa137d2d524a79b6,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5439552189889691705, guid: a3c5e2806af374c9fa137d2d524a79b6,
         type: 3}
@@ -2125,7 +2135,7 @@ PrefabInstance:
     - target: {fileID: 7967091921826160106, guid: a3c5e2806af374c9fa137d2d524a79b6,
         type: 3}
       propertyPath: near clip plane
-      value: 0.01
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 8280855541366485319, guid: a3c5e2806af374c9fa137d2d524a79b6,
         type: 3}
@@ -2956,10 +2966,90 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 399638115330141745, guid: 3bfdda62787624ce7995af89b81ead06,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 1403379669521305248, guid: 3bfdda62787624ce7995af89b81ead06,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 1417323373153413385, guid: 3bfdda62787624ce7995af89b81ead06,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 1696827397129690952, guid: 3bfdda62787624ce7995af89b81ead06,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2545306410522777150, guid: 3bfdda62787624ce7995af89b81ead06,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4040669414202663361, guid: 3bfdda62787624ce7995af89b81ead06,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4688688725838488209, guid: 3bfdda62787624ce7995af89b81ead06,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 5662604942563857397, guid: 3bfdda62787624ce7995af89b81ead06,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6069607810590611085, guid: 3bfdda62787624ce7995af89b81ead06,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6458692460412108066, guid: 3bfdda62787624ce7995af89b81ead06,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7649606595291241512, guid: 3bfdda62787624ce7995af89b81ead06,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7725517300944010081, guid: 3bfdda62787624ce7995af89b81ead06,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7928412193074148104, guid: 3bfdda62787624ce7995af89b81ead06,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8330639904863789913, guid: 3bfdda62787624ce7995af89b81ead06,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 8644482516420832346, guid: 3bfdda62787624ce7995af89b81ead06,
         type: 3}
       propertyPath: m_Name
       value: Road Block Straight Variant 01
+      objectReference: {fileID: 0}
+    - target: {fileID: 8979393506846289715, guid: 3bfdda62787624ce7995af89b81ead06,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 9103105212885599307, guid: 3bfdda62787624ce7995af89b81ead06,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3673,6 +3763,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Road Block Spawner
+      objectReference: {fileID: 0}
+    - target: {fileID: 8487807543363601118, guid: 88c4939c2bf5f314c91fc91ba3bbc209,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

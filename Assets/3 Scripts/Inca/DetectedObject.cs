@@ -30,6 +30,8 @@ namespace Inca
             this.originalTransform = environmentObject.transform;
             transform.position = Position;
             transform.rotation = Rotation;
+
+            onHideActions = new List<UnityAction>();
             // environmentObject.RegisterOnDistroyAction(() => IsVisible(false));
             // transform.localScale = Scale;    // ??
         }
@@ -39,22 +41,14 @@ namespace Inca
             if (originalTransform == null || !originalTransform.gameObject.activeSelf || !originalTransform.gameObject.activeInHierarchy)
                 IsVisible(false);
 
-            UpdatePosition();
-            UpdateRoatation();
+            UpdatePositionAndRotation();
         }
 
-        private void UpdatePosition()
+        private void UpdatePositionAndRotation()
         {
             if (!environmentObject) return;
 
-            transform.position = Position;
-        }
-
-        private void UpdateRoatation()
-        {
-            if (!environmentObject) return;
-
-            transform.rotation = Rotation;
+            transform.SetPositionAndRotation(Position, Rotation);
         }
 
         public bool IsVisible() => isVisible;

@@ -8,8 +8,10 @@ public class CarStateDrive : State<Car>
     private float originalMoveSpeed;
     [SerializeField]
     private float currentMoveSpeed = 20;
+    private Vector3 moveDirection = Vector3.zero;
 
-    private Vector3 correctPosition = Vector3.zero;
+    public float CurrentMoveSpeed => currentMoveSpeed;
+    public Vector3 CurrentVelocity => moveDirection * CurrentMoveSpeed;
 
     [Space]
     [SerializeField]
@@ -94,10 +96,9 @@ public class CarStateDrive : State<Car>
     {
         if (car.NextLanePoint == null || car.CurrentLanePoint == null) return;
 
-        Vector3 moveDir = car.NextLanePoint.Position - transform.position;
-        moveDir.Normalize();
+        moveDirection = (car.NextLanePoint.Position - transform.position).normalized;
 
-        transform.position += moveDir * currentMoveSpeed * Time.deltaTime;
+        transform.position += moveDirection * currentMoveSpeed * Time.deltaTime;
     }
 
     private void UpdateRotate(Car car)

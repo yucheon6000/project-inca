@@ -21,9 +21,10 @@ public class Enemy_Shotput : Enemy
     [SerializeField]
     private UnityEvent onInit = new UnityEvent();
 
-    protected override void Awake()
+    public override void Setup(DetectedObject detectedObject)
     {
-        base.Awake();
+        base.Setup(detectedObject);
+
         animator.Play("Jump");
         attackTimer = 0;
     }
@@ -51,8 +52,20 @@ public class Enemy_Shotput : Enemy
 
     public void Attack()
     {
-        Instantiate(bulletPrefab, bulletSpawnTransform.transform.position, Quaternion.LookRotation(IncaData.PlayerPosition));
+        GameObject bulletClone = MemoryPool.Instance(MemoryPoolType.Enemy).ActivatePoolItem(bulletPrefab);
+        bulletClone.transform.SetPositionAndRotation(transform.position, Quaternion.LookRotation(IncaData.PlayerPosition));
+        Vector3 dir = (IncaData.PlayerPosition - bulletSpawnTransform.position);
+        bulletClone.GetComponent<Bullet>().Setup(dir);
     }
+
+    protected override void Die()
+    {
+        base.Die();
+
+        Invoke(nameof(DeactivateGameObject), 1);
+    }
+
+
 
     private void OnDrawGizmos()
     {

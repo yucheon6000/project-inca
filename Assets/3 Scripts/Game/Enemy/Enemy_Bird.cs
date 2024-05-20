@@ -21,14 +21,12 @@ public class Enemy_Bird : Enemy
 
     private float maxY = 0;
 
-    protected override void Awake()
+    public override void Setup(DetectedObject detectedObject)
     {
-        base.Awake();
-        // animator.Play("Jump");
+        base.Setup(detectedObject);
+
         attackTimer = 0;
-
         StartCoroutine(UpdateMove());
-
         maxY = transform.localPosition.y;
     }
 
@@ -108,5 +106,6 @@ public class Enemy_Bird : Enemy
     {
         base.Die();
         StopAllCoroutines();
+        Invoke(nameof(DeactivateGameObject), 1);
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Inca;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -22,9 +23,9 @@ public class ApplicationIcon : Enemy, InteractableObject
     [SerializeField]
     private AnimationCurve hoverEndScaleCurve;
 
-    protected override void Awake()
+    public override void Setup(DetectedObject detectedObject)
     {
-        base.Awake();
+        base.Setup(detectedObject);
         originScale = transform.localScale.x;
     }
 

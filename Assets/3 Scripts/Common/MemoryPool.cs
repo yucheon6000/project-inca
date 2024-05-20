@@ -4,7 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public enum MemoryPoolType { Enviroments, RoadBlocks, DetectedObject }
+public enum MemoryPoolType
+{
+    Enviroments, RoadBlocks,
+    DetectedObject,
+    Enemy
+}
 public class MemoryPool : MonoBehaviour
 {
     private static Dictionary<MemoryPoolType, MemoryPool> instances = null;

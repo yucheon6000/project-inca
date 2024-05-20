@@ -119,6 +119,9 @@ public class MemoryPoolBase
                 item.isActive = false;
                 item.gameObject.SetActive(false);
 
+                if (parentTransform != null)
+                    item.gameObject.transform.SetParent(parentTransform);
+
                 return;
             }
         }

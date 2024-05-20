@@ -32,13 +32,13 @@ public abstract class Enemy : MonoBehaviour, InteractableObject
     [SerializeField]
     private AudioClip dieAudioClip;
 
+    /// <summary>
+    /// When this enemy is spawned by EnemySpawner, this method is called firstly.
+    /// </summary>
+    /// <param name="detectedObject"></param>
     public virtual void Setup(DetectedObject detectedObject)
     {
-        detectedObject?.RegisterOnHideAction(() => Destroy(gameObject));
-    }
-
-    protected virtual void Awake()
-    {
+        detectedObject?.RegisterOnHideAction(() => DeactivateGameObject());
         currentHp = maxHp;
     }
 
@@ -66,6 +66,11 @@ public abstract class Enemy : MonoBehaviour, InteractableObject
         audioSource?.PlayOneShot(dieAudioClip);
 
         onDie.Invoke();
+    }
+
+    protected void DeactivateGameObject()
+    {
+        MemoryPool.Instance(MemoryPoolType.Enemy).DeactivatePoolItem(gameObject);
     }
 
     public virtual bool IsInteractableType(InteractableType type)

@@ -403,6 +403,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 361655497}
+  - component: {fileID: 361655500}
   - component: {fileID: 361655498}
   - component: {fileID: 361655499}
   m_Layer: 0
@@ -458,6 +459,29 @@ PlayableDirector:
   m_SceneBindings: []
   m_ExposedReferences:
     m_References: []
+--- !u!114 &361655500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 361655496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 047049c009cb94bc38f32573d334d51c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  memoryPoolType: 3
+  prefabs:
+  - prefab: {fileID: 3337080805184279109, guid: f79d864f762214da7ba0d5d71f3ac83d,
+      type: 3}
+    increaesCount: 3
+  - prefab: {fileID: 1029529747383366894, guid: aca4c35c3bd7c4d7daed49791a65cdab,
+      type: 3}
+    increaesCount: 3
+  - prefab: {fileID: 1370727570811104193, guid: b24580121c48d45a7bc78842eec1331a,
+      type: 3}
+    increaesCount: 3
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

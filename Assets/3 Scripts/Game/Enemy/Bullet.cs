@@ -8,17 +8,34 @@ public class Bullet : MonoBehaviour
 
     [SerializeField]
     private float moveSpeed;
+    Vector3 dir;
+    private void OnEnable()
+    {
+        dir = (IncaData.PlayerPosition - transform.position).normalized;
+        // Vector3 desiredVelocity = (IncaData.PlayerPosition - transform.position).normalized * 30;
+        // dir = desiredVelocity;
+        transform.SetParent(IncaData.PlayerTransform);
+    }
+
+    public void Setup(Vector3 dir)
+    {
+        this.dir = dir.normalized;
+    }
 
     void Update()
     {
-        Vector3 dir = IncaData.PlayerPosition - transform.position;
-        if (dir.sqrMagnitude <= 1)
+
+        // Vector3 steerForce = desiredVelocity - IncaData.PlayerVelocity;
+
+        dir = (IncaData.PlayerPosition - transform.position);
+        dir.Normalize();
+
+        if ((IncaData.PlayerPosition - transform.position).sqrMagnitude <= 1)
         {
             Player.Instance?.Hit();
-            Destroy(this.gameObject);
+            MemoryPool.Instance(MemoryPoolType.Enemy).DeactivatePoolItem(gameObject);
         }
 
-        dir.Normalize();
         transform.position += dir * moveSpeed * Time.deltaTime;
     }
 }

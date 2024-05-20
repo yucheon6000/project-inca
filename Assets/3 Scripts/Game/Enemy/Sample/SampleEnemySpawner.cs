@@ -26,7 +26,7 @@ public class SampleEnemySpawner : MonoBehaviour
         if (detectedObject.ObjectType != DetectedObjectType.Car)
             return;
 
-        GameObject clone = Instantiate(sampleEnemyPrefab);
+        GameObject clone = MemoryPool.Instance(MemoryPoolType.Enemy).ActivatePoolItem(sampleEnemyPrefab);
         Vector3 pos = detectedObject.Position;
         pos.y += detectedObject.Scale.y;
         clone.transform.position = pos;
