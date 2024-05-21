@@ -26,7 +26,12 @@ public class MouseBasedGameController : GameController
     private Vector3 CameraPosition => targetCamera.transform.position;
     private Vector3 PlayerPosition => IncaData.PlayerPosition;
 
-    private void Update()
+    private void Awake()
+    {
+        targetCamera = GameObject.Find("Render Camera").GetComponent<Camera>();
+    }
+
+    private void LateUpdate()
     {
         // On or off debug mode
         if (mouseBallTransfrom.gameObject.activeSelf != debugMode)

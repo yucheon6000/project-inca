@@ -5,11 +5,20 @@ using UnityEngine;
 using UnityEngine.Events;
 using Environment;
 using System.Linq;
+using Unity.VisualScripting;
 
 namespace Inca
 {
     public class IncaDetectManager : IncaManager
     {
+        [Header("User Car")]
+        [SerializeField]
+        private Transform envCar;
+        [SerializeField]
+        private Transform detCar;
+        public void SetUserCar(Transform userCar) => detCar = userCar;
+
+        [Header("Detected Objects")]
         [SerializeField]
         private GameObject detectedObjectPrefab;
 
@@ -54,6 +63,14 @@ namespace Inca
             => onTriggerExitDetectedObject.Remove(action);
 
         #endregion
+
+        private void LateUpdate()
+        {
+            if (detCar == null) return;
+
+            detCar.position = envCar.position;
+            detCar.rotation = envCar.rotation;
+        }
 
         private void EnterEnvironmentObject(EnvironmentObject environmentObject)
         {

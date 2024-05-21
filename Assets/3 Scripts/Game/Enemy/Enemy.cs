@@ -48,7 +48,8 @@ public abstract class Enemy : MonoBehaviour, InteractableObject
 
         currentHp -= power;
 
-        audioSource.PlayOneShot(hitAudioClip);
+        if (audioSource != null)
+            audioSource.PlayOneShot(hitAudioClip);
 
         if (currentHp <= 0)
         {
@@ -56,14 +57,19 @@ public abstract class Enemy : MonoBehaviour, InteractableObject
             return;
         }
 
-        animator?.Play(Constants.animation_enemy_hit);
+        if (animator != null)
+            animator.Play(Constants.animation_enemy_hit);
     }
 
     protected virtual void Die()
     {
         isDead = true;
-        if (animator != null) animator?.Play(Constants.animation_enemy_death);
-        audioSource?.PlayOneShot(dieAudioClip);
+
+        if (animator != null)
+            animator.Play(Constants.animation_enemy_death);
+
+        if (audioSource != null)
+            audioSource.PlayOneShot(dieAudioClip);
 
         onDie.Invoke();
     }

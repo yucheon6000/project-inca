@@ -11,6 +11,7 @@ namespace Inca
         public static Vector3 PlayerPosition => IncaDataManager.Instance.GetPlayerPosition();
         public static Vector3 PlayerForward => IncaDataManager.Instance.GetPlayerForward();
         public static Transform PlayerTransform => IncaDataManager.Instance.GetPlayerTransform();
+        public static int PlayerLaneIndex => IncaDataManager.Instance.GetPlayerLaneIndex();
         public static Vector3 PlayerVelocity => IncaDataManager.Instance.GetPlayerVelocity();
 
         // [ASSUME] Player와 Car의 구분이 필요할 수 있음
@@ -20,6 +21,8 @@ namespace Inca
     {
         public static IncaDataManager Instance;
 
+        [SerializeField]
+        private Car car;
         [SerializeField]
         private CarStateDrive carStateDrive;
 
@@ -50,6 +53,7 @@ namespace Inca
         public Vector3 GetPlayerPosition() => this.player.transform.position;
         public Vector3 GetPlayerForward() => this.player.transform.forward;
         public Transform GetPlayerTransform() => this.player.transform;
+        public int GetPlayerLaneIndex() => this.car.CurrentLanePoint.LaneIndex;
         public Vector3 GetPlayerVelocity()
         {
             return carStateDrive.CurrentVelocity;

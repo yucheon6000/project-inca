@@ -23,10 +23,14 @@ public class ApplicationIcon : Enemy, InteractableObject
     [SerializeField]
     private AnimationCurve hoverEndScaleCurve;
 
+    private void Awake()
+    {
+        originScale = transform.localScale.x;
+    }
+
     public override void Setup(DetectedObject detectedObject)
     {
         base.Setup(detectedObject);
-        originScale = transform.localScale.x;
     }
 
     private void Update()
