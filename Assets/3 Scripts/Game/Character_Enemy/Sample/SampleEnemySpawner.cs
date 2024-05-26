@@ -33,6 +33,6 @@ public class SampleEnemySpawner : MonoBehaviour
 
         clone.transform.SetParent(detectedObject.transform);
 
-        clone.GetComponent<Enemy>().Setup(detectedObject);
+        clone.GetComponent<Enemy>().Init(detectedObject);
     }
 }

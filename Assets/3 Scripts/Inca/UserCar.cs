@@ -7,4 +7,10 @@ public class UserCar : MonoBehaviour
     {
         GameObject.FindFirstObjectByType<IncaDetectManager>().SetUserCar(transform);
     }
+
+    [ContextMenu("SyncPosition")]
+    private void SyncPosition()
+    {
+        transform.position = GameObject.FindFirstObjectByType<IncaDetectManager>().transform.position;
+    }
 }

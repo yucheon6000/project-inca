@@ -21,16 +21,13 @@ public class Enemy_Shotput : Enemy
     [SerializeField]
     private UnityEvent onInit = new UnityEvent();
 
-    public override void Setup(DetectedObject detectedObject)
+    public override void Init(DetectedObject detectedObject = null)
     {
-        base.Setup(detectedObject);
+        base.Init(detectedObject);
 
         animator.Play("Jump");
         attackTimer = 0;
-    }
 
-    public void Init()
-    {
         onInit.Invoke();
     }
 
@@ -58,9 +55,9 @@ public class Enemy_Shotput : Enemy
         bulletClone.GetComponent<Bullet>().Setup(dir);
     }
 
-    protected override void Die()
+    protected override void OnDeath()
     {
-        base.Die();
+        base.OnDeath();
 
         Invoke(nameof(DeactivateGameObject), 1);
     }

@@ -35,7 +35,7 @@ public class Enemy_Tree : Enemy
 
     private Rigidbody rigidbody;
 
-    private void Awake()
+    protected override void Awake()
     {
         rigidbody = GetComponent<Rigidbody>();
     }
@@ -98,9 +98,9 @@ public class Enemy_Tree : Enemy
         }
     }
 
-    protected override void Die()
+    protected override void OnDeath()
     {
-        base.Die();
+        base.OnDeath();
         Destroy(gameObject);
     }
 
@@ -116,6 +116,8 @@ public class Enemy_Tree : Enemy
             rigidbody.useGravity = true;
             // rigidbody.AddForce((transform.position - explosionTf.position).normalized * exFor, ForceMode.Impulse);
             rigidbody.AddExplosionForce(exFor, explosionTf.position, exRa, 1f);
+
+            Player.Instance.Hit(2);
         }
     }
 

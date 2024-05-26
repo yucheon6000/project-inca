@@ -21,16 +21,16 @@ public class Enemy_Bird : Enemy
 
     private float maxY = 0;
 
-    public override void Setup(DetectedObject detectedObject)
+    public override void Init(DetectedObject detectedObject)
     {
-        base.Setup(detectedObject);
+        base.Init(detectedObject);
 
         attackTimer = 0;
         StartCoroutine(UpdateMove());
         maxY = transform.localPosition.y;
     }
 
-    public void Init()
+    public override void Init()
     {
         onInit.Invoke();
     }
@@ -102,9 +102,10 @@ public class Enemy_Bird : Enemy
         // Gizmos.DrawWireSphere(transform.position, attackDistance);
     }
 
-    protected override void Die()
+    protected override void OnDeath()
     {
-        base.Die();
+        base.OnDeath();
+
         StopAllCoroutines();
         Invoke(nameof(DeactivateGameObject), 1);
     }

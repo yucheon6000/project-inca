@@ -7,22 +7,15 @@ using UnityEngine.Events;
 
 public enum EnemyState { Idle, Move, Attack, Die }
 
-public abstract class Enemy : MonoBehaviour, InteractableObject
+public abstract class Enemy : Character, InteractableObject
 {
     protected EnemyState state = EnemyState.Idle;
 
-    [SerializeField]
-    private int maxHp;
-    [SerializeField]
-    private int currentHp;
     [SerializeField]
     protected bool isDead = false;
 
     [SerializeField]
     protected Animator animator;
-
-    [SerializeField]
-    private UnityEvent onDie = new UnityEvent();
 
     [Header("Audio")]
     [SerializeField]
@@ -36,32 +29,30 @@ public abstract class Enemy : MonoBehaviour, InteractableObject
     /// When this enemy is spawned by EnemySpawner, this method is called firstly.
     /// </summary>
     /// <param name="detectedObject"></param>
-    public virtual void Setup(DetectedObject detectedObject)
+    public virtual void Init(DetectedObject detectedObject = null)
     {
-        detectedObject?.RegisterOnHideAction(() => DeactivateGameObject());
-        currentHp = maxHp;
+        if (detectedObject != null)
+            detectedObject.RegisterOnHideAction(() => DeactivateGameObject());
+
+        base.Init();
     }
 
-    public virtual void Hit(int power)
+    public override int Hit(int attckAmount)
     {
-        if (isDead) return;
+        int curHp = base.Hit(attckAmount);
 
-        currentHp -= power;
+        if (isDead) return 0;
 
         if (audioSource != null)
             audioSource.PlayOneShot(hitAudioClip);
 
-        if (currentHp <= 0)
-        {
-            Die();
-            return;
-        }
-
         if (animator != null)
             animator.Play(Constants.animation_enemy_hit);
+
+        return curHp;
     }
 
-    protected virtual void Die()
+    protected override void OnDeath()
     {
         isDead = true;
 
@@ -70,8 +61,6 @@ public abstract class Enemy : MonoBehaviour, InteractableObject
 
         if (audioSource != null)
             audioSource.PlayOneShot(dieAudioClip);
-
-        onDie.Invoke();
     }
 
     protected void DeactivateGameObject()

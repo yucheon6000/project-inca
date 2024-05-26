@@ -68,8 +68,7 @@ namespace Inca
         {
             if (detCar == null) return;
 
-            detCar.position = envCar.position;
-            detCar.rotation = envCar.rotation;
+            detCar.SetPositionAndRotation(envCar.position, envCar.rotation);
         }
 
         private void EnterEnvironmentObject(EnvironmentObject environmentObject)

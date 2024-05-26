@@ -5,7 +5,6 @@ using Inca;
 
 public class Bullet : MonoBehaviour
 {
-
     [SerializeField]
     private float moveSpeed;
     Vector3 dir;
@@ -32,7 +31,7 @@ public class Bullet : MonoBehaviour
 
         if ((IncaData.PlayerPosition - transform.position).sqrMagnitude <= 1)
         {
-            Player.Instance?.Hit();
+            Player.Instance.Hit(1);
             MemoryPool.Instance(MemoryPoolType.Enemy).DeactivatePoolItem(gameObject);
         }
 
