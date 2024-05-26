@@ -97,7 +97,7 @@ public class Car : MonoBehaviour
         ChangeState(CarStates.Drive);
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         stateMachine.Execute();
     }

@@ -64,8 +64,7 @@ public class CarStateDrive : State<Car>
 
         UpdateStarting(car);
         UpdateStopping(car);
-        UpdateMove(car);
-        UpdateRotate(car);
+        UpdateMoveAndRotate(car);
     }
 
     private void UpdateStarting(Car car)
@@ -92,23 +91,18 @@ public class CarStateDrive : State<Car>
             car.ChangeState(CarStates.Stop);
     }
 
-    private void UpdateMove(Car car)
+    private void UpdateMoveAndRotate(Car car)
     {
         if (car.NextLanePoint == null || car.CurrentLanePoint == null) return;
 
         moveDirection = (car.NextLanePoint.Position - transform.position).normalized;
 
-        transform.position += moveDirection * currentMoveSpeed * Time.deltaTime;
-    }
-
-    private void UpdateRotate(Car car)
-    {
-
-        // float t = (transform.position - car.CurrentLanePoint.Position).magnitude / (car.NextLanePoint.Position - car.CurrentLanePoint.Position).magnitude;
-
-        transform.rotation = Quaternion.Slerp(
-           transform.rotation, Quaternion.LookRotation(car.NextLanePoint.Position - car.CurrentLanePoint.Position), Time.deltaTime * rotateSpeed
+        Vector3 pos = transform.position + moveDirection * currentMoveSpeed * Time.deltaTime;
+        Quaternion rot = Quaternion.Slerp(
+              transform.rotation, Quaternion.LookRotation(car.NextLanePoint.Position - car.CurrentLanePoint.Position), Time.deltaTime * rotateSpeed
         );
+
+        transform.SetPositionAndRotation(pos, rot);
     }
 
     public override void Exit(Car car) { }

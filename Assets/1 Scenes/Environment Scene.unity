@@ -768,7 +768,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 4
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -1057,7 +1057,7 @@ PrefabInstance:
     - target: {fileID: 2576061713299665916, guid: 28463aa8c3c274778b145b1fb44818dd,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.12
+      value: 5.29
       objectReference: {fileID: 0}
     - target: {fileID: 2576061713299665916, guid: 28463aa8c3c274778b145b1fb44818dd,
         type: 3}
@@ -1067,7 +1067,7 @@ PrefabInstance:
     - target: {fileID: 2576061713299665916, guid: 28463aa8c3c274778b145b1fb44818dd,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -216.4
+      value: -222.7
       objectReference: {fileID: 0}
     - target: {fileID: 2576061713299665916, guid: 28463aa8c3c274778b145b1fb44818dd,
         type: 3}
@@ -1109,6 +1109,11 @@ PrefabInstance:
       propertyPath: currentLanePoint
       value: 
       objectReference: {fileID: 2033988322}
+    - target: {fileID: 4862468214488286356, guid: 28463aa8c3c274778b145b1fb44818dd,
+        type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2045,7 +2050,7 @@ PrefabInstance:
     - target: {fileID: 4105056245064183078, guid: a3c5e2806af374c9fa137d2d524a79b6,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -241.6
+      value: -243.69
       objectReference: {fileID: 0}
     - target: {fileID: 4105056245064183078, guid: a3c5e2806af374c9fa137d2d524a79b6,
         type: 3}
@@ -2110,7 +2115,7 @@ PrefabInstance:
     - target: {fileID: 5070842164255094323, guid: a3c5e2806af374c9fa137d2d524a79b6,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5439552189889691705, guid: a3c5e2806af374c9fa137d2d524a79b6,
         type: 3}
@@ -2122,6 +2127,16 @@ PrefabInstance:
       propertyPath: shootAudioClip
       value: 
       objectReference: {fileID: 8300000, guid: 935f87d8da8fb184fb167ece25420548, type: 3}
+    - target: {fileID: 5893266241383908503, guid: a3c5e2806af374c9fa137d2d524a79b6,
+        type: 3}
+      propertyPath: m_TargetDisplay
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6359893603041057358, guid: a3c5e2806af374c9fa137d2d524a79b6,
+        type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7838516692123240397, guid: a3c5e2806af374c9fa137d2d524a79b6,
         type: 3}
       propertyPath: rotateSpeed
@@ -2151,6 +2166,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.y
       value: 5.09
+      objectReference: {fileID: 0}
+    - target: {fileID: 9115453565417160431, guid: a3c5e2806af374c9fa137d2d524a79b6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3300,7 +3320,7 @@ MonoBehaviour:
   - {fileID: 754067170}
   - {fileID: 451040954}
   explosionTf: {fileID: 290910773}
-  exFor: 2000
+  exFor: 3000
   exRa: 10
 --- !u!136 &448868675345745884
 CapsuleCollider:
@@ -3345,11 +3365,11 @@ Rigidbody:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
+  m_ImplicitCom: 0
+  m_ImplicitTensor: 0
   m_UseGravity: 0
   m_IsKinematic: 1
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!1001 &3052354391880807862

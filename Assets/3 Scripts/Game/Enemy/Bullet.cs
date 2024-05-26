@@ -22,7 +22,7 @@ public class Bullet : MonoBehaviour
         this.dir = dir.normalized;
     }
 
-    void Update()
+    private void FixedUpdate()
     {
 
         // Vector3 steerForce = desiredVelocity - IncaData.PlayerVelocity;

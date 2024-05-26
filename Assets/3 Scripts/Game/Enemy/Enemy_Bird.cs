@@ -35,7 +35,7 @@ public class Enemy_Bird : Enemy
         onInit.Invoke();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (isDead) return;
 

@@ -36,7 +36,7 @@ namespace Inca
             // transform.localScale = Scale;    // ??
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             if (originalTransform == null || !originalTransform.gameObject.activeSelf || !originalTransform.gameObject.activeInHierarchy)
                 IsVisible(false);
