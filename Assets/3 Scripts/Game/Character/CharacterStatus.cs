@@ -30,8 +30,8 @@ public class CharacterStatus : MonoBehaviour
     public void Init()
     {
         // Set current values
-        currentHp = Mathf.Max(maxHp, defaultHp);
-        currentAttack = Mathf.Max(maxAttack, defaultAttack);
+        currentHp = Mathf.Min(maxHp, defaultHp);
+        currentAttack = Mathf.Min(maxAttack, defaultAttack);
 
         // Reset UnityEvents.
         OnChangeCurrentHp = new UnityEvent<int, int>();

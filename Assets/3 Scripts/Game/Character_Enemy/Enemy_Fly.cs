@@ -19,4 +19,10 @@ public class Enemy_Fly : Enemy
     {
         stateMachine.Execute();
     }
+
+    protected override void OnDeath()
+    {
+        base.OnDeath();
+        Destroy(this.gameObject);
+    }
 }
