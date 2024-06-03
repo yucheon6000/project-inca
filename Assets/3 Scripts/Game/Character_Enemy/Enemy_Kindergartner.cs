@@ -8,29 +8,36 @@ public class Enemy_Kindergartner : Enemy
     [SerializeField]
     private float moveSpeed;
 
+    private void Start()
+    {
+        Init();
+    }
+
     public override void Init(DetectedObject detectedObject = null)
     {
         base.Init(detectedObject);
+        Invoke(nameof(PlayAnimation), Random.Range(0f, 1f));
+    }
+
+    private void PlayAnimation()
+    {
+        animator.SetInteger("animation", 2);
     }
 
     private void FixedUpdate()
     {
+        if (IsDead) return;
+
         transform.position += transform.forward * moveSpeed * Time.fixedDeltaTime;
-    }
-
-    public override int Hit(int attckAmount)
-    {
-        if (isDead) return 0;
-
-        return base.Hit(attckAmount);
     }
 
     protected override void OnDeath()
     {
+        transform.rotation = Quaternion.Euler(0, Random.Range(150f, 210f), 0);
+        animator.SetInteger("animation", 5);
+
         base.OnDeath();
 
-        isDead = true;
-
-        Destroy(this.gameObject);
+        // Destroy(this.gameObject);
     }
 }

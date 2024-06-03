@@ -75,7 +75,7 @@ public class Enemy_Fly_FlyingState : State<Enemy_Fly>
     public void SetWanderPositions(List<Vector3> wanderPositions)
     {
         this.wanderPositions = wanderPositions;
-        currentWanderPosition = wanderPositions[wanderPositionIndex];
+        SetCurrentWanderPosition(wanderPositions[wanderPositionIndex]);
     }
 
     public override void Execute(Enemy_Fly entity)
@@ -158,11 +158,16 @@ public class Enemy_Fly_FlyingState : State<Enemy_Fly>
         }
         else
         {
-            currentWanderPosition = wanderPositions[wanderPositionIndex];
+            SetCurrentWanderPosition(wanderPositions[wanderPositionIndex]);
             wanderPositionIndex++;
         }
 
         return Seek(currentWanderPosition);
+    }
+
+    public void SetCurrentWanderPosition(Vector3 wanderPosition)
+    {
+        currentWanderPosition = wanderPosition + Random.insideUnitSphere * 0.2f;
     }
 
     public override void Exit(Enemy_Fly entity) { }

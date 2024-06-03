@@ -13,6 +13,7 @@ public class Enemy_Fly : Enemy
     {
         stateMachine = new StateMachine<Enemy_Fly>();
         stateMachine.Setup(this, flyingState);
+        animator.SetInteger("animation", 2);
     }
 
     private void FixedUpdate()

@@ -48,11 +48,30 @@ public abstract class GameController : MonoBehaviour
 
     protected bool CheckTarget(Ray ray)
     {
-        bool flag = false;
+        bool hit = Physics.Raycast(ray, out RaycastHit hitInfo, 100000, targetLayermask);
 
-        if (Physics.Raycast(ray, out RaycastHit hitInfo, 100000, targetLayermask)
-            && hitInfo.collider.TryGetComponent<Enemy>(out Enemy enemy)
-            && enemy.IsInteractableType(InteractableType.Hitable))
+        // If ray didn't hit anything
+        if (!hit)
+        {
+            target?.OnHoverEnd();
+            target = null;
+            return false;
+        }
+
+        // Find enemy
+        Enemy enemy = hitInfo.collider.GetComponent<Enemy>();
+        if (enemy == null)
+            enemy = hitInfo.collider.GetComponentInParent<Enemy>();
+
+        if (enemy == null)
+        {
+            target?.OnHoverEnd();
+            target = null;
+            return false;
+        }
+
+        // If enemy is hitable
+        if (enemy.IsInteractableType(InteractableType.Hitable))
         {
             if (target == null)
             {
@@ -64,19 +83,12 @@ public abstract class GameController : MonoBehaviour
                 enemy.OnHoverStart();
             }
 
-            flag = true;
             hitPoint = hitInfo.point;
             target = enemy;
+            return true;
         }
 
-        else
-        {
-            if (target != null) target?.OnHoverEnd();
-
-            target = null;
-        }
-
-        return flag;
+        return false;
     }
 
     protected abstract void SpawnShootEffect();

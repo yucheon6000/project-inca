@@ -21,30 +21,31 @@ public class Enemy_Bird : Enemy
 
     private float maxY = 0;
 
-    public override void Init(DetectedObject detectedObject)
+    private void Start()
+    {
+        Init();
+    }
+
+    public override void Init(DetectedObject detectedObject = null)
     {
         base.Init(detectedObject);
 
         attackTimer = 0;
-        StartCoroutine(UpdateMove());
         maxY = transform.localPosition.y;
-    }
-
-    public override void Init()
-    {
+        StartCoroutine(UpdateMove());
         onInit.Invoke();
     }
 
     private void FixedUpdate()
     {
-        if (isDead) return;
+        if (IsDead) return;
 
         attackTimer += Time.deltaTime;
         if (attackTimer > attackTime)
         {
             Attack();
             attackTimer = 0;
-            animator?.Play("Attack");
+            animator.Play("Attack");
         }
     }
 
@@ -62,6 +63,8 @@ public class Enemy_Bird : Enemy
     public bool parent = true;
     private IEnumerator UpdateMove()
     {
+        animator.SetInteger("animation", 2);
+
         float moveTimer = 0;
 
         Vector3 originalPos = transform.localPosition;
@@ -76,18 +79,31 @@ public class Enemy_Bird : Enemy
             newPos.x += moveLength * progress * currentMoveDirection;
             newPos.y += -Mathf.Sin(progress * Mathf.PI) * moveDepth;
 
-            newPos.y = Mathf.Max(maxY, newPos.y);
+            if (newPos.y >= maxY) newPos.y = maxY;
 
             transform.localPosition = newPos;
 
-            yield return null;
+            yield return new WaitForFixedUpdate();
         }
 
         currentMoveDirection *= -1;
 
+        animator.SetInteger("animation", 1);
+
         yield return new WaitForSeconds(nextMoveDelayTime);
 
         StartCoroutine(UpdateMove());
+    }
+
+    public override int Hit(int attckAmount)
+    {
+        int curHp = base.Hit(attckAmount);
+
+        if (IsDead) return curHp;
+
+        animator.Play("Damage");
+
+        return curHp;
     }
 
     public void Attack()
@@ -105,6 +121,11 @@ public class Enemy_Bird : Enemy
     protected override void OnDeath()
     {
         base.OnDeath();
+
+        animator.SetInteger("animation", 5);
+        Rigidbody rigidbody = GetComponent<Rigidbody>();
+        rigidbody.isKinematic = false;
+        rigidbody.useGravity = true;
 
         StopAllCoroutines();
         Invoke(nameof(DeactivateGameObject), 1);

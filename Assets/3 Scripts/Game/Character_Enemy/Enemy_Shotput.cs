@@ -25,7 +25,6 @@ public class Enemy_Shotput : Enemy
     {
         base.Init(detectedObject);
 
-        animator.Play("Jump");
         attackTimer = 0;
 
         onInit.Invoke();
@@ -33,36 +32,49 @@ public class Enemy_Shotput : Enemy
 
     private void FixedUpdate()
     {
-        if (isDead) return;
-
-        if (Vector3.Distance(transform.position, IncaData.PlayerPosition) > attackDistance) return;
+        if (IsDead) return;
 
         transform.LookAt(IncaData.PlayerPosition, Vector3.up);
+
+        if (Vector3.Distance(transform.position, IncaData.PlayerPosition) > attackDistance) return;
 
         attackTimer += Time.deltaTime;
         if (attackTimer > attackTime)
         {
             attackTimer = 0;
             animator.Play("Attack");
+            Attack();
         }
     }
 
     public void Attack()
     {
+        if (IsDead) return;
+
         GameObject bulletClone = MemoryPool.Instance(MemoryPoolType.Enemy).ActivatePoolItem(bulletPrefab);
         bulletClone.transform.SetPositionAndRotation(transform.position, Quaternion.LookRotation(IncaData.PlayerPosition));
         Vector3 dir = (IncaData.PlayerPosition - bulletSpawnTransform.position);
         bulletClone.GetComponent<Bullet>().Setup(dir);
     }
 
+    public override int Hit(int attckAmount)
+    {
+        int curHp = base.Hit(attckAmount);
+        if (IsDead) return curHp;
+
+        animator.Play("Damage");
+
+        return curHp;
+    }
+
     protected override void OnDeath()
     {
         base.OnDeath();
 
+        animator.SetInteger("animation", 5);
+
         Invoke(nameof(DeactivateGameObject), 1);
     }
-
-
 
     private void OnDrawGizmos()
     {

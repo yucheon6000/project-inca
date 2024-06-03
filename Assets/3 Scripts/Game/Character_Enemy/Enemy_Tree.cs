@@ -20,6 +20,7 @@ public class Enemy_Tree : Enemy
     private float fallTime;
     [SerializeField]
     private AnimationCurve fallCurve;
+    private bool isFall = false;
 
     [SerializeField]
     private LookAtPlayer lookAtPlayer;
@@ -35,14 +36,21 @@ public class Enemy_Tree : Enemy
 
     private Rigidbody rigidbody;
 
+
     protected override void Awake()
     {
+        base.Awake();
         rigidbody = GetComponent<Rigidbody>();
+    }
+
+    private void Start()
+    {
+        Init();
     }
 
     private void Update()
     {
-        if (isDead) return;
+        if (IsDead) return;
 
         float dist = Vector3.Distance(transform.position, IncaData.PlayerPosition);
 
@@ -50,6 +58,7 @@ public class Enemy_Tree : Enemy
         {
             state = EnemyState.Move;
             lookAtPlayer.Look(true);
+            animator.SetInteger("animation", 2);
             StartCoroutine(MoveRoutine());
         }
 
@@ -57,6 +66,7 @@ public class Enemy_Tree : Enemy
         {
             state = EnemyState.Attack;
             lookAtPlayer.Look(false);
+            animator.SetInteger("animation", 1);
             StartCoroutine(FallRoutine());
         }
     }
@@ -69,6 +79,8 @@ public class Enemy_Tree : Enemy
         Vector3 originPos = transform.position;
         Vector3 targetPos = transformByLaneIndex[IncaData.PlayerLaneIndex].position;
 
+        WaitForFixedUpdate wait = new WaitForFixedUpdate();
+
         while (progress < 1)
         {
             followTimer += Time.deltaTime;
@@ -76,7 +88,7 @@ public class Enemy_Tree : Enemy
 
             transform.position = Vector3.Lerp(originPos, targetPos, progress);
 
-            yield return null;
+            yield return wait;
         }
     }
 
@@ -84,29 +96,46 @@ public class Enemy_Tree : Enemy
     {
         float fallTimer = 0;
         float progress = 0;
-
+        isFall = true;
         while (progress < 1)
         {
+            WaitForFixedUpdate wait = new WaitForFixedUpdate();
+
             fallTimer += Time.deltaTime;
             progress = fallTimer / fallTime;
 
-            float angleZ = Mathf.Lerp(0, 89, fallCurve.Evaluate(progress));
+            float angleZ = Mathf.Lerp(0, 80, fallCurve.Evaluate(progress));
 
             transform.rotation = Quaternion.Euler(0, 0, angleZ);
 
-            yield return null;
+            yield return wait;
         }
     }
 
     protected override void OnDeath()
     {
         base.OnDeath();
-        Destroy(gameObject);
+
+        if (isFall)
+        {
+            StopAllCoroutines();
+            transform.rotation = Quaternion.Euler(0, 0, 80);
+            rigidbody.isKinematic = false;
+            rigidbody.useGravity = true;
+            // rigidbody.AddForce((transform.position - explosionTf.position).normalized * exFor, ForceMode.Impulse);
+            rigidbody.AddExplosionForce(exFor, explosionTf.position, exRa, 1f);
+        }
+        else
+        {
+            animator.SetInteger("animation", 5);
+        }
+
+        // Destroy(gameObject);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (state == EnemyState.Die) return;
+        if (state == EnemyState.Die || IsDead) return;
 
         if (other.TryGetComponent<UserCar>(out UserCar car))
         {

@@ -12,7 +12,7 @@ public abstract class Enemy : Character, InteractableObject
     protected EnemyState state = EnemyState.Idle;
 
     [SerializeField]
-    protected bool isDead = false;
+    protected bool IsDead => status.CurrentHp == 0;
 
     [SerializeField]
     protected Animator animator;
@@ -41,7 +41,7 @@ public abstract class Enemy : Character, InteractableObject
     {
         int curHp = base.Hit(attckAmount);
 
-        if (isDead) return 0;
+        if (IsDead) return 0;
 
         if (audioSource != null)
             audioSource.PlayOneShot(hitAudioClip);
@@ -54,8 +54,6 @@ public abstract class Enemy : Character, InteractableObject
 
     protected override void OnDeath()
     {
-        isDead = true;
-
         if (animator != null)
             animator.Play(Constants.animation_enemy_death);
 
@@ -70,6 +68,9 @@ public abstract class Enemy : Character, InteractableObject
 
     public virtual bool IsInteractableType(InteractableType type)
     {
+        if (IsDead)
+            return false;
+
         return type == InteractableType.Hitable;
     }
 
