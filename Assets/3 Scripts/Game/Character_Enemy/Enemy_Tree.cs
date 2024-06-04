@@ -33,6 +33,8 @@ public class Enemy_Tree : Enemy
     private float exFor = 1000;
     [SerializeField]
     private float exRa = 10;
+    [SerializeField]
+    private float exMo = 1;
 
     private Rigidbody rigidbody;
 
@@ -104,7 +106,7 @@ public class Enemy_Tree : Enemy
             fallTimer += Time.deltaTime;
             progress = fallTimer / fallTime;
 
-            float angleZ = Mathf.Lerp(0, 80, fallCurve.Evaluate(progress));
+            float angleZ = Mathf.Lerp(0, 90, fallCurve.Evaluate(progress));
 
             transform.rotation = Quaternion.Euler(0, 0, angleZ);
 
@@ -119,11 +121,11 @@ public class Enemy_Tree : Enemy
         if (isFall)
         {
             StopAllCoroutines();
-            transform.rotation = Quaternion.Euler(0, 0, 80);
+            transform.rotation = Quaternion.Euler(0, 0, 90);
             rigidbody.isKinematic = false;
             rigidbody.useGravity = true;
             // rigidbody.AddForce((transform.position - explosionTf.position).normalized * exFor, ForceMode.Impulse);
-            rigidbody.AddExplosionForce(exFor, explosionTf.position, exRa, 1f);
+            rigidbody.AddExplosionForce(exFor, explosionTf.position, exRa, exMo);
         }
         else
         {

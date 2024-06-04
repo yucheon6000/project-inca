@@ -28,7 +28,7 @@ public class ViveControllerBasedGameController : GameController
         });
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         Ray ray = new Ray(controllerTransform.position, controllerTransform.forward);
         if (CheckTarget(ray))
@@ -70,6 +70,16 @@ public class ViveControllerBasedGameController : GameController
         GameObject cloneEffect = Instantiate(shootEffect, shootEffectSpawnTransform.position, Quaternion.identity);
         cloneEffect.transform.rotation = controllerTransform.rotation;
     }
+
+    // protected override void SpawnShootEffect()
+    // {
+    //     GameObject cloneEffect = Instantiate(shootEffect, PlayerPosition, Quaternion.identity);
+    //     cloneEffect.transform.SetParent(transform);
+
+    //     // Target position that the effect should look at
+    //     Vector3 targetPosition = target != null ? hitPoint : mouseWorldPosition;
+    //     cloneEffect.transform.LookAt(targetPosition, Vector3.up);
+    // }
 
     private void OnDrawGizmos()
     {
