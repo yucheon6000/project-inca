@@ -97,7 +97,7 @@ public class CarStateDrive : State<Car>
 
         moveDirection = (car.NextLanePoint.Position - transform.position).normalized;
 
-        Vector3 pos = transform.position + moveDirection * currentMoveSpeed * Time.deltaTime;
+        Vector3 pos = Vector3.MoveTowards(transform.position, car.NextLanePoint.Position, currentMoveSpeed * Time.fixedDeltaTime);
         Quaternion rot = Quaternion.Slerp(
               transform.rotation, Quaternion.LookRotation(car.NextLanePoint.Position - car.CurrentLanePoint.Position), Time.deltaTime * rotateSpeed
         );

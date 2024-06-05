@@ -64,17 +64,21 @@ public class CarStateGlobal : State<Car>
         }
     }
 
-    private bool CheckPointIsBetweenTwoPoints(Vector3 targetPoint, Vector3 point1, Vector3 point2)
+    private bool CheckPointIsBetweenTwoPoints(Vector3 currentPoint, Vector3 startPoint, Vector3 endPoint)
     {
-        Vector2 V2point1 = new Vector2(point1.x, point1.z);
-        Vector2 V2point2 = new Vector2(point2.x, point2.z);
-        Vector2 V2targetPoint = new Vector2(targetPoint.x, targetPoint.z);
+        return Vector3.Distance(currentPoint, endPoint) > 0.001f;
 
-        float distA = Vector2.Distance(V2point1, V2point2);
-        float distB = Vector2.Distance(V2targetPoint, V2point2);
-        float distC = Vector2.Distance(V2targetPoint, V2point1);
+        /*
+        Vector2 V2StartPoint = new Vector2(startPoint.x, startPoint.z);
+        Vector2 V2EndPoint = new Vector2(endPoint.x, endPoint.z);
+        Vector2 V2CurrentPoint = new Vector2(currentPoint.x, currentPoint.z);
+
+        float distA = Vector2.Distance(V2StartPoint, V2EndPoint);
+        float distB = Vector2.Distance(V2CurrentPoint, V2EndPoint);
+        float distC = Vector2.Distance(V2CurrentPoint, V2StartPoint);
 
         return Math.Pow(distA, 2) + Math.Pow(distB, 2) >= Math.Pow(distC, 2) && Math.Pow(distA, 2) + Math.Pow(distC, 2) >= Math.Pow(distB, 2);
+        */
     }
 
     private void SetNextLanePoint(Car car)
