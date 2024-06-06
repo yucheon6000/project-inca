@@ -9,19 +9,9 @@ public class CameraRotateController : MonoBehaviour
     private Camera camera;
 
     [SerializeField]
-    private int mousePosMinX;
+    private Vector3 originPosition;
     [SerializeField]
-    private int mousePosMaxX;
-
-    [SerializeField]
-    private float rotationMinY;
-    [SerializeField]
-    private float rotationMaxY;
-
-    [SerializeField]
-    private float currentRotationY;
-    [SerializeField]
-    private float targetRotationY;
+    private float maxDistance;
 
     [SerializeField]
     private Transform targetTransform;
@@ -29,35 +19,15 @@ public class CameraRotateController : MonoBehaviour
     [SerializeField]
     private float rotateSpeed;
 
-    private void Awake()
+    private void LateUpdate()
     {
-        currentRotationY = camera.transform.localRotation.eulerAngles.y;
-        targetRotationY = currentRotationY;
-    }
+        Vector3 targetPos = targetTransform.localPosition - originPosition;
+        targetPos = originPosition + Vector3.ClampMagnitude(targetPos, maxDistance);
 
-    private void FixedUpdate()
-    {
+        Vector3 worldTargetPos = transform.TransformPoint(targetPos);
 
-        // print(Input.mousePosition.x);
+        Quaternion lookAtTarget = Quaternion.LookRotation(worldTargetPos - camera.transform.position);
 
-        // if (Input.mousePosition.x > mousePosMaxX)
-        //     targetRotationY = rotationMaxY;
-        // else if (Input.mousePosition.x < mousePosMinX)
-        //     targetRotationY = rotationMinY;
-
-        Quaternion target = Quaternion.LookRotation(targetTransform.position - camera.transform.position);
-
-        camera.transform.rotation = Quaternion.Slerp(camera.transform.rotation, target, rotateSpeed * Time.fixedDeltaTime);
-
-        // targetRotationY = Math.Clamp(targetRotationY, rotationMinY, rotationMaxY);
-
-        // float y = Mathf.Lerp(currentRotationY, targetRotationY, rotateSpeed * Time.deltaTime);
-
-        // currentRotationY = y;
-
-        // Vector3 result = camera.transform.localRotation.eulerAngles;
-        // result.y = y;
-
-        // camera.transform.localRotation = Quaternion.Euler(result);
+        camera.transform.rotation = Quaternion.Lerp(camera.transform.rotation, lookAtTarget, rotateSpeed * Time.fixedDeltaTime);
     }
 }
