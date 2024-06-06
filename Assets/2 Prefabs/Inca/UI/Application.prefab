@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5923572544376244710}
   - component: {fileID: 1705120132232951935}
   - component: {fileID: 1284263688668227168}
+  - component: {fileID: 8186348392222152424}
   m_Layer: 15
   m_Name: Application
   m_TagString: Untagged
@@ -46,13 +47,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60afbe6c528e2476cb39b8a94efcb39b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 0
-  currentHp: 0
-  isDead: 0
   animator: {fileID: 0}
-  onDie:
-    m_PersistentCalls:
-      m_Calls: []
+  audioSource: {fileID: 0}
+  hitAudioClip: {fileID: 0}
+  dieAudioClip: {fileID: 0}
   onClick:
     m_PersistentCalls:
       m_Calls:
@@ -191,3 +189,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 10.24, y: 10.24, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8186348392222152424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8303884417407565229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae662e9ba09c940798245bcffc268986, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHp: 0
+  defaultHp: 0
+  currentHp: 0
+  maxAttack: 0
+  defaultAttack: 0
+  currentAttack: 0

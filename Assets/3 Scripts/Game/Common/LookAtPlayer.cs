@@ -9,7 +9,7 @@ public class LookAtPlayer : MonoBehaviour
 
     public void Look(bool value) => look = value;
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (look == false) return;
 

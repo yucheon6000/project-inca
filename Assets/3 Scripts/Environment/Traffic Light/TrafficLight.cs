@@ -17,6 +17,7 @@ public class TrafficLight : MonoBehaviour
     [SerializeField]
     private List<TrafficLightPhase> phases = new List<TrafficLightPhase>();
 
+    [SerializeField]
     private int currentPhaseIndex = 0;
     TrafficLightPhase currentPhase = null;
 
@@ -41,6 +42,15 @@ public class TrafficLight : MonoBehaviour
             currentPhase = phases[currentPhaseIndex];
             currentPhase.Setup(settings);
         }
+    }
+
+    public void SetPhaseIndex(int index)
+    {
+        currentPhase.Stop();
+
+        this.currentPhaseIndex = index;
+        currentPhase = phases[currentPhaseIndex];
+        currentPhase.Setup(settings);
     }
 }
 
@@ -124,6 +134,11 @@ public class TrafficLightPhase
         }
 
         return turnOn;
+    }
+
+    public void Stop()
+    {
+        TurnOff();
     }
 
     private void TurnOn()

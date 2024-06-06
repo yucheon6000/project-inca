@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using HTC.UnityPlugin.Vive;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -46,6 +47,18 @@ public class Dialog : MonoBehaviour
     private bool pressNextButton = false;               // If the player wants to see the following message.
     private Coroutine printMessageCoroutine = null;
 
+    private void Awake()
+    {
+        ViveInput.AddListenerEx(HandRole.RightHand, ControllerButton.FullTrigger, ButtonEventType.Down, () =>
+        {
+            if (isPrintingMessage)
+                SkipPrintMessage();
+
+            else if (isWaitingForPressNextButton)
+                PressNextButton();
+        });
+    }
+
     private void Update()
     {
         if (!Input.GetMouseButtonDown(0)) return;
@@ -69,14 +82,14 @@ public class Dialog : MonoBehaviour
 
     public void SkipPrintMessage()
     {
-        if (printMessageCoroutine == null) return;
+        // if (printMessageCoroutine == null) return;
 
         skipPrintMessage = true;
     }
 
     public void PressNextButton()
     {
-        if (printMessageCoroutine == null) return;
+        // if (printMessageCoroutine == null) return;
 
         pressNextButton = true;
     }
@@ -182,6 +195,7 @@ public class Dialog : MonoBehaviour
                 if (pressNextButton)
                     break;
 
+                print(gameObject.name + ": No pressNextButton");
                 yield return null;
             }
         }

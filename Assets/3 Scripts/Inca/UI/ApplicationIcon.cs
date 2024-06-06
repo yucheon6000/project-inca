@@ -66,4 +66,9 @@ public class ApplicationIcon : Enemy, InteractableObject
         animTimer = 0;
         startScale = transform.localScale.x;
     }
+
+    public override bool IsInteractableType(InteractableType type)
+    {
+        return type == InteractableType.Hitable;
+    }
 }

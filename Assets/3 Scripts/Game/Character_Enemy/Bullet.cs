@@ -8,6 +8,9 @@ public class Bullet : MonoBehaviour
     [SerializeField]
     private float moveSpeed;
     Vector3 dir;
+
+    private int attack;
+
     private void OnEnable()
     {
         dir = (IncaData.PlayerPosition - transform.position).normalized;
@@ -21,6 +24,8 @@ public class Bullet : MonoBehaviour
         this.dir = dir.normalized;
     }
 
+    public void SetAttack(int attack) => this.attack = attack;
+
     private void FixedUpdate()
     {
 
@@ -31,7 +36,7 @@ public class Bullet : MonoBehaviour
 
         if ((IncaData.PlayerPosition - transform.position).sqrMagnitude <= 1)
         {
-            Player.Instance.Hit(1);
+            Player.Instance.Hit(attack);
             // MemoryPool.Instance(MemoryPoolType.Enemy).DeactivatePoolItem(gameObject);
             Destroy(this.gameObject);
         }

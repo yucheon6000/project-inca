@@ -11,6 +11,7 @@ namespace Inca
         public static Vector3 PlayerPosition => IncaDataManager.Instance.GetPlayerPosition();
         public static Vector3 PlayerForward => IncaDataManager.Instance.GetPlayerForward();
         public static Transform PlayerTransform => IncaDataManager.Instance.GetPlayerTransform();
+        public static Transform PlayerCarTransform => IncaDataManager.Instance.GetPlayerCarTransform();
         public static int PlayerLaneIndex => IncaDataManager.Instance.GetPlayerLaneIndex();
         public static Vector3 PlayerVelocity => IncaDataManager.Instance.GetPlayerVelocity();
 
@@ -53,6 +54,7 @@ namespace Inca
         public Vector3 GetPlayerPosition() => this.player.transform.position;
         public Vector3 GetPlayerForward() => this.player.transform.forward;
         public Transform GetPlayerTransform() => this.player.transform;
+        public Transform GetPlayerCarTransform() => this.car.transform;
         public int GetPlayerLaneIndex() => this.car.CurrentLanePoint.LaneIndex;
         public Vector3 GetPlayerVelocity()
         {

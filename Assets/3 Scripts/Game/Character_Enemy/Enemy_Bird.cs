@@ -18,6 +18,8 @@ public class Enemy_Bird : Enemy
     [Space]
     [SerializeField]
     private UnityEvent onInit = new UnityEvent();
+    [SerializeField]
+    private UnityEvent onDeath = new UnityEvent();
 
     private float maxY = 0;
 
@@ -109,6 +111,7 @@ public class Enemy_Bird : Enemy
     public void Attack()
     {
         GameObject clone = Instantiate(bulletPrefab, bulletSpawnTransform.transform.position, Quaternion.LookRotation(IncaData.PlayerPosition));
+        clone.GetComponent<Bullet>().SetAttack(status.CurrentAttack);
         if (parent) clone.transform.SetParent(IncaData.PlayerTransform);
     }
 
@@ -122,12 +125,14 @@ public class Enemy_Bird : Enemy
     {
         base.OnDeath();
 
+        onDeath.Invoke();
+
         animator.SetInteger("animation", 5);
         Rigidbody rigidbody = GetComponent<Rigidbody>();
         rigidbody.isKinematic = false;
         rigidbody.useGravity = true;
 
         StopAllCoroutines();
-        Invoke(nameof(DeactivateGameObject), 1);
+        // Invoke(nameof(DeactivateGameObject), 1);
     }
 }

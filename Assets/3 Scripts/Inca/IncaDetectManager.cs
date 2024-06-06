@@ -11,6 +11,8 @@ namespace Inca
 {
     public class IncaDetectManager : IncaManager
     {
+        public static IncaDetectManager Instance { get; private set; }
+
         [Header("User Car")]
         [SerializeField]
         private Transform envCar;
@@ -64,7 +66,13 @@ namespace Inca
 
         #endregion
 
-        private void LateUpdate()
+        private void Awake()
+        {
+            if (Instance == null)
+                Instance = this;
+        }
+
+        public void UpdateDetectedMyCar()
         {
             if (detCar == null) return;
 
