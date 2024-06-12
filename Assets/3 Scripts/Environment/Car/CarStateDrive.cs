@@ -72,7 +72,7 @@ public class CarStateDrive : State<Car>
     {
         if (!isStarting) return;
 
-        startDelayTimer += Time.deltaTime;
+        startDelayTimer += Time.fixedDeltaTime;
 
         currentMoveSpeed = Mathf.Lerp(0, originalMoveSpeed, stopDecelerationCurve.Evaluate(startDelayTimer / startDelayTime));
 
@@ -84,7 +84,7 @@ public class CarStateDrive : State<Car>
     {
         if (!isStopping) return;
 
-        stopDelayTimer += Time.deltaTime;
+        stopDelayTimer += Time.fixedDeltaTime;
 
         currentMoveSpeed = Mathf.Lerp(originalMoveSpeed, 0, stopDecelerationCurve.Evaluate(stopDelayTimer / stopDelayTime));
 
@@ -100,7 +100,7 @@ public class CarStateDrive : State<Car>
 
         Vector3 pos = Vector3.MoveTowards(transform.position, car.NextLanePoint.Position, currentMoveSpeed * Time.fixedDeltaTime);
         Quaternion rot = Quaternion.Slerp(
-              transform.rotation, Quaternion.LookRotation(car.NextLanePoint.Position - car.CurrentLanePoint.Position), Time.deltaTime * rotateSpeed
+              transform.rotation, Quaternion.LookRotation(car.NextLanePoint.Position - car.CurrentLanePoint.Position), Time.fixedDeltaTime * rotateSpeed
         );
 
         transform.SetPositionAndRotation(pos, rot);

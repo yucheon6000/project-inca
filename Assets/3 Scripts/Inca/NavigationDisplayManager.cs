@@ -18,13 +18,22 @@ public class NavigationDisplayManager : IncaManager
     {
         transform.localScale *= scale;
 
-        IncaDetectManager.AddOnTriggerEnterDetectedObject((DetectedObject detectedObject, bool first) =>
+        IncaDetectManager.GetAllDetectedObjects().ForEach(detObj =>
         {
             GameObject clone = Instantiate(cubePrefab);
-            clone.transform.localScale = detectedObject.Scale * scale;
-            clone.transform.rotation = detectedObject.Rotation;
+            clone.transform.localScale = detObj.Scale * scale;
+            clone.transform.rotation = detObj.Rotation;
 
-            detectedObjects.Add(detectedObject, clone.transform);
+            detectedObjects.Add(detObj, clone.transform);
+        });
+
+        IncaDetectManager.AddOnTriggerEnterDetectedObject((DetectedObject detObj, bool first) =>
+        {
+            GameObject clone = Instantiate(cubePrefab);
+            clone.transform.localScale = detObj.Scale * scale;
+            clone.transform.rotation = detObj.Rotation;
+
+            detectedObjects.Add(detObj, clone.transform);
         });
 
 
@@ -40,6 +49,8 @@ public class NavigationDisplayManager : IncaManager
     private void Update()
     {
         List<DetectedObject> removedDetectedObjs = new List<DetectedObject>();
+
+        transform.rotation = IncaData.PlayerCarTransform.rotation;
 
         foreach (var obj in detectedObjects.Keys)
         {
@@ -60,6 +71,7 @@ public class NavigationDisplayManager : IncaManager
                 rToObj = transform.position + rToObj;
 
                 objTransform.position = rToObj;
+                objTransform.rotation = obj.Rotation;
             }
             catch (MissingReferenceException)
             {

@@ -98,6 +98,8 @@ namespace Inca
 
             obj.Initialize(environmentObject);
 
+            obj.IsVisible(true);
+
             foreach (var action in onTriggerEnterDetectedObject)
                 action.Invoke(obj, firstTime);
         }
@@ -108,6 +110,8 @@ namespace Inca
 
             DetectedObject detObj = detectedObjects[guid];
             if (!detObj) return;
+
+            detObj.IsVisible(false);
 
             foreach (var action in onTriggerExitDetectedObject)
                 action.Invoke(detObj);
