@@ -44,11 +44,8 @@ public class Enemy_Fly_FlyingState : State<Enemy_Fly>
     private List<Enemy_Fly_FlyingState> children = new List<Enemy_Fly_FlyingState>();
 
     private Enemy_Fly owner;
-    private Vector3 OwnerPosition
-    {
-        get => owner.transform.localPosition;
-        set => owner.transform.localPosition = value;
-    }
+    private Vector3 OwnerPosition => owner.transform.position;
+    private Vector3 OwnerLocalPosition => owner.transform.localPosition;
 
     public override void Enter(Enemy_Fly entity)
     {
@@ -92,7 +89,7 @@ public class Enemy_Fly_FlyingState : State<Enemy_Fly>
 
         if (velocity != Vector3.zero)
         {
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(velocity), 0.05f);
+            entity.LookAt(transform.TransformDirection(velocity));
         }
     }
 
@@ -105,14 +102,14 @@ public class Enemy_Fly_FlyingState : State<Enemy_Fly>
         }
     }
 
-    private Vector3 Seek(Vector3 targetPosition)
+    private Vector3 Seek(Vector3 targetLocalPosition)
     {
-        Vector3 desiredVelocity = (targetPosition - OwnerPosition).normalized * maxVelocity;
+        Vector3 desiredVelocity = (targetLocalPosition - OwnerLocalPosition).normalized * maxVelocity;
 
         Vector3 steerForce = desiredVelocity - velocity;
 
-        Debug.DrawLine(OwnerPosition, OwnerPosition + velocity, Color.green);
-        Debug.DrawLine(OwnerPosition, OwnerPosition + desiredVelocity, Color.blue);
+        Debug.DrawLine(OwnerPosition, transform.TransformPoint(OwnerLocalPosition + velocity), Color.green);
+        Debug.DrawLine(OwnerPosition, transform.TransformPoint(OwnerLocalPosition + desiredVelocity), Color.blue);
 
         return steerForce;
     }
@@ -147,7 +144,7 @@ public class Enemy_Fly_FlyingState : State<Enemy_Fly>
     private Vector3 Wander()
     {
         // If this enemy didn't arrive currentWanderPosition, it has to move to currentWanderPosition.
-        if (Vector3.Distance(OwnerPosition, currentWanderPosition) > 0.5f) return Seek(currentWanderPosition);
+        if (Vector3.Distance(OwnerLocalPosition, currentWanderPosition) > 0.5f) return Seek(currentWanderPosition);
 
         // If it is last point, (If you arrived player's position)
         // Attack player

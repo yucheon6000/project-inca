@@ -9,6 +9,9 @@ public class Enemy_Fly : Enemy
     [SerializeField]
     private State<Enemy_Fly> flyingState;
 
+    [SerializeField]
+    private Transform modelTransform;
+
     private void Start()
     {
         stateMachine = new StateMachine<Enemy_Fly>();
@@ -25,5 +28,10 @@ public class Enemy_Fly : Enemy
     {
         base.OnDeath();
         Destroy(this.gameObject);
+    }
+
+    public void LookAt(Vector3 direction)
+    {
+        modelTransform.rotation = Quaternion.LookRotation(direction);
     }
 }
