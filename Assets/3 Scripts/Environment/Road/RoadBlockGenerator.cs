@@ -8,6 +8,7 @@ using UnityEngine;
 [RequireComponent(typeof(RoadBlock))]
 public class RoadBlockGenerator : MonoBehaviour
 {
+#if UNITY_EDITOR
     public Vector3 roadBlockSize => RoadBlock.road_block_size;
 
     [Header("Prefab")]
@@ -89,7 +90,7 @@ public class RoadBlockGenerator : MonoBehaviour
             }
         }
     }
-
+#endif
     [Serializable]
     public class RoadInformation
     {

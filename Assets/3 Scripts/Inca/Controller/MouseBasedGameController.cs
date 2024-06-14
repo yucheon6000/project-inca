@@ -31,7 +31,7 @@ public class MouseBasedGameController : GameController
         targetCamera = GameObject.Find("Render Camera").GetComponent<Camera>();
     }
 
-    private void LateUpdate()
+    private void FixedUpdate()
     {
         // On or off debug mode
         if (mouseBallTransfrom.gameObject.activeSelf != debugMode)
@@ -83,7 +83,7 @@ public class MouseBasedGameController : GameController
 
         // Update aim UI
         rectTransform.position = Input.mousePosition;
-        scaleTimer += Time.deltaTime;
+        scaleTimer += Time.fixedDeltaTime;
         rectTransform.localScale = Vector3.one * Mathf.Lerp(startScale, targetScale, sizeChangingCurve.Evaluate(scaleTimer / 0.5f));
         prevScale = rectTransform.localScale.x;
 
@@ -100,8 +100,8 @@ public class MouseBasedGameController : GameController
 
     protected override void SpawnShootEffect()
     {
-        GameObject cloneEffect = Instantiate(shootEffect, PlayerPosition, Quaternion.identity);
-        cloneEffect.transform.SetParent(transform);
+        GameObject cloneEffect = Instantiate(shootEffect, shootEffectSpawnTransform.position, Quaternion.identity);
+        cloneEffect.transform.SetParent(IncaData.PlayerTransform);
 
         // Target position that the effect should look at
         Vector3 targetPosition = target != null ? hitPoint : mouseWorldPosition;
