@@ -11,6 +11,7 @@ namespace Inca
 
     public class DetectedObject : MonoBehaviour
     {
+        [SerializeField]
         private EnvironmentObject environmentObject;
         private Transform originalTransform;
 
@@ -32,14 +33,18 @@ namespace Inca
             transform.rotation = Rotation;
 
             onHideActions = new List<UnityAction>();
-            // environmentObject.RegisterOnDistroyAction(() => IsVisible(false));
+            // environmentObject.RegisterOnDisableAction(() => IsVisible(false));
             // transform.localScale = Scale;    // ??
         }
 
         private void FixedUpdate()
         {
             if (originalTransform == null || !originalTransform.gameObject.activeSelf || !originalTransform.gameObject.activeInHierarchy)
+            {
                 IsVisible(false);
+                MemoryPool.Instance(MemoryPoolType.DetectedObject).DeactivatePoolItem(this.gameObject);
+                return;
+            }
 
             UpdatePositionAndRotation();
         }
@@ -105,6 +110,12 @@ namespace Inca
         }
 
         /* Gizmos */
+        private void OnDrawGizmosSelected()
+        {
+            print("Self:" + originalTransform.gameObject.activeSelf.ToString());
+            print("Hi" + originalTransform.gameObject.activeInHierarchy.ToString());
+        }
+
         private void OnDrawGizmos()
         {
             // if (!isVisible) return;
@@ -114,7 +125,7 @@ namespace Inca
 
             if (ObjectType == DetectedObjectType.Building)
             {
-                if (gameObject.activeSelf)
+                if (IsVisible())
                     DrawMyGizmos(Color.blue);
                 else
                     DrawMyGizmos(Color.red);
