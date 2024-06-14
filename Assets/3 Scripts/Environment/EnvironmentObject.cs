@@ -25,16 +25,22 @@ namespace Environment
         public Vector3 ColliderSize => boundCollider.size;
         public Bounds ColliderBounds => boundCollider.bounds;
 
-        public List<UnityAction> onDistroyActions = new List<UnityAction>();
+        public List<UnityAction> onDisableActions = new List<UnityAction>();
 
-        public void RegisterOnDistroyAction(UnityAction action)
+        private void OnEnable()
         {
-            onDistroyActions.Add(action);
+            guid = Guid.NewGuid();
+            onDisableActions.Clear();
         }
 
-        private void OnDestroy()
+        public void RegisterOnDisableAction(UnityAction action)
         {
-            foreach (var action in onDistroyActions)
+            onDisableActions.Add(action);
+        }
+
+        private void OnDisable()
+        {
+            foreach (var action in onDisableActions)
                 action.Invoke();
         }
     }
