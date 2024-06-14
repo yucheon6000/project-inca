@@ -1669,6 +1669,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 973338386}
+  - component: {fileID: 973338387}
   m_Layer: 25
   m_Name: Navigation
   m_TagString: Untagged
@@ -1695,6 +1696,21 @@ Transform:
   - {fileID: 716965132}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &973338387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 973338385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 047049c009cb94bc38f32573d334d51c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  memoryPoolType: 5
+  prefabs: []
+  defaultIncreaesCount: 10
 --- !u!1001 &1002133288
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2564,7 +2580,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetCar: {fileID: 1646533514}
-  roadBlockPrefabs: []
+  roadBlockPrefabs:
+  - {fileID: 1959046000439871853, guid: c97f48a0694aded42ab614bf5c456528, type: 3}
+  - {fileID: 1959046000439871853, guid: 41ed68644a5cc2242b282de4b3567ceb, type: 3}
+  - {fileID: 3368785866326424961, guid: 14e1801a67704ba49a7078e6e1403261, type: 3}
+  - {fileID: 1959046000439871853, guid: c52f18814e2a56f47a737a6bdccd6ed4, type: 3}
+  - {fileID: 9078347276526653196, guid: f9131600bb376a748b3b686ba2979bfa, type: 3}
+  - {fileID: 1959046000439871853, guid: 4ccff8e3cb5cb6248af3e8a04c7dc3ea, type: 3}
+  - {fileID: 1959046000439871853, guid: a253e9882bb1f054cb0775a41569bd16, type: 3}
+  - {fileID: 3368785866326424961, guid: b20222e4714ed47478e4c0ef33eab4a3, type: 3}
+  - {fileID: 1959046000439871853, guid: d1d33d28efbd653419a06676700abbef, type: 3}
+  - {fileID: 1959046000439871853, guid: 9a5163162af14b745a82a7453a3db622, type: 3}
+  - {fileID: 9078347276526653196, guid: 8d2cd834195eb0c46ba8d7637de1ab3c, type: 3}
+  - {fileID: 1959046000439871853, guid: 23184e2b73d825a45982c5469a9a8385, type: 3}
   trigerGap: 490
   presetedRoadBlock: {fileID: 1455392414}
 --- !u!1 &1183693753
@@ -3653,7 +3681,7 @@ PrefabInstance:
     - target: {fileID: 7838516692123240397, guid: a3c5e2806af374c9fa137d2d524a79b6,
         type: 3}
       propertyPath: currentMoveSpeed
-      value: 120
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 7915124670517216990, guid: a3c5e2806af374c9fa137d2d524a79b6,
         type: 3}
@@ -4761,7 +4789,8 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5711739410346103039, guid: 88c4939c2bf5f314c91fc91ba3bbc209, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 5821284737973568507, guid: 88c4939c2bf5f314c91fc91ba3bbc209,
@@ -4771,7 +4800,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8487807543363601118, guid: 88c4939c2bf5f314c91fc91ba3bbc209,
         type: 3}
-      insertIndex: 1
+      insertIndex: -1
       addedObject: {fileID: 1165054300}
     - targetCorrespondingSourceObject: {fileID: 8487807543363601118, guid: 88c4939c2bf5f314c91fc91ba3bbc209,
         type: 3}

@@ -8,7 +8,8 @@ public enum MemoryPoolType
 {
     Enviroments, RoadBlocks,
     DetectedObject,
-    Enemy
+    Enemy,
+    Inca, Inca_Navigation
 }
 public class MemoryPool : MonoBehaviour
 {

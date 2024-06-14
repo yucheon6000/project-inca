@@ -20,11 +20,11 @@ public class NavigationDisplayManager : IncaManager
     [SerializeField]
     private int lanePointCount = 10;
 
-
-
     [SerializeField]
     private float scale;
 
+    /// <typeparam name="DetectedObject">Detected Object</typeparam>
+    /// <typeparam name="Transform">Model Transform</typeparam>
     private Dictionary<DetectedObject, Transform> detectedObjects = new Dictionary<DetectedObject, Transform>();
 
     private void Awake()
@@ -35,64 +35,78 @@ public class NavigationDisplayManager : IncaManager
         {
             GameObject clone = null;
 
+            // Create a model based on the type of the detected object.
             if (detObj.ObjectType == DetectedObjectType.Car)
-                clone = Instantiate(carPrefab, new Vector3(0, -300, 0), Quaternion.identity);
+                clone = MemoryPool.Instance(MemoryPoolType.Inca_Navigation).ActivatePoolItem(carPrefab);
             else if (detObj.ObjectType == DetectedObjectType.Building)
             {
-                clone = Instantiate(buildingPrefab, new Vector3(0, -300, 0), Quaternion.identity);
+                clone = MemoryPool.Instance(MemoryPoolType.Inca_Navigation).ActivatePoolItem(buildingPrefab);
                 clone.transform.localScale = detObj.Scale * scale;
             }
-            clone.transform.rotation = detObj.Rotation;
 
+            clone.transform.position = new Vector3(0, -300, 0);
+
+            // Add the model to the dictionary.
             detectedObjects.Add(detObj, clone.transform);
 
-            detObj.RegisterOnHideAction(() =>
-            {
-                if (detectedObjects.ContainsKey(detObj))
-                    detectedObjects.Remove(detObj);
-            });
+            // When the detected object is hiden, remove it and model object.
+            detObj.RegisterOnHideAction(() => RemoveDetectedObject(detObj));
         });
     }
 
     private void Update()
     {
-        List<DetectedObject> removedDetectedObjs = new List<DetectedObject>();
-
         transform.rotation = IncaData.PlayerCarTransform.rotation;
 
+        List<DetectedObject> removedDetectedObjs = new List<DetectedObject>();
+
         // Move objects to their position
-        foreach (var obj in detectedObjects.Keys)
-        {
-            if (obj == null || !obj.IsVisible())
-            {
-                removedDetectedObjs.Add(obj);
-                continue;
-            }
-
-            Transform objTransform = detectedObjects[obj];
-
-            try
-            {
-                objTransform.position = CovertToOurCoordinate(obj.Position);
-                objTransform.rotation = obj.Rotation;
-            }
-            catch (MissingReferenceException)
-            {
-                removedDetectedObjs.Add(obj);
-            }
-        }
+        foreach (var detObj in detectedObjects.Keys)
+            UpdateModelPositionAndRotation(detObj, ref removedDetectedObjs);
 
 
         // Delete objects which don't use anymore.
-        foreach (var obj in removedDetectedObjs)
-        {
-            Transform objTransform = detectedObjects[obj];
-            detectedObjects.Remove(obj);
-            Destroy(objTransform.gameObject);
-        }
+        foreach (var detObj in removedDetectedObjs)
+            RemoveDetectedObject(detObj);
+
 
         // Update line renderer.
         UpdateLineRenderer();
+    }
+
+    private void UpdateModelPositionAndRotation(DetectedObject detectedObject, ref List<DetectedObject> removedDetectedObejcts)
+    {
+        // If the detected object is not visible, remove it.
+        if (detectedObject == null || !detectedObject.IsVisible())
+        {
+            removedDetectedObejcts.Add(detectedObject);
+            return;
+        }
+
+        // Update position of the model and rotation of the model.
+        Transform modelTf = detectedObjects[detectedObject];
+
+        try
+        {
+            modelTf.position = CovertToOurCoordinate(detectedObject.Position);
+            modelTf.rotation = detectedObject.Rotation;
+        }
+
+        // If the model can't be moved by this script, remove the detected obejct.
+        catch (MissingReferenceException)
+        {
+            removedDetectedObejcts.Add(detectedObject);
+        }
+    }
+
+    private void RemoveDetectedObject(DetectedObject detectedObject)
+    {
+        if (!detectedObjects.ContainsKey(detectedObject)) return;
+
+        Transform clone = detectedObjects[detectedObject];
+        MemoryPool.Instance(MemoryPoolType.Inca_Navigation).DeactivatePoolItem(clone.gameObject);
+
+        detectedObjects.Remove(detectedObject);
     }
 
     List<Vector3> points = new List<Vector3>();     // Points the LineRenderer uses
