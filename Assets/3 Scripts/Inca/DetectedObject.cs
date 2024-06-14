@@ -59,10 +59,9 @@ namespace Inca
 
             isVisible = value;
 
-            if (value) return;
-
             // if this is hided
-            OnHide();
+            if (!isVisible)
+                OnHide();
         }
 
         public void OnHide()
@@ -70,7 +69,7 @@ namespace Inca
             // Deactivate colliders
             var colliders = GetComponents<Collider>();
 
-            if (colliders != null && colliders.Length != 0)
+            if (colliders != null)
                 foreach (var col in colliders)
                     col.enabled = false;
 
@@ -83,6 +82,15 @@ namespace Inca
         public void RegisterOnHideAction(UnityAction action)
         {
             onHideActions.Add(action);
+        }
+
+        private void OnEnable()
+        {
+            var colliders = GetComponents<Collider>();
+
+            if (colliders != null)
+                foreach (var col in colliders)
+                    col.enabled = true;
         }
 
         private void OnDisable()

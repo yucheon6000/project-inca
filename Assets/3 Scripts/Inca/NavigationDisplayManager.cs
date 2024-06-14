@@ -45,6 +45,12 @@ public class NavigationDisplayManager : IncaManager
             clone.transform.rotation = detObj.Rotation;
 
             detectedObjects.Add(detObj, clone.transform);
+
+            detObj.RegisterOnHideAction(() =>
+            {
+                if (detectedObjects.ContainsKey(detObj))
+                    detectedObjects.Remove(detObj);
+            });
         });
     }
 
