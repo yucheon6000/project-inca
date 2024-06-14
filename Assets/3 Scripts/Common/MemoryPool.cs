@@ -33,6 +33,9 @@ public class MemoryPool : MonoBehaviour
     protected Dictionary<GameObject, MemoryPoolBase> pools = new Dictionary<GameObject, MemoryPoolBase>();
     private Dictionary<GameObject, GameObject> cloneToPrefab = new Dictionary<GameObject, GameObject>();
 
+    [SerializeField]
+    private int defaultIncreaesCount = 1;
+
     private void Awake()
     {
         if (instances == null)
@@ -45,19 +48,26 @@ public class MemoryPool : MonoBehaviour
     private void Setup()
     {
         foreach (var prefab in prefabs)
-        {
-            MemoryPoolBase memoryPool = new MemoryPoolBase(prefab.prefab, prefab.increaesCount, transform);
-            memoryPool.InstatiateObjects();
-
-            pools.Add(prefab.prefab, memoryPool);
-        }
+            AddMemeoryPoolBase(prefab.prefab, prefab.increaesCount, transform);
 
         instances.Add(memoryPoolType, this);
     }
 
+    private void AddMemeoryPoolBase(GameObject prefab, int increaesCount, Transform transform)
+    {
+        MemoryPoolBase memoryPool = new MemoryPoolBase(prefab, increaesCount, transform);
+        memoryPool.InstatiateObjects();
+
+        pools.Add(prefab, memoryPool);
+    }
+
     public GameObject ActivatePoolItem(GameObject prefab)
     {
-        if (pools.ContainsKey(prefab) == false) return null;
+        if (pools.ContainsKey(prefab) == false)
+        {
+            AddMemeoryPoolBase(prefab, defaultIncreaesCount, transform);
+            return ActivatePoolItem(prefab);
+        }
 
         GameObject result = pools[prefab].ActivatePoolItem();
         cloneToPrefab.Add(result, prefab);
