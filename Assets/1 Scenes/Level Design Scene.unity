@@ -2549,16 +2549,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   memoryPoolType: 1
-  prefabs:
-  - prefab: {fileID: 8644482516420832346, guid: 3bfdda62787624ce7995af89b81ead06,
-      type: 3}
-    increaesCount: 2
-  - prefab: {fileID: 1235242244408699451, guid: 60ec6dc071804493692e70a6b399338a,
-      type: 3}
-    increaesCount: 2
-  - prefab: {fileID: 4762809618008561846, guid: a52e9ec11ba0a4ea3b55df508d43c294,
-      type: 3}
-    increaesCount: 2
+  prefabs: []
+  defaultIncreaesCount: 1
+--- !u!114 &1165054300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1165054294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c61ecbfee07b74dadeaf33758f51c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetCar: {fileID: 1646533514}
+  roadBlockPrefabs: []
+  trigerGap: 490
+  presetedRoadBlock: {fileID: 1455392414}
 --- !u!1 &1183693753
 GameObject:
   m_ObjectHideFlags: 0
@@ -3645,7 +3653,7 @@ PrefabInstance:
     - target: {fileID: 7838516692123240397, guid: a3c5e2806af374c9fa137d2d524a79b6,
         type: 3}
       propertyPath: currentMoveSpeed
-      value: 30
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 7915124670517216990, guid: a3c5e2806af374c9fa137d2d524a79b6,
         type: 3}
@@ -4651,6 +4659,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5711739410346103039, guid: 88c4939c2bf5f314c91fc91ba3bbc209,
         type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5711739410346103039, guid: 88c4939c2bf5f314c91fc91ba3bbc209,
+        type: 3}
       propertyPath: targetCar
       value: 
       objectReference: {fileID: 1646533514}
@@ -4756,6 +4769,10 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1455392417}
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8487807543363601118, guid: 88c4939c2bf5f314c91fc91ba3bbc209,
+        type: 3}
+      insertIndex: 1
+      addedObject: {fileID: 1165054300}
     - targetCorrespondingSourceObject: {fileID: 8487807543363601118, guid: 88c4939c2bf5f314c91fc91ba3bbc209,
         type: 3}
       insertIndex: -1

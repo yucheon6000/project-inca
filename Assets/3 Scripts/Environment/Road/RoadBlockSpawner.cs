@@ -8,7 +8,7 @@ public class RoadBlockSpawner : MonoBehaviour
     private GameObject targetCar;
 
     [SerializeField]
-    private List<RoadBlock> roadBlockPrefabs = new List<RoadBlock>();
+    protected List<RoadBlock> roadBlockPrefabs = new List<RoadBlock>();
 
     [SerializeField]
     private int trigerGap = 490;     // trigerGap is gap between end line and limit line;
@@ -54,7 +54,8 @@ public class RoadBlockSpawner : MonoBehaviour
                     .DeactivatePoolItem(previousRoadBlock.gameObject);
         }
 
-        RoadBlock prefab = roadBlockPrefabs[Random.Range(0, roadBlockPrefabs.Count)];
+        RoadBlock prefab = GetNextRoadBlock();
+        if (prefab == null) return;
 
         Vector3 pos = currentRoadBlock.transform.position;
 
@@ -99,5 +100,10 @@ public class RoadBlockSpawner : MonoBehaviour
         currentRoadBlock.SetNextRoadBlock(nextRoadBlock);
         previousRoadBlock = currentRoadBlock;
         currentRoadBlock = nextRoadBlock;
+    }
+
+    protected virtual RoadBlock GetNextRoadBlock()
+    {
+        return roadBlockPrefabs[Random.Range(0, roadBlockPrefabs.Count)];
     }
 }
