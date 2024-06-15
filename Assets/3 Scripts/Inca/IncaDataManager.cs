@@ -38,18 +38,7 @@ namespace Inca
             if (!Instance) Instance = this;
         }
 
-        private void Update()
-        {
-            // float speed = carController.GetComponent<PrometeoCarController>().carSpeed;
-            // SetSpeed(speed);
-        }
-
-        private void SetSpeed(float speed)
-        {
-            this.speed = speed;
-        }
-
-        public float GetSpeed() => this.speed;
+        public float GetSpeed() => carStateDrive.CurrentMoveSpeed;
 
         public Vector3 GetPlayerPosition() => this.player.transform.position;
         public Vector3 GetPlayerForward() => this.player.transform.forward;

@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using Inca;
 using UnityEngine;
 using UnityEngine.Events;
@@ -15,6 +14,13 @@ public class Enemy_Bird : Enemy
     [SerializeField]
     private Transform bulletSpawnTransform;
 
+    [SerializeField]
+    private Vector3 originLocalPosition;
+    [SerializeField]
+    private float minLocalX;
+    [SerializeField]
+    private float maxLocalX;
+
     [Space]
     [SerializeField]
     private UnityEvent onInit = new UnityEvent();
@@ -23,14 +29,24 @@ public class Enemy_Bird : Enemy
 
     private float maxY = 0;
 
-    private void Start()
+    Rigidbody rigidbody;
+
+    protected override void Awake()
     {
-        Init();
+        base.Awake();
+        rigidbody = GetComponent<Rigidbody>();
     }
 
     public override void Init(DetectedObject detectedObject = null)
     {
         base.Init(detectedObject);
+
+        rigidbody.isKinematic = true;
+        rigidbody.useGravity = false;
+
+        Vector3 startPos = originLocalPosition;
+        startPos.x = Random.Range(minLocalX, minLocalX + ((maxLocalX - minLocalX) / 2));
+        transform.localPosition = startPos;
 
         attackTimer = 0;
         maxY = transform.localPosition.y;
@@ -55,7 +71,15 @@ public class Enemy_Bird : Enemy
     [SerializeField]
     float moveTime = 2f;
     [SerializeField]
+    private float moveDepthMin = 1f;
+    [SerializeField]
+    private float moveDepthMax = 1f;
+    [SerializeField]
     private float moveDepth = 1f;
+    [SerializeField]
+    private float moveLengthMin = 1f;
+    [SerializeField]
+    private float moveLengthMax = 1f;
     [SerializeField]
     private float moveLength = 1f;
     [SerializeField]
@@ -69,7 +93,16 @@ public class Enemy_Bird : Enemy
 
         float moveTimer = 0;
 
-        Vector3 originalPos = transform.localPosition;
+        Vector3 startPos = transform.localPosition;
+
+        moveLength = Random.Range(moveLengthMin, moveLengthMax);
+        if (currentMoveDirection > 0 && startPos.x + moveLength > maxLocalX)
+            moveLength = maxLocalX - startPos.x;
+        else if (currentMoveDirection < 0 && startPos.x + moveLength < minLocalX)
+            moveLength = minLocalX - startPos.x;
+        moveLength = Mathf.Abs(moveLength);
+
+        moveDepth = Random.Range(moveDepthMin, moveDepthMax);
 
         while (moveTimer < moveTime)
         {
@@ -77,11 +110,14 @@ public class Enemy_Bird : Enemy
 
             float progress = moveTimer / moveTime;
 
-            Vector3 newPos = originalPos;
+            Vector3 newPos = startPos;
             newPos.x += moveLength * progress * currentMoveDirection;
             newPos.y += -Mathf.Sin(progress * Mathf.PI) * moveDepth;
 
-            if (newPos.y >= maxY) newPos.y = maxY;
+            if (newPos.x > maxLocalX) newPos.x = maxLocalX;
+            else if (newPos.x < minLocalX) newPos.x = minLocalX;
+
+            if (newPos.y > maxY) newPos.y = maxY;
 
             transform.localPosition = newPos;
 
@@ -128,11 +164,11 @@ public class Enemy_Bird : Enemy
         onDeath.Invoke();
 
         animator.SetInteger("animation", 5);
-        Rigidbody rigidbody = GetComponent<Rigidbody>();
+
         rigidbody.isKinematic = false;
         rigidbody.useGravity = true;
 
         StopAllCoroutines();
-        // Invoke(nameof(DeactivateGameObject), 1);
+        Invoke(nameof(DeactivateGameObject), 2);
     }
 }

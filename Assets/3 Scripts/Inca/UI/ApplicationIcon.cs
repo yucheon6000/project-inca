@@ -9,6 +9,9 @@ public class ApplicationIcon : Enemy, InteractableObject
     [SerializeField]
     private UnityEvent onClick = new UnityEvent();
 
+    [SerializeField]
+    private bool canSelect = false;
+
     private float originScale;
     private float startScale;
     [SerializeField]
@@ -23,14 +26,22 @@ public class ApplicationIcon : Enemy, InteractableObject
     [SerializeField]
     private AnimationCurve hoverEndScaleCurve;
 
+    private SpriteRenderer spriteRenderer;
+
     protected override void Awake()
     {
+        base.Awake();
         originScale = transform.localScale.x;
+
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
+        Init();
     }
 
-    public override void Init(DetectedObject detectedObject)
+    public override void Init(DetectedObject detectedObject = null)
     {
         base.Init(detectedObject);
+        CanSelect(canSelect);
     }
 
     private void Update()
@@ -46,10 +57,21 @@ public class ApplicationIcon : Enemy, InteractableObject
         transform.localScale = new Vector3(s, s, s);
     }
 
+    public void CanSelect(bool value)
+    {
+        canSelect = value;
+
+        Color c = spriteRenderer.color;
+
+        if (canSelect) spriteRenderer.color = new Color(1, 1, 1, c.a);
+        else spriteRenderer.color = new Color(45f / 255, 45f / 255, 45f / 255, c.a);
+    }
+
     public override int Hit(int attckAmount)
     {
+        if (!canSelect) return 0;
+
         onClick.Invoke();
-        print("aa");
         return base.Hit(attckAmount);
     }
 
@@ -69,6 +91,7 @@ public class ApplicationIcon : Enemy, InteractableObject
 
     public override bool IsInteractableType(InteractableType type)
     {
-        return type == InteractableType.Hitable;
+
+        return canSelect && type == InteractableType.Hitable;
     }
 }

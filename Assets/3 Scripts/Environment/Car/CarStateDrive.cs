@@ -8,7 +8,13 @@ public class CarStateDrive : State<Car>
     [SerializeField]
     private float originalMoveSpeed;
     [SerializeField]
+    private float initialMoveSpeedMin = 20;
+    [SerializeField]
+    private float initialMoveSpeedMax = 30;
+    [SerializeField]
     private float currentMoveSpeed = 20;
+    [SerializeField]
+    private float targetMoveSpeed = -1;
     private Vector3 moveDirection = Vector3.zero;
 
     public float CurrentMoveSpeed => currentMoveSpeed;
@@ -34,8 +40,20 @@ public class CarStateDrive : State<Car>
     [SerializeField]
     private AnimationCurve stopDecelerationCurve;
 
+    [Header("Target Speed")]
+    [SerializeField]
+    private float slowDistance = 30;
+    [SerializeField]
+    private float increaseTargetSpeed = 5;
+    [SerializeField]
+    private float safetyDistance = 20;
+    [SerializeField]
+    private float decreaseTargetSpeed = 2;
+
+
     private void Awake()
     {
+        currentMoveSpeed = Random.Range(initialMoveSpeedMin, initialMoveSpeedMax);
         originalMoveSpeed = currentMoveSpeed;
     }
 
@@ -65,6 +83,10 @@ public class CarStateDrive : State<Car>
 
         UpdateStarting(car);
         UpdateStopping(car);
+
+        UpdateTargetSpeedFromSafetyDistance(car);
+        UpdateMoveSpeed();
+
         UpdateMoveAndRotate(car);
     }
 
@@ -90,6 +112,53 @@ public class CarStateDrive : State<Car>
 
         if (stopDelayTimer >= stopDelayTime)
             car.ChangeState(CarStates.Stop);
+    }
+
+    private void UpdateMoveSpeed()
+    {
+        if (targetMoveSpeed < 0) return;
+
+        if (currentMoveSpeed > targetMoveSpeed)
+            currentMoveSpeed = Mathf.Lerp(currentMoveSpeed, targetMoveSpeed, decreaseTargetSpeed * Time.fixedDeltaTime);
+        else
+            currentMoveSpeed = Mathf.Lerp(currentMoveSpeed, targetMoveSpeed, increaseTargetSpeed * Time.fixedDeltaTime);
+    }
+
+    private void UpdateTargetSpeedFromSafetyDistance(Car car)
+    {
+        Ray ray = new Ray(car.MiddlePosition, car.transform.forward);
+        RaycastHit[] hits = Physics.RaycastAll(ray, 1000f);
+
+        // if (hits.Length == 0) return;
+
+        float minDistance = Mathf.Infinity;
+
+        Car closestCar = null;
+        foreach (RaycastHit hit in hits)
+        {
+
+            // If it is not a car, continue.
+            if (hit.collider.gameObject.TryGetComponent<Car>(out Car otherCar))
+
+                // If the car is me, continue.
+                if (otherCar == car) continue;
+
+            if (hit.distance < minDistance)
+            {
+                minDistance = hit.distance;
+                closestCar = otherCar;
+            }
+        }
+
+        if (closestCar == null || minDistance > slowDistance)
+        {
+            targetMoveSpeed = originalMoveSpeed;
+            return;
+        }
+
+        else if (minDistance < safetyDistance)
+            targetMoveSpeed = closestCar.CurrentMoveSpeed - 2;
+
     }
 
     private void UpdateMoveAndRotate(Car car)

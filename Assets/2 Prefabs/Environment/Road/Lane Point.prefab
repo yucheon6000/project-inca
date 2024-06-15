@@ -93,7 +93,8 @@ GameObject:
   m_Component:
   - component: {fileID: 638581550408341574}
   - component: {fileID: 430965544126987306}
-  m_Layer: 0
+  - component: {fileID: 7389731578964237540}
+  m_Layer: 7
   m_Name: Lane Point
   m_TagString: Untagged
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
@@ -131,4 +132,26 @@ MonoBehaviour:
   laneIndex: 0
   isStartPoint: 0
   isEndPoint: 0
+  roadBlockDirection: 0
   accessibleLanePoints: []
+--- !u!135 &7389731578964237540
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3489842056337085410}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}

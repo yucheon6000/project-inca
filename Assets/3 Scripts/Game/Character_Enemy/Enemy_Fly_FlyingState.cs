@@ -65,12 +65,15 @@ public class Enemy_Fly_FlyingState : State<Enemy_Fly>
             wanderPositionsForChildren.Insert(0, this.transform.localPosition);
 
             foreach (var child in children)
+            {
                 child.SetWanderPositions(wanderPositionsForChildren);
+            }
         }
     }
 
     public void SetWanderPositions(List<Vector3> wanderPositions)
     {
+        wanderPositionIndex = 0;
         this.wanderPositions = wanderPositions;
         SetCurrentWanderPosition(wanderPositions[wanderPositionIndex]);
     }
@@ -150,8 +153,7 @@ public class Enemy_Fly_FlyingState : State<Enemy_Fly>
         // Attack player
         if (wanderPositionIndex == wanderPositions.Count)
         {
-            Player.Instance.Hit(1);
-            owner.Hit(100);
+            owner.AttackPlayer();
         }
         else
         {
@@ -173,5 +175,7 @@ public class Enemy_Fly_FlyingState : State<Enemy_Fly>
     {
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(currentWanderPosition, 0.2f);
+
+        Gizmos.DrawSphere(wanderPositions[wanderPositions.Count - 1], 1);
     }
 }

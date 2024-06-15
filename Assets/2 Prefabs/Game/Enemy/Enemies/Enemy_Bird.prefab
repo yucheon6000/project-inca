@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2740010936688174481}
   - component: {fileID: 6812591918069490251}
   - component: {fileID: 5701242257579572047}
+  - component: {fileID: 5613531371703622072}
   m_Layer: 15
   m_Name: Enemy_Bird
   m_TagString: Untagged
@@ -48,8 +49,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae662e9ba09c940798245bcffc268986, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 10
-  defaultHp: 10
+  maxHp: 3
+  defaultHp: 3
   currentHp: 0
   maxAttack: 1
   defaultAttack: 1
@@ -66,7 +67,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a903e5f61fb9a848a7da6d188a5d6a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isDead: 0
+  initOnAwake: 0
   animator: {fileID: 8855993009608231113}
   audioSource: {fileID: 0}
   hitAudioClip: {fileID: 0}
@@ -75,12 +76,22 @@ MonoBehaviour:
   bulletPrefab: {fileID: 1370727570811104193, guid: b24580121c48d45a7bc78842eec1331a,
     type: 3}
   bulletSpawnTransform: {fileID: 88896159296508417}
+  originLocalPosition: {x: -3.22, y: 3.1, z: 8.23}
+  minLocalX: -3.22
+  maxLocalX: 6.59
   onInit:
     m_PersistentCalls:
       m_Calls: []
+  onDeath:
+    m_PersistentCalls:
+      m_Calls: []
   moveTime: 0.5
+  moveDepthMin: 1
+  moveDepthMax: 1.5
   moveDepth: 1
-  moveLength: 7
+  moveLengthMin: 1
+  moveLengthMax: 9.81
+  moveLength: 0
   nextMoveDelayTime: 3
   parent: 1
 --- !u!135 &6812591918069490251
@@ -125,6 +136,33 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!54 &5613531371703622072
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6107386718842632941}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1001 &7627732361160435074
 PrefabInstance:
   m_ObjectHideFlags: 0

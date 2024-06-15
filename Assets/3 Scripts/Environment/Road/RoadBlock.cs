@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Valve.VR.InteractionSystem;
 
 public enum RoadBlockDirection { North = 0, South = 180, East = 90, West = 270 }
 public class RoadBlock : MonoBehaviour
@@ -25,6 +26,42 @@ public class RoadBlock : MonoBehaviour
     [SerializeField]
     private RoadBlockDirection nextDirection = RoadBlockDirection.North;        // 상대 방향
     public RoadBlockDirection NextDirection => nextDirection;
+
+
+    [Header("Car")]
+    [SerializeField]
+    private GameObject carPrefab;
+    private List<Vector3> carPositions = null;
+    private List<Quaternion> carRotations = null;
+
+    private void OnEnable()
+    {
+        if (carPositions == null)
+        {
+            carPositions = new List<Vector3>();
+            carRotations = new List<Quaternion>();
+
+            GetComponentsInChildren<Car>().ForEach(car =>
+            {
+                carPositions.Add(car.transform.localPosition);
+                carRotations.Add(car.transform.localRotation);
+            });
+        }
+        else
+        {
+            for (int i = 0; i < carPositions.Count; ++i)
+            {
+                Vector3 pos = carPositions[i];
+                Quaternion rot = carRotations[i];
+
+                GameObject clone = Instantiate(carPrefab, pos, Quaternion.identity);
+
+                clone.transform.SetParent(transform);
+                clone.transform.localPosition = pos;
+                clone.transform.localRotation = rot;
+            }
+        }
+    }
 
     /// <summary>
     /// Find start lane points and end lane points. And it is added to each lists.

@@ -5,6 +5,7 @@ using UnityEngine.Events;
 public abstract class Character : MonoBehaviour
 {
     protected CharacterStatus status;
+    public CharacterStatus Status => status;
 
     /// <summary>OnChangeCurrentHp(int currentHp, int previousHp)</summary>
     public UnityEvent<int, int> OnChangeCurrentHp => status.OnChangeCurrentHp;
@@ -12,11 +13,15 @@ public abstract class Character : MonoBehaviour
     public UnityEvent<int, int> OnChangeCurrentAttack => status.OnChangeCurrentAttack;
     public UnityEvent OnDeathEvent => status.OnDeath;
 
+    [SerializeField]
+    protected bool initOnAwake = false;
+
     protected virtual void Awake()
     {
         status = GetComponent<CharacterStatus>();
 
-        Init();
+        if (initOnAwake)
+            Init();
     }
 
     public virtual void Init()

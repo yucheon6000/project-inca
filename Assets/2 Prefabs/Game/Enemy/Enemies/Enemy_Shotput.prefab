@@ -49,11 +49,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae662e9ba09c940798245bcffc268986, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 5
-  defaultHp: 5
+  maxHp: 2
+  defaultHp: 2
   currentHp: 0
-  maxAttack: -1
-  defaultAttack: 0
+  maxAttack: 1
+  defaultAttack: 1
   currentAttack: 0
 --- !u!114 &6888520781720584837
 MonoBehaviour:
@@ -67,11 +67,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5be02446505d543f39b865c5abd1be0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initOnAwake: 0
   animator: {fileID: 3738872893036080905}
   audioSource: {fileID: 2931816147692053613}
   hitAudioClip: {fileID: 8300000, guid: 09d085ac4941c11448b7835507d84503, type: 3}
   dieAudioClip: {fileID: 8300000, guid: fd29596663b10d7409d42c65b64566c2, type: 3}
-  attackDistance: 50
+  attackDistance: 80
+  attackTimeMin: 2
+  attackTimeMax: 5
   attackTime: 3
   bulletPrefab: {fileID: 1370727570811104193, guid: b24580121c48d45a7bc78842eec1331a,
     type: 3}

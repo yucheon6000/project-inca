@@ -20,5 +20,11 @@ namespace Inca
         {
             SceneManager.LoadScene(detectedWorldSceneName, LoadSceneMode.Additive);
         }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+                Application.Quit();
+        }
     }
 }

@@ -77,6 +77,8 @@ public class LanePoint : MonoBehaviour
 
         LanePoint nextPoint = accessibleLanePoints[0];
 
+        if (nextPoint == null) return null;
+
         foreach (var point in accessibleLanePoints)
         {
             if (Mathf.Abs(targetLaneIndex - point.laneIndex) <= Mathf.Abs(targetLaneIndex - nextPoint.laneIndex))
@@ -135,5 +137,13 @@ public class LanePoint : MonoBehaviour
     {
         if (users.Contains(user))
             users.Remove(user);
+    }
+
+    private void OnDisable()
+    {
+        foreach (var user in users)
+            Destroy(user);
+
+        users.Clear();
     }
 }

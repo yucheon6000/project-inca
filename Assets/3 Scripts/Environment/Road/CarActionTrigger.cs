@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Inca;
 using UnityEngine;
 
 public class CarActionTrigger : MonoBehaviour
 {
+    [SerializeField]
+    private bool onlyForUser = false;
+
     [Header("Speed")]
     [SerializeField]
     private bool triggerSpeedChange;
@@ -32,24 +36,52 @@ public class CarActionTrigger : MonoBehaviour
     {
         if (other.TryGetComponent<CarStateDrive>(out CarStateDrive carStateDrive) && triggerSpeedChange)
         {
-            float targetMoveSpeed = Random.Range(minTargetSpeed, maxTargetSpeed);
-            carStateDrive.ChangeMoveSpeed(targetMoveSpeed);
+            if (onlyForUser && IncaData.PlayerCarTransform == carStateDrive.transform)
+            {
+                float targetMoveSpeed = Random.Range(minTargetSpeed, maxTargetSpeed);
+                carStateDrive.ChangeMoveSpeed(targetMoveSpeed);
+            }
+            else if (!onlyForUser && IncaData.PlayerCarTransform != carStateDrive.transform)
+            {
+                float targetMoveSpeed = Random.Range(minTargetSpeed, maxTargetSpeed);
+                carStateDrive.ChangeMoveSpeed(targetMoveSpeed);
+            }
         }
 
         if (other.TryGetComponent<Car>(out Car car))
         {
-            if (triggerLaneChange)
+            if (onlyForUser && IncaData.PlayerCarTransform == carStateDrive.transform)
             {
-                int targetLaneIndex = Random.Range(minTargetLaneIndex, maxTargetLaneIndex);
-                car.ChangeTargetLane(targetLaneIndex);
+                if (triggerLaneChange)
+                {
+                    int targetLaneIndex = Random.Range(minTargetLaneIndex, maxTargetLaneIndex + 1);
+                    car.ChangeTargetLane(targetLaneIndex);
+                }
+
+                if (triggerTrafficLightWait)
+                {
+                    if (trafficLightGo)
+                        car.IsWaitingTrafficLight = false;
+                    else if (trafficLightStop)
+                        car.IsWaitingTrafficLight = true;
+                }
             }
 
-            if (triggerTrafficLightWait)
+            else if (!onlyForUser && IncaData.PlayerCarTransform != carStateDrive.transform)
             {
-                if (trafficLightGo)
-                    car.IsWaitingTrafficLight = false;
-                else if (trafficLightStop)
-                    car.IsWaitingTrafficLight = true;
+                if (triggerLaneChange)
+                {
+                    int targetLaneIndex = Random.Range(minTargetLaneIndex, maxTargetLaneIndex + 1);
+                    car.ChangeTargetLane(targetLaneIndex);
+                }
+
+                if (triggerTrafficLightWait)
+                {
+                    if (trafficLightGo)
+                        car.IsWaitingTrafficLight = false;
+                    else if (trafficLightStop)
+                        car.IsWaitingTrafficLight = true;
+                }
             }
         }
     }

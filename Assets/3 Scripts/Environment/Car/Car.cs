@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -73,21 +75,43 @@ public class Car : MonoBehaviour
 
     public Vector3 MiddlePosition => transform.position + Vector3.up * 1;
 
-    private void Start()
+    public float CurrentMoveSpeed
     {
+        get
+        {
+            CarStateDrive d = (CarStateDrive)states[(int)CarStates.Drive];
+
+            if (d == null) return 0;
+            return d.CurrentMoveSpeed;
+        }
+    }
+
+    private IEnumerator Start()
+    {
+        while (true)
+        {
+            if (currentLanePoint != null) break;
+            yield return null;
+        }
+
         Setup();
     }
+
+    private bool setup = false;
 
     [SerializeField]
     private bool startWithPositioning = true;
     private void Setup()
     {
-        transform.SetParent(null);
-        if (startWithPositioning)
-            transform.position = CurrentLanePoint.Position;
-
         NextLanePoint = CurrentLanePoint.GetNextLanePoint(TargetLaneIndex);
         NextLanePoint.RegisterUser(this.gameObject);
+
+        transform.SetParent(null);
+        if (startWithPositioning)
+        {
+            transform.position = CurrentLanePoint.Position;
+            transform.rotation = Quaternion.LookRotation(NextLanePoint.Position - CurrentLanePoint.Position);
+        }
 
         stateMachine.Setup(this, states[(int)CarStates.Drive]);
 
@@ -95,10 +119,14 @@ public class Car : MonoBehaviour
             stateMachine.SetGlobalState(states[(int)CarStates.Global]);
 
         ChangeState(CarStates.Drive);
+
+        setup = true;
     }
 
     private void FixedUpdate()
     {
+        if (!setup) return;
+
         stateMachine.Execute();
     }
 
@@ -111,6 +139,14 @@ public class Car : MonoBehaviour
     public void ChangeTargetLane(int targetLaneIndex)
     {
         this.targetLaneIndex = targetLaneIndex;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (currentLanePoint != null) return;
+
+        if (other.TryGetComponent<LanePoint>(out LanePoint lanePoint))
+            CurrentLanePoint = lanePoint;
     }
 
     /* Gizmo */

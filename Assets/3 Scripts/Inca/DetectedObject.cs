@@ -100,13 +100,11 @@ namespace Inca
 
         private void OnDisable()
         {
-            int childCount = transform.childCount;
+            IsVisible(false);
 
-            for (int i = 0; i < childCount; ++i)
-            {
-                var child = transform.GetChild(i);
-                Destroy(child);
-            }
+            int chCount = transform.childCount;
+            for (int i = chCount - 1; i >= 0; i--)
+                Destroy(transform.GetChild(i).gameObject);
         }
 
         /* Gizmos */

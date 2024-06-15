@@ -89,6 +89,7 @@ public class MemoryPoolBase
 
         foreach (var item in poolItems)
         {
+            if (item == null) continue; ///!!!!!!
             if (!item.isActive)
             {
                 activeCount++;

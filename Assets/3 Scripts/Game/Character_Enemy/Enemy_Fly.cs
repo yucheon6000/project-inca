@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Inca;
 using UnityEngine;
 
 public class Enemy_Fly : Enemy
@@ -12,8 +13,26 @@ public class Enemy_Fly : Enemy
     [SerializeField]
     private Transform modelTransform;
 
-    private void Start()
+    private Vector3 originLocalPosition;
+    private Quaternion originLocalRotation;
+
+    protected override void Awake()
     {
+        base.Awake();
+
+        originLocalPosition = transform.localPosition;
+        originLocalRotation = transform.localRotation;
+    }
+
+    public override void Init(DetectedObject detectedObject = null)
+    {
+        base.Init(detectedObject);
+
+        transform.localPosition = originLocalPosition;
+        transform.localRotation = originLocalRotation;
+
+        gameObject.SetActive(true);
+
         stateMachine = new StateMachine<Enemy_Fly>();
         stateMachine.Setup(this, flyingState);
         animator.SetInteger("animation", 2);
@@ -24,10 +43,16 @@ public class Enemy_Fly : Enemy
         stateMachine.Execute();
     }
 
+    public void AttackPlayer()
+    {
+        Player.Instance.Hit(Status.CurrentAttack);
+        ForceKill();
+    }
+
     protected override void OnDeath()
     {
         base.OnDeath();
-        Destroy(this.gameObject);
+        gameObject.SetActive(false);
     }
 
     public void LookAt(Vector3 direction)

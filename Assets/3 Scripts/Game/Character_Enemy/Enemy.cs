@@ -12,7 +12,9 @@ public abstract class Enemy : Character, InteractableObject
     protected EnemyState state = EnemyState.Idle;
 
     [SerializeField]
-    protected bool IsDead => status.CurrentHp == 0;
+    public bool IsAlive => status.CurrentHp > 0;
+    [SerializeField]
+    public bool IsDead => status.CurrentHp == 0;
 
     [SerializeField]
     protected Animator animator;
@@ -31,8 +33,10 @@ public abstract class Enemy : Character, InteractableObject
     /// <param name="detectedObject"></param>
     public virtual void Init(DetectedObject detectedObject = null)
     {
+        // If the detectedObject is hiden, call OnHideDetectedObject method.
+        // Basically, OnHideDetectedObject call ForceKill method.
         if (detectedObject != null)
-            detectedObject.RegisterOnHideAction(() => DeactivateGameObject());
+            detectedObject.RegisterOnHideAction(OnHideDetectedObject);
 
         base.Init();
     }
@@ -52,6 +56,11 @@ public abstract class Enemy : Character, InteractableObject
         return curHp;
     }
 
+    public void ForceKill()
+    {
+        base.Hit(status.CurrentHp);     // => Call OnDeath method
+    }
+
     protected override void OnDeath()
     {
         if (animator != null)
@@ -64,6 +73,12 @@ public abstract class Enemy : Character, InteractableObject
     protected void DeactivateGameObject()
     {
         MemoryPool.Instance(MemoryPoolType.Enemy).DeactivatePoolItem(gameObject);
+    }
+
+    protected virtual void OnHideDetectedObject()
+    {
+        ForceKill();
+        // MemoryPool.Instance(MemoryPoolType.Enemy).DeactivatePoolItem(gameObject);
     }
 
     public virtual bool IsInteractableType(InteractableType type)

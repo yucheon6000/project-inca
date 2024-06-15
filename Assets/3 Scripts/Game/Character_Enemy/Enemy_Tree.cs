@@ -38,6 +38,8 @@ public class Enemy_Tree : Enemy
 
     private Rigidbody rigidbody;
 
+    [SerializeField]
+    private Vector3 dir = Vector3.zero;
 
     protected override void Awake()
     {
@@ -45,9 +47,16 @@ public class Enemy_Tree : Enemy
         rigidbody = GetComponent<Rigidbody>();
     }
 
-    private void Start()
+    public override void Init(DetectedObject detectedObject = null)
     {
-        Init();
+        base.Init(detectedObject);
+
+        rigidbody.isKinematic = true;
+        rigidbody.useGravity = false;
+        state = EnemyState.Idle;
+        rigidbody.velocity = Vector3.zero;
+        transform.rotation = Quaternion.Euler(0, 0, 0);
+        lookAtPlayer.Look(true);
     }
 
     private void Update()
@@ -108,7 +117,7 @@ public class Enemy_Tree : Enemy
 
             float angleZ = Mathf.Lerp(0, 90, fallCurve.Evaluate(progress));
 
-            transform.rotation = Quaternion.Euler(0, 0, angleZ);
+            transform.rotation = Quaternion.Euler(dir.x * angleZ, dir.y * angleZ, dir.z * angleZ);
 
             yield return wait;
         }
@@ -118,22 +127,24 @@ public class Enemy_Tree : Enemy
     {
         base.OnDeath();
 
+        state = EnemyState.Die;
+
         if (isFall)
         {
             StopAllCoroutines();
-            transform.rotation = Quaternion.Euler(0, 0, 90);
+            transform.rotation = Quaternion.Euler(dir.x * 90, dir.y * 90, dir.z * 90);
             rigidbody.isKinematic = false;
             rigidbody.useGravity = true;
-            // rigidbody.AddForce((transform.position - explosionTf.position).normalized * exFor, ForceMode.Impulse);
-            rigidbody.AddExplosionForce(exFor, explosionTf.position, exRa, exMo);
+            rigidbody.AddExplosionForce(exFor, explosionTf.position, exRa, 1f);
         }
         else
         {
             animator.SetInteger("animation", 5);
         }
 
-        // Destroy(gameObject);
+        Invoke(nameof(DeactivateGameObject), 5f);
     }
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -141,13 +152,7 @@ public class Enemy_Tree : Enemy
 
         if (other.TryGetComponent<UserCar>(out UserCar car))
         {
-            state = EnemyState.Die;
-
-            rigidbody.isKinematic = false;
-            rigidbody.useGravity = true;
-            // rigidbody.AddForce((transform.position - explosionTf.position).normalized * exFor, ForceMode.Impulse);
-            rigidbody.AddExplosionForce(exFor, explosionTf.position, exRa, 1f);
-
+            ForceKill();
             Player.Instance.Hit(2);
         }
     }

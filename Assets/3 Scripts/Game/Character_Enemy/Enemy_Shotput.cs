@@ -9,6 +9,10 @@ public class Enemy_Shotput : Enemy
     [SerializeField]
     private float attackDistance;
     [SerializeField]
+    private float attackTimeMin;
+    [SerializeField]
+    private float attackTimeMax;
+    [SerializeField]
     private float attackTime;
     private float attackTimer;
 
@@ -25,7 +29,10 @@ public class Enemy_Shotput : Enemy
     {
         base.Init(detectedObject);
 
+        attackTime = Random.Range(attackTimeMin, attackTimeMax);
         attackTimer = 0;
+
+        animator.SetInteger("animation", 1);
 
         onInit.Invoke();
     }
@@ -41,6 +48,7 @@ public class Enemy_Shotput : Enemy
         attackTimer += Time.deltaTime;
         if (attackTimer > attackTime)
         {
+            attackTime = Random.Range(attackTimeMin, attackTimeMax);
             attackTimer = 0;
             animator.Play("Attack");
             Attack();
@@ -73,7 +81,7 @@ public class Enemy_Shotput : Enemy
 
         animator.SetInteger("animation", 5);
 
-        Invoke(nameof(DeactivateGameObject), 1);
+        Invoke(nameof(DeactivateGameObject), 2);
     }
 
     private void OnDrawGizmos()
