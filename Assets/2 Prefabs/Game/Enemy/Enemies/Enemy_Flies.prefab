@@ -57,9 +57,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae662e9ba09c940798245bcffc268986, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 100
-  defaultHp: 100
-  currentHp: 100
+  maxHp: 99999
+  defaultHp: 99999
+  currentHp: 99999
   maxAttack: 0
   defaultAttack: 0
   currentAttack: 0
@@ -75,6 +75,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93fe83f3cff8e274cacdce7ee29d4286, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initOnAwake: 0
   animator: {fileID: 0}
   audioSource: {fileID: 0}
   hitAudioClip: {fileID: 0}

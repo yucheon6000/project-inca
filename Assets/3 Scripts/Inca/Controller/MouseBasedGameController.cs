@@ -40,7 +40,7 @@ public class MouseBasedGameController : GameController
             hitBallTransfrom.gameObject.SetActive(debugMode);
         }
 
-        // Update mouse's positions
+        // Update mouse positions
         mouseScreenPosition = Input.mousePosition + new Vector3(0, 0, 10f);
         mouseWorldPosition = targetCamera.ScreenToWorldPoint(mouseScreenPosition);
 
@@ -57,7 +57,7 @@ public class MouseBasedGameController : GameController
             // for Debug
             hitBallTransfrom.position = hitPoint;
 
-            // Set aim's target scale
+            // Set target scale of aim
             float dist = Vector3.Distance(mouseWorldPosition, hitPoint);
             targetScale = Mathf.Lerp(0.1f, 2.4f, 5f / dist);
 
@@ -67,7 +67,7 @@ public class MouseBasedGameController : GameController
                 scaleTimer = 0;
             }
 
-            // Change aim's color
+            // Change color of aim
             image.material = materialRed;
         }
         else

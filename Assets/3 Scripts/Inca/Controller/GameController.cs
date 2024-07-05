@@ -88,6 +88,8 @@ public abstract class GameController : MonoBehaviour
             return true;
         }
 
+        target?.OnHoverEnd();
+        target = null;
         return false;
     }
 

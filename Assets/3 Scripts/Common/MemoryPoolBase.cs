@@ -83,6 +83,15 @@ public class MemoryPoolBase
     /// </summary>
     public GameObject ActivatePoolItem()
     {
+        return ActivatePoolItem(Vector3.one * -100);
+    }
+
+    /// <summary>
+    /// Get a game object that you can use.
+    /// If you don't use the game object anymore, Call 'DeactivatePoolItem' method with the game object.
+    /// </summary>
+    public GameObject ActivatePoolItem(Vector3 position)
+    {
         if (poolItems == null) return null;
 
         if (maxCount == activeCount) InstatiateObjects();
@@ -95,6 +104,7 @@ public class MemoryPoolBase
                 activeCount++;
 
                 item.isActive = true;
+                item.gameObject.transform.position = position;
                 item.gameObject.SetActive(true);
 
                 return item.gameObject;
@@ -103,6 +113,7 @@ public class MemoryPoolBase
 
         return null;
     }
+
 
     /// <summary>
     /// It makes the game object (parameter) inactive

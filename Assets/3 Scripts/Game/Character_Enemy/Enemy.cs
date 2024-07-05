@@ -12,9 +12,9 @@ public abstract class Enemy : Character, InteractableObject
     protected EnemyState state = EnemyState.Idle;
 
     [SerializeField]
-    public bool IsAlive => status.CurrentHp > 0;
+    public virtual bool IsAlive => status.CurrentHp > 0;
     [SerializeField]
-    public bool IsDead => status.CurrentHp == 0;
+    public virtual bool IsDead => !IsAlive;
 
     [SerializeField]
     protected Animator animator;

@@ -16,6 +16,9 @@ public class Enemy_Fly : Enemy
     private Vector3 originLocalPosition;
     private Quaternion originLocalRotation;
 
+    [SerializeField]
+    private bool isUsedByItself = false;
+
     protected override void Awake()
     {
         base.Awake();
@@ -28,8 +31,11 @@ public class Enemy_Fly : Enemy
     {
         base.Init(detectedObject);
 
-        transform.localPosition = originLocalPosition;
-        transform.localRotation = originLocalRotation;
+        if (!isUsedByItself)
+        {
+            transform.localPosition = originLocalPosition;
+            transform.localRotation = originLocalRotation;
+        }
 
         gameObject.SetActive(true);
 
@@ -52,7 +58,11 @@ public class Enemy_Fly : Enemy
     protected override void OnDeath()
     {
         base.OnDeath();
-        gameObject.SetActive(false);
+
+        if (isUsedByItself)
+            DeactivateGameObject();
+        else
+            gameObject.SetActive(false);
     }
 
     public void LookAt(Vector3 direction)

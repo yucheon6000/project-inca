@@ -111,8 +111,8 @@ public class Enemy_Fly_FlyingState : State<Enemy_Fly>
 
         Vector3 steerForce = desiredVelocity - velocity;
 
-        Debug.DrawLine(OwnerPosition, transform.TransformPoint(OwnerLocalPosition + velocity), Color.green);
-        Debug.DrawLine(OwnerPosition, transform.TransformPoint(OwnerLocalPosition + desiredVelocity), Color.blue);
+        Debug.DrawLine(OwnerPosition, transform.parent.TransformPoint(OwnerLocalPosition + velocity), Color.green);
+        Debug.DrawLine(OwnerPosition, transform.parent.TransformPoint(OwnerLocalPosition + desiredVelocity), Color.blue);
 
         return steerForce;
     }
@@ -139,7 +139,7 @@ public class Enemy_Fly_FlyingState : State<Enemy_Fly>
         }
 
         // Add player's local position.
-        result.Add(IncaData.PlayerPosition - transform.parent.transform.position);
+        result.Add(transform.parent.InverseTransformPoint(IncaData.PlayerPosition));
 
         return result;
     }
