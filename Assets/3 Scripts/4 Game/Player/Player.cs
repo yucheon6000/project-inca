@@ -18,12 +18,12 @@ public class Player : Character
             Instance = this;
     }
 
-    public override int Hit(int attckAmount)
+    public override int TakeDamage(int attckAmount)
     {
         if (audioSource != null)
             audioSource.PlayOneShot(hitAudioClip);
 
-        return base.Hit(attckAmount);
+        return base.TakeDamage(attckAmount);
     }
 
     protected override void OnDeath()

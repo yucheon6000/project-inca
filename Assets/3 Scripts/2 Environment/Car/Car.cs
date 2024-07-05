@@ -152,6 +152,8 @@ public class Car : MonoBehaviour
     /* Gizmo */
     private void OnDrawGizmos()
     {
+        Gizmos.DrawIcon(transform.position, "Car.png");
+
         Gizmos.color = hasSafetyDistanceProblem ? Color.red : Color.green;
         Gizmos.DrawLine(MiddlePosition, MiddlePosition + (transform.forward * safetyDistance));
 

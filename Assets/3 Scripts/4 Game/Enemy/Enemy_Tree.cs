@@ -153,7 +153,7 @@ public class Enemy_Tree : Enemy
         if (other.TryGetComponent<UserCar>(out UserCar car))
         {
             ForceKill();
-            Player.Instance.Hit(2);
+            Player.Instance.TakeDamage(2);
         }
     }
 

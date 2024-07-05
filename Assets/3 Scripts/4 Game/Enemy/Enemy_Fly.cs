@@ -51,7 +51,7 @@ public class Enemy_Fly : Enemy
 
     public void AttackPlayer()
     {
-        Player.Instance.Hit(Status.CurrentAttack);
+        Player.Instance.TakeDamage(Status.CurrentAttack);
         ForceKill();
     }
 

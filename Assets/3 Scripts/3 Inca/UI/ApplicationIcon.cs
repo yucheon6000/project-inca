@@ -67,12 +67,12 @@ public class ApplicationIcon : Enemy, InteractableObject
         else spriteRenderer.color = new Color(45f / 255, 45f / 255, 45f / 255, c.a);
     }
 
-    public override int Hit(int attckAmount)
+    public override int TakeDamage(int attckAmount)
     {
         if (!canSelect) return 0;
 
         onClick.Invoke();
-        return base.Hit(attckAmount);
+        return base.TakeDamage(attckAmount);
     }
 
     public override void OnHoverStart()

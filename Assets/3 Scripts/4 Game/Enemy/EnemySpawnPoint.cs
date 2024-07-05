@@ -7,6 +7,8 @@ public class EnemySpawnPoint : MonoBehaviour
 {
     [SerializeField]
     private GameObject enemyPrefab;
+    [SerializeField]
+    private string gizmosIconName;
 
     [Header("Method")]
     [SerializeField]
@@ -71,5 +73,10 @@ public class EnemySpawnPoint : MonoBehaviour
         clone.transform.SetParent(detectedObject.transform);
 
         clone.GetComponent<Enemy>().Init(detectedObject);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawIcon(transform.position, gizmosIconName);
     }
 }

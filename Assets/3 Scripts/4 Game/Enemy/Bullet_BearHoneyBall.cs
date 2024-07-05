@@ -83,7 +83,7 @@ public class Bullet_BearHoneyBall : Enemy
 
             if (currentBounceCount == bounceCount)
             {
-                Player.Instance.Hit(status.CurrentAttack);
+                Player.Instance.TakeDamage(status.CurrentAttack);
                 DeactivateGameObject();
             }
         }

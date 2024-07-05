@@ -65,9 +65,9 @@ public class Enemy_Shotput : Enemy
         bulletClone.GetComponent<Bullet>().Setup(dir);
     }
 
-    public override int Hit(int attckAmount)
+    public override int TakeDamage(int attckAmount)
     {
-        int curHp = base.Hit(attckAmount);
+        int curHp = base.TakeDamage(attckAmount);
         if (IsDead) return curHp;
 
         animator.Play("Damage");

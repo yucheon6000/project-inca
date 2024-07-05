@@ -36,7 +36,7 @@ public class Bullet : MonoBehaviour
 
         if ((IncaData.PlayerPosition - transform.position).sqrMagnitude <= 1)
         {
-            Player.Instance.Hit(attack);
+            Player.Instance.TakeDamage(attack);
             // MemoryPool.Instance(MemoryPoolType.Enemy).DeactivatePoolItem(gameObject);
             Destroy(this.gameObject);
         }

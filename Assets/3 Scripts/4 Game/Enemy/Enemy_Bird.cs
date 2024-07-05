@@ -133,9 +133,9 @@ public class Enemy_Bird : Enemy
         StartCoroutine(UpdateMove());
     }
 
-    public override int Hit(int attckAmount)
+    public override int TakeDamage(int attckAmount)
     {
-        int curHp = base.Hit(attckAmount);
+        int curHp = base.TakeDamage(attckAmount);
 
         if (IsDead) return curHp;
 
@@ -149,12 +149,6 @@ public class Enemy_Bird : Enemy
         GameObject clone = Instantiate(bulletPrefab, bulletSpawnTransform.transform.position, Quaternion.LookRotation(IncaData.PlayerPosition));
         clone.GetComponent<Bullet>().SetAttack(status.CurrentAttack);
         if (parent) clone.transform.SetParent(IncaData.PlayerTransform);
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        // Gizmos.DrawWireSphere(transform.position, attackDistance);
     }
 
     protected override void OnDeath()

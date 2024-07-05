@@ -11,22 +11,6 @@ public abstract class Enemy : Character, InteractableObject
 {
     protected EnemyState state = EnemyState.Idle;
 
-    [SerializeField]
-    public virtual bool IsAlive => status.CurrentHp > 0;
-    [SerializeField]
-    public virtual bool IsDead => !IsAlive;
-
-    [SerializeField]
-    protected Animator animator;
-
-    [Header("Audio")]
-    [SerializeField]
-    private AudioSource audioSource;
-    [SerializeField]
-    private AudioClip hitAudioClip;
-    [SerializeField]
-    private AudioClip dieAudioClip;
-
     /// <summary>
     /// When this enemy is spawned by EnemySpawner, this method is called firstly.
     /// </summary>
@@ -41,14 +25,13 @@ public abstract class Enemy : Character, InteractableObject
         base.Init();
     }
 
-    public override int Hit(int attckAmount)
+    public override int TakeDamage(int attckAmount)
     {
-        int curHp = base.Hit(attckAmount);
+        int curHp = base.TakeDamage(attckAmount);
 
         if (IsDead) return 0;
 
-        if (audioSource != null)
-            audioSource.PlayOneShot(hitAudioClip);
+        PlayAudioClip(AudioType.TakeDamage0);
 
         if (animator != null)
             animator.Play(Constants.animation_enemy_hit);
@@ -58,16 +41,15 @@ public abstract class Enemy : Character, InteractableObject
 
     public void ForceKill()
     {
-        base.Hit(status.CurrentHp);     // => Call OnDeath method
+        base.TakeDamage(status.CurrentHp);     // => Call OnDeath method
     }
 
     protected override void OnDeath()
     {
+        PlayAudioClip(AudioType.Die);
+
         if (animator != null)
             animator.Play(Constants.animation_enemy_death);
-
-        if (audioSource != null)
-            audioSource.PlayOneShot(dieAudioClip);
     }
 
     protected void DeactivateGameObject()
