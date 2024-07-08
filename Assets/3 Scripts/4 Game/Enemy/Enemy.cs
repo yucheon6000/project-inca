@@ -11,6 +11,20 @@ public abstract class Enemy : Character, InteractableObject
 {
     protected EnemyState state = EnemyState.Idle;
 
+    protected override void Awake()
+    {
+        base.Awake();
+
+        if (initOnAwake)
+            Init(null);
+    }
+
+    [ContextMenu("Init")]
+    private void InitWithoutDetectedObject()
+    {
+        Init(null);
+    }
+
     /// <summary>
     /// When this enemy is spawned by EnemySpawner, this method is called firstly.
     /// </summary>

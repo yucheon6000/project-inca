@@ -35,6 +35,7 @@ namespace Inca
 
         private void Awake()
         {
+            print("IncaDataManager: Awake()");
             if (!Instance) Instance = this;
         }
 

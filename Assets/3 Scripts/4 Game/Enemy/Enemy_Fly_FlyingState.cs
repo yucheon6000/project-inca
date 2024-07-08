@@ -10,7 +10,7 @@ public class Enemy_Fly_FlyingState : State<Enemy_Fly>
     private Vector3 steerForce;     // 조종 힘
 
     [SerializeField]
-    public int maxSteerForce = 20;
+    public float maxSteerForce = 20;
     [SerializeField]
     public int maxVelocity = 10;
     [SerializeField]
@@ -18,30 +18,6 @@ public class Enemy_Fly_FlyingState : State<Enemy_Fly>
     [Range(0, 1)]
     [SerializeField]
     public float rotateSpeed = 0.05f;
-
-    [Header("Wander")]
-    private List<Vector3> wanderPositions;
-    [SerializeField]
-    private int wanderPositionIndex = 0;
-    [SerializeField]
-    private Vector3 currentWanderPosition;
-
-    [Space]
-    [SerializeField]
-    private int wanderPositionCount = 5;
-    [SerializeField]
-    private Vector3 wanderPositionRangeMin;
-    [SerializeField]
-    private Vector3 wanderPositionRangeMax;
-    [SerializeField]
-    private bool flipY = false;
-
-    [Header("Children")]
-    [SerializeField]
-    private bool isChild = false;
-    private bool IsParent => !isChild;
-    [SerializeField]
-    private List<Enemy_Fly_FlyingState> children = new List<Enemy_Fly_FlyingState>();
 
     private Enemy_Fly owner;
     private Vector3 OwnerPosition => owner.transform.position;
@@ -54,28 +30,6 @@ public class Enemy_Fly_FlyingState : State<Enemy_Fly>
         velocity = Vector3.zero;
         acceleration = Vector3.zero;
         steerForce = Vector3.zero;
-
-        if (IsParent)
-        {
-            SetWanderPositions(GetWanderPositions(wanderPositionCount));
-
-            // Set children's wanderPositions.
-            // Children have to pass parent's start position.
-            List<Vector3> wanderPositionsForChildren = new List<Vector3>(wanderPositions);
-            wanderPositionsForChildren.Insert(0, this.transform.localPosition);
-
-            foreach (var child in children)
-            {
-                child.SetWanderPositions(wanderPositionsForChildren);
-            }
-        }
-    }
-
-    public void SetWanderPositions(List<Vector3> wanderPositions)
-    {
-        wanderPositionIndex = 0;
-        this.wanderPositions = wanderPositions;
-        SetCurrentWanderPosition(wanderPositions[wanderPositionIndex]);
     }
 
     public override void Execute(Enemy_Fly entity)
@@ -96,7 +50,7 @@ public class Enemy_Fly_FlyingState : State<Enemy_Fly>
         }
     }
 
-    private void Truncate(ref Vector3 vector, int max)
+    private void Truncate(ref Vector3 vector, float max)
     {
         if (vector.magnitude > max)
         {
@@ -117,65 +71,17 @@ public class Enemy_Fly_FlyingState : State<Enemy_Fly>
         return steerForce;
     }
 
-    private List<Vector3> GetWanderPositions(int count)
-    {
-        List<Vector3> result = new List<Vector3>();
-
-        float gapZ = (wanderPositionRangeMax.z - wanderPositionRangeMin.z) / (count - 1);
-
-        for (int i = 0; i < count - 1; ++i)    // count-1: The last point is player's position.
-        {
-            float x = Random.Range(wanderPositionRangeMin.x, wanderPositionRangeMax.x);
-
-            float y = 0;
-            if (flipY) y = i % 2 == 0 ? wanderPositionRangeMax.y : wanderPositionRangeMin.y + Random.Range(-0.5f, 0.5f);
-            else y = i % 2 == 0 ? wanderPositionRangeMin.y : wanderPositionRangeMax.y + Random.Range(-0.5f, 0.5f);
-
-            float z = wanderPositionRangeMax.z - gapZ * i;
-
-            Vector3 wanderPos = new Vector3(x, y, z);
-
-            result.Add(wanderPos);
-        }
-
-        // Add player's local position.
-        result.Add(transform.parent.InverseTransformPoint(IncaData.PlayerPosition));
-
-        return result;
-    }
-
     private Vector3 Wander()
     {
         // If this enemy didn't arrive currentWanderPosition, it has to move to currentWanderPosition.
-        if (Vector3.Distance(OwnerLocalPosition, currentWanderPosition) > 0.5f) return Seek(currentWanderPosition);
+        if (Vector3.Distance(OwnerLocalPosition, owner.CurrentWanderPosition) > 0.5f) return Seek(owner.CurrentWanderPosition);
 
         // If it is last point, (If you arrived player's position)
         // Attack player
-        if (wanderPositionIndex == wanderPositions.Count)
-        {
-            owner.AttackPlayer();
-        }
-        else
-        {
-            SetCurrentWanderPosition(wanderPositions[wanderPositionIndex]);
-            wanderPositionIndex++;
-        }
+        owner.HasReachedCurrentWanderPosition();
 
-        return Seek(currentWanderPosition);
-    }
-
-    public void SetCurrentWanderPosition(Vector3 wanderPosition)
-    {
-        currentWanderPosition = wanderPosition + Random.insideUnitSphere * 0.2f;
+        return Seek(owner.CurrentWanderPosition);
     }
 
     public override void Exit(Enemy_Fly entity) { }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(currentWanderPosition, 0.2f);
-
-        Gizmos.DrawSphere(wanderPositions[wanderPositions.Count - 1], 1);
-    }
 }

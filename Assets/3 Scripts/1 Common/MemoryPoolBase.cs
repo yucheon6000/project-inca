@@ -137,6 +137,8 @@ public class MemoryPoolBase
                 return;
             }
         }
+
+        GameObject.Destroy(removeObject);
     }
 
     private class PoolItem
