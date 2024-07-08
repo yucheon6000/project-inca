@@ -7,7 +7,7 @@ using UnityEngine.Events;
 
 public enum EnemyState { Idle, Move, Attack, Die }
 
-public abstract class Enemy : Character, InteractableObject
+public abstract class Enemy : Character
 {
     protected EnemyState state = EnemyState.Idle;
 
@@ -75,14 +75,6 @@ public abstract class Enemy : Character, InteractableObject
     {
         ForceKill();
         // MemoryPool.Instance(MemoryPoolType.Enemy).DeactivatePoolItem(gameObject);
-    }
-
-    public virtual bool IsInteractableType(InteractableType type)
-    {
-        if (IsDead)
-            return false;
-
-        return type == InteractableType.Hitable;
     }
 
     public virtual void OnHoverStart() { }

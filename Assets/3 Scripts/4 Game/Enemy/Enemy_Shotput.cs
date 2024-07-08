@@ -4,7 +4,7 @@ using Inca;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Enemy_Shotput : Enemy
+public class Enemy_Shotput : DamagableEnemy
 {
     [SerializeField]
     private float attackDistance;

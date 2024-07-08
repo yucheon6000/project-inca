@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Inca;
 
-public class Enemy_Sample : Enemy
+public class Enemy_Sample : DamagableEnemy
 {
     [SerializeField]
     private GameObject bulletPrefab;

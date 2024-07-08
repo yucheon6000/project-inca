@@ -30,7 +30,7 @@ public abstract class GameController : MonoBehaviour
     [SerializeField]
     protected Vector3 hitPoint = Vector3.zero;
     [SerializeField]
-    protected Enemy target = null;
+    protected DamagableEnemy target = null;
 
     [Header("Effects")]
     [SerializeField]
@@ -59,9 +59,9 @@ public abstract class GameController : MonoBehaviour
         }
 
         // Find enemy
-        Enemy enemy = hitInfo.collider.GetComponent<Enemy>();
+        DamagableEnemy enemy = hitInfo.collider.GetComponent<DamagableEnemy>();
         if (enemy == null)
-            enemy = hitInfo.collider.GetComponentInParent<Enemy>();
+            enemy = hitInfo.collider.GetComponentInParent<DamagableEnemy>();
 
         if (enemy == null)
         {
@@ -109,6 +109,7 @@ public abstract class GameController : MonoBehaviour
         if (target == null) return;
 
         target.TakeDamage(1);
+        print("asdf");
 
         SpawnHitEffect();
     }

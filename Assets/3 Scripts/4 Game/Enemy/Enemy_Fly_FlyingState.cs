@@ -23,6 +23,8 @@ public class Enemy_Fly_FlyingState : State<Enemy_Fly>
     private Vector3 OwnerPosition => owner.transform.position;
     private Vector3 OwnerLocalPosition => owner.transform.localPosition;
 
+    public void SetMass(float value) => mass = value;
+
     public override void Enter(Enemy_Fly entity)
     {
         owner = entity;

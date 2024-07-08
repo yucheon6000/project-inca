@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Inca;
 using UnityEngine;
 
-public class Enemy_Honeycomb : Enemy
+public class Enemy_Honeycomb : NonDamagableEnemy
 {
     [Header("Honeycomb")]
     [SerializeField]
@@ -39,10 +39,5 @@ public class Enemy_Honeycomb : Enemy
             bullet.GetComponent<Enemy>().Init();
             shootTimer = 0;
         }
-    }
-
-    public override bool IsInteractableType(InteractableType type)
-    {
-        return false;
     }
 }

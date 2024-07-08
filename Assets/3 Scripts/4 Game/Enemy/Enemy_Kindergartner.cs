@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Inca;
 using UnityEngine;
 
-public class Enemy_Kindergartner : Enemy
+public class Enemy_Kindergartner : DamagableEnemy
 {
     [SerializeField]
     private float moveSpeed;

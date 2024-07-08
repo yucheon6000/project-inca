@@ -92,7 +92,11 @@ public class MemoryPool : MonoBehaviour
 
     public void DeactivatePoolItem(GameObject removeObject)
     {
-        if (cloneToPrefab.ContainsKey(removeObject) == false) return;
+        if (cloneToPrefab.ContainsKey(removeObject) == false)
+        {
+            Destroy(removeObject);
+            return;
+        }
 
         GameObject prefab = cloneToPrefab[removeObject];
         pools[prefab].DeactivatePoolItem(removeObject);

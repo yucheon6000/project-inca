@@ -8,6 +8,7 @@ public class CharacterStatus : MonoBehaviour
     private int maxHp;
     [SerializeField]
     private int defaultHp;
+    public int DefaultHp => defaultHp;
     [SerializeField]
     private int currentHp;
     public int CurrentHp => currentHp;

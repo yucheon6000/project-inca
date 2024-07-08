@@ -87,6 +87,10 @@ public class MouseBasedGameController : GameController
         rectTransform.localScale = Vector3.one * Mathf.Lerp(startScale, targetScale, sizeChangingCurve.Evaluate(scaleTimer / 0.5f));
         prevScale = rectTransform.localScale.x;
 
+    }
+
+    private void Update()
+    {
         // Check trigger button down
         CheckTriggerDown();
     }

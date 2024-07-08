@@ -3,7 +3,7 @@ using Inca;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Enemy_Bird : Enemy
+public class Enemy_Bird : DamagableEnemy
 {
     [SerializeField]
     private float attackTime;

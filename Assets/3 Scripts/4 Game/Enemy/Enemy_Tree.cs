@@ -4,7 +4,7 @@ using Inca;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Enemy_Tree : Enemy
+public class Enemy_Tree : DamagableEnemy
 {
     [SerializeField]
     private float followDistance;

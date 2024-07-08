@@ -4,7 +4,7 @@ using Inca;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ApplicationIcon : Enemy, InteractableObject
+public class ApplicationIcon : DamagableEnemy
 {
     [SerializeField]
     private UnityEvent onClick = new UnityEvent();

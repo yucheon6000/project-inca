@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy_Bear : Enemy
+public class Enemy_Bear : DamagableEnemy
 {
     [SerializeField]
     private GameObject bulletPrefab;

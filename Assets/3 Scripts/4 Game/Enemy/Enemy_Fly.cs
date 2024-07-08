@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using Inca;
 using UnityEngine;
 
-public class Enemy_Fly : Enemy
+public class Enemy_Fly : DamagableEnemy
 {
     private StateMachine<Enemy_Fly> stateMachine;
 
     [SerializeField]
-    private State<Enemy_Fly> flyingState;
+    protected State<Enemy_Fly> flyingState;
 
     [SerializeField]
     private Transform modelTransform;
@@ -55,12 +55,6 @@ public class Enemy_Fly : Enemy
 
         originLocalPosition = transform.localPosition;
         originLocalRotation = transform.localRotation;
-    }
-
-    private void OnEnable()
-    {
-        if (isUsedByItself)
-            Init(null);
     }
 
     public override void Init(DetectedObject detectedObject = null)
@@ -112,7 +106,7 @@ public class Enemy_Fly : Enemy
         );
     }
 
-    private void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         stateMachine.Execute();
     }

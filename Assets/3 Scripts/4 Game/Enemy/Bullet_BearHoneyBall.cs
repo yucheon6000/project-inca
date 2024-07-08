@@ -1,7 +1,7 @@
 using Inca;
 using UnityEngine;
 
-public class Bullet_BearHoneyBall : Enemy
+public class Bullet_BearHoneyBall : DamagableEnemy
 {
     [SerializeField]
     private int bounceCount = 4;

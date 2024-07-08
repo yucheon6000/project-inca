@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Inca;
 using UnityEngine;
 
-public class Enemy_Flies : Enemy
+public class Enemy_Flies : NonDamagableEnemy
 {
     [SerializeField]
     private List<Enemy_Fly> flies;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Inca;
 
-public class Bullet : MonoBehaviour
+public class Bullet : NonDamagableEnemy
 {
     [SerializeField]
     protected float moveSpeed;
