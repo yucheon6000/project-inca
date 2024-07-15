@@ -37,8 +37,10 @@ public class Bullet_BearHoneyBall : DamagableEnemy
         rigidbody = GetComponent<Rigidbody>();
     }
 
-    private void OnEnable()
+    public override void Init(DetectedObject detectedObject = null)
     {
+        base.Init(detectedObject);
+
         currentBounceCount = 0;
 
         gameObject.transform.SetParent(IncaData.PlayerCarTransform);

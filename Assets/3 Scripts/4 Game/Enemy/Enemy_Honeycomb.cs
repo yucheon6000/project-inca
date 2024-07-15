@@ -29,15 +29,29 @@ public class Enemy_Honeycomb : NonDamagableEnemy
 
     private void Update()
     {
+        PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_IDLE);
+
         if (IsDead) return;
 
         shootTimer += Time.deltaTime;
+
         if (shootTimer >= shootDelay)
-        {
-            GameObject bullet = MemoryPool.Instance(MemoryPoolType.Enemy).ActivatePoolItem(beePrefab, transform.position);
-            bullet.transform.SetParent(IncaData.PlayerCarTransform);
-            bullet.GetComponent<Enemy>().Init();
-            shootTimer = 0;
-        }
+            Attack();
+    }
+
+    public override void Attack()
+    {
+        base.Attack();
+
+        GameObject bullet = MemoryPool.Instance(MemoryPoolType.Enemy).ActivatePoolItem(beePrefab, transform.position);
+        bullet.transform.SetParent(IncaData.PlayerCarTransform);
+        bullet.GetComponent<Enemy>().Init();
+        shootTimer = 0;
+    }
+
+    public override int TakeDamage(int attckAmount)
+    {
+        PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_TAKE_DAMAGE);
+        return base.TakeDamage(attckAmount);
     }
 }

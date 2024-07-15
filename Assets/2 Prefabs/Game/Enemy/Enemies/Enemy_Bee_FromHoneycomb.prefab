@@ -69,11 +69,21 @@ MonoBehaviour:
   initOnAwake: 0
   animator: {fileID: 3849388984688808909}
   audioSource: {fileID: 0}
-  hitAudioClip: {fileID: 0}
-  dieAudioClip: {fileID: 0}
+  audioStorage:
+    audios: []
   flyingState: {fileID: 7775751145822729777}
   modelTransform: {fileID: 3849388984681331749}
+  wanderPositionIndex: 0
+  currentWanderPosition: {x: 0, y: 0, z: 0}
+  wanderPositionCount: 5
+  wanderPositionRangeMin: {x: -8, y: 1.79, z: 5.22}
+  wanderPositionRangeMax: {x: -0.8, y: -0.01, z: 40}
+  flipY: 0
+  randomFlipY: 1
+  isChild: 0
+  children: []
   isUsedByItself: 1
+  usesCurrentPositionZAsRangeZ: 0
 --- !u!114 &7775751145822729777
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -90,14 +100,6 @@ MonoBehaviour:
   maxVelocity: 15
   mass: 60
   rotateSpeed: 0.05
-  wanderPositionIndex: 0
-  currentWanderPosition: {x: 0, y: 0, z: 0}
-  wanderPositionCount: 8
-  wanderPositionRangeMin: {x: -3.4, y: 1.9, z: 11.05}
-  wanderPositionRangeMax: {x: 5.32, y: 3.75, z: 40}
-  flipY: 1
-  isChild: 0
-  children: []
 --- !u!135 &2924803582752802823
 SphereCollider:
   m_ObjectHideFlags: 0

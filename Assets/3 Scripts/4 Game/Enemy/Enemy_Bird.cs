@@ -62,8 +62,6 @@ public class Enemy_Bird : DamagableEnemy
         if (attackTimer > attackTime)
         {
             Attack();
-            attackTimer = 0;
-            animator.Play("Attack");
         }
     }
 
@@ -89,7 +87,7 @@ public class Enemy_Bird : DamagableEnemy
     public bool parent = true;
     private IEnumerator UpdateMove()
     {
-        animator.SetInteger("animation", 2);
+        PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_MOVE);
 
         float moveTimer = 0;
 
@@ -126,7 +124,7 @@ public class Enemy_Bird : DamagableEnemy
 
         currentMoveDirection *= -1;
 
-        animator.SetInteger("animation", 1);
+        PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_IDLE);
 
         yield return new WaitForSeconds(nextMoveDelayTime);
 
@@ -139,16 +137,19 @@ public class Enemy_Bird : DamagableEnemy
 
         if (IsDead) return curHp;
 
-        animator.Play("Damage");
-
         return curHp;
     }
 
-    public void Attack()
+    public override void Attack()
     {
+        base.Attack();
+
         GameObject clone = Instantiate(bulletPrefab, bulletSpawnTransform.transform.position, Quaternion.LookRotation(IncaData.PlayerPosition));
+
         clone.GetComponent<Bullet>().SetAttack(status.CurrentAttack);
         if (parent) clone.transform.SetParent(IncaData.PlayerTransform);
+
+        attackTimer = 0;
     }
 
     protected override void OnDeath()
@@ -156,8 +157,6 @@ public class Enemy_Bird : DamagableEnemy
         base.OnDeath();
 
         onDeath.Invoke();
-
-        animator.SetInteger("animation", 5);
 
         rigidbody.isKinematic = false;
         rigidbody.useGravity = true;

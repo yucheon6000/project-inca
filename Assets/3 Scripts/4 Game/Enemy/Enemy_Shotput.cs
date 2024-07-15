@@ -32,8 +32,6 @@ public class Enemy_Shotput : DamagableEnemy
         attackTime = Random.Range(attackTimeMin, attackTimeMax);
         attackTimer = 0;
 
-        animator.SetInteger("animation", 1);
-
         onInit.Invoke();
     }
 
@@ -47,22 +45,22 @@ public class Enemy_Shotput : DamagableEnemy
 
         attackTimer += Time.deltaTime;
         if (attackTimer > attackTime)
-        {
-            attackTime = Random.Range(attackTimeMin, attackTimeMax);
-            attackTimer = 0;
-            animator.Play("Attack");
             Attack();
-        }
     }
 
-    public void Attack()
+    public override void Attack()
     {
+        base.Attack();
+
         if (IsDead) return;
 
         GameObject bulletClone = MemoryPool.Instance(MemoryPoolType.Enemy).ActivatePoolItem(bulletPrefab);
         bulletClone.transform.SetPositionAndRotation(transform.position, Quaternion.LookRotation(IncaData.PlayerPosition));
         Vector3 dir = (IncaData.PlayerPosition - bulletSpawnTransform.position);
         bulletClone.GetComponent<Bullet>().Setup(dir);
+
+        attackTime = Random.Range(attackTimeMin, attackTimeMax);
+        attackTimer = 0;
     }
 
     public override int TakeDamage(int attckAmount)
@@ -70,16 +68,12 @@ public class Enemy_Shotput : DamagableEnemy
         int curHp = base.TakeDamage(attckAmount);
         if (IsDead) return curHp;
 
-        animator.Play("Damage");
-
         return curHp;
     }
 
     protected override void OnDeath()
     {
         base.OnDeath();
-
-        animator.SetInteger("animation", 5);
 
         Invoke(nameof(DeactivateGameObject), 2);
     }

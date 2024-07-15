@@ -41,7 +41,7 @@ public class Enemy_Kindergartner : DamagableEnemy
 
     private void PlayAnimation()
     {
-        animator.SetInteger("animation", 2);
+        PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_MOVE);
     }
 
     private void FixedUpdate()
@@ -59,7 +59,6 @@ public class Enemy_Kindergartner : DamagableEnemy
         base.OnDeath();
 
         transform.rotation = Quaternion.Euler(0, Random.Range(150f, 210f), 0);
-        animator.SetInteger("animation", 5);
 
         lookAtPlayer.Look(true);
 
