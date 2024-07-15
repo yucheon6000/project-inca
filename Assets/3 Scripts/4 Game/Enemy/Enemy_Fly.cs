@@ -78,8 +78,7 @@ public class Enemy_Fly : DamagableEnemy
         stateMachine = new StateMachine<Enemy_Fly>();
         stateMachine.Setup(this, flyingState);
 
-        if (animator)
-            animator.SetInteger("animation", 2);
+        PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_MOVE);
     }
 
     private void SetWanderPositionsToMeAndChildren()

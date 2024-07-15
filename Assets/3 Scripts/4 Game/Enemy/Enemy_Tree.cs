@@ -69,7 +69,7 @@ public class Enemy_Tree : DamagableEnemy
         {
             state = EnemyState.Move;
             lookAtPlayer.Look(true);
-            animator.SetInteger("animation", 2);
+            PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_MOVE);
             StartCoroutine(MoveRoutine());
         }
 
@@ -77,7 +77,7 @@ public class Enemy_Tree : DamagableEnemy
         {
             state = EnemyState.Attack;
             lookAtPlayer.Look(false);
-            animator.SetInteger("animation", 1);
+            PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_IDLE);
             StartCoroutine(FallRoutine());
         }
     }
@@ -132,14 +132,12 @@ public class Enemy_Tree : DamagableEnemy
         if (isFall)
         {
             StopAllCoroutines();
+            PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_IDLE);
+
             transform.rotation = Quaternion.Euler(dir.x * 90, dir.y * 90, dir.z * 90);
             rigidbody.isKinematic = false;
             rigidbody.useGravity = true;
             rigidbody.AddExplosionForce(exFor, explosionTf.position, exRa, 1f);
-        }
-        else
-        {
-            animator.SetInteger("animation", 5);
         }
 
         Invoke(nameof(DeactivateGameObject), 5f);

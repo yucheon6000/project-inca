@@ -99,12 +99,14 @@ public class MemoryPoolBase
         foreach (var item in poolItems)
         {
             if (item == null) continue; ///!!!!!!
-            if (!item.isActive)
+
+            if (item.isActive == false)
             {
                 activeCount++;
 
-                item.isActive = true;
                 item.gameObject.transform.position = position;
+
+                item.isActive = true;
                 item.gameObject.SetActive(true);
 
                 return item.gameObject;

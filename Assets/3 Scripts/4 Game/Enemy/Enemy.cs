@@ -36,19 +36,31 @@ public abstract class Enemy : Character
         if (detectedObject != null)
             detectedObject.RegisterOnHideAction(OnHideDetectedObject);
 
+        PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_IDLE);
+
         base.Init();
+    }
+
+    public override void Attack()
+    {
+        base.Attack();
+
+        PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_ATTACK);
     }
 
     public override int TakeDamage(int attckAmount)
     {
         int curHp = base.TakeDamage(attckAmount);
 
-        if (IsDead) return 0;
-
-        PlayAudioClip(AudioType.TakeDamage0);
-
-        if (animator != null)
-            animator.Play(Constants.animation_enemy_hit);
+        if (IsDead)
+        {
+            return 0;
+        }
+        else
+        {
+            PlayAudioClip(AudioType.TakeDamage0);
+            PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_TAKE_DAMAGE);
+        }
 
         return curHp;
     }
@@ -62,8 +74,14 @@ public abstract class Enemy : Character
     {
         PlayAudioClip(AudioType.Die);
 
-        if (animator != null)
-            animator.Play(Constants.animation_enemy_death);
+        PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_DIE);
+    }
+
+    protected override void PlayAnimationByValue(int animationValue)
+    {
+        if (animator == null) return;
+        animator.SetInteger(Constants.Animation.ENEMY_ANIMATION_ID, -1);
+        animator.SetInteger(Constants.Animation.ENEMY_ANIMATION_ID, animationValue);
     }
 
     protected void DeactivateGameObject()

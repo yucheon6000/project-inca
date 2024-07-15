@@ -62,4 +62,8 @@ public abstract class Character : MonoBehaviour
 
         audioSource.PlayOneShot(clip);
     }
+
+    protected virtual void PlayAnimationByValue(int animationValue) { }
+
+    public virtual void Attack() { }
 }
