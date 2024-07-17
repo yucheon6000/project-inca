@@ -17,6 +17,8 @@ public class Enemy_Honeycomb : NonDamagableEnemy
     [SerializeField]
     private Enemy[] hinges;
 
+    public override bool IsAlive => bear.IsDead && HingesAreFine();
+
     private bool HingesAreFine()
     {
         foreach (Enemy hinge in hinges)
@@ -24,8 +26,6 @@ public class Enemy_Honeycomb : NonDamagableEnemy
 
         return false;
     }
-
-    public override bool IsAlive => bear.IsDead && HingesAreFine();
 
     private void Update()
     {

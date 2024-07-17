@@ -25,9 +25,9 @@ public class Enemy_Fly : DamagableEnemy
     [SerializeField]
     private int wanderPositionCount = 5;
     [SerializeField]
-    private Vector3 wanderPositionRangeMin;     // Local position
+    protected Vector3 wanderPositionRangeMin;     // Local position
     [SerializeField]
-    private Vector3 wanderPositionRangeMax;     // Local position
+    protected Vector3 wanderPositionRangeMax;     // Local position
     [SerializeField]
     private bool flipY = false;
     [SerializeField]

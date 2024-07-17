@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 4657252473636324481}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.840473, y: 1.9336973, z: -221.81}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -148,14 +148,15 @@ MonoBehaviour:
   wanderPositionIndex: 0
   currentWanderPosition: {x: 0, y: 0, z: 0}
   wanderPositionCount: 5
-  wanderPositionRangeMin: {x: -3.88, y: -0.01, z: 4.84}
-  wanderPositionRangeMax: {x: -1.95, y: 1.39, z: 23.1}
+  wanderPositionRangeMin: {x: -3.1, y: -0.01, z: 4.84}
+  wanderPositionRangeMax: {x: -1.43, y: 1.39, z: 23.1}
   flipY: 0
   randomFlipY: 1
   isChild: 0
   children: []
   isUsedByItself: 1
   usesCurrentPositionZAsRangeZ: 1
+  rangeY: 1.4
   minMass: 0
   maxMoveSpeed: 2
   minInitialScale: 0.2
