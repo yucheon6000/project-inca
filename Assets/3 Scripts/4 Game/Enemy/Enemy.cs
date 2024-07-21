@@ -77,11 +77,16 @@ public abstract class Enemy : Character
         PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_DIE);
     }
 
+    int lastAnimationUpdateFrameCount = -1;
     protected override void PlayAnimationByValue(int animationValue)
     {
         if (animator == null) return;
+        if (lastAnimationUpdateFrameCount == Time.frameCount && animationValue == Constants.Animation.ENEMY_ANIMATION_IDLE) return;
+
         animator.SetInteger(Constants.Animation.ENEMY_ANIMATION_ID, -1);
         animator.SetInteger(Constants.Animation.ENEMY_ANIMATION_ID, animationValue);
+
+        lastAnimationUpdateFrameCount = Time.frameCount;
     }
 
     protected void DeactivateGameObject()

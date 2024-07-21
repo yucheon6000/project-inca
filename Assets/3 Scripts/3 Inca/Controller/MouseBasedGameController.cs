@@ -1,6 +1,8 @@
 using Inca;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
+using Viveport;
 
 public class MouseBasedGameController : GameController
 {
@@ -26,12 +28,30 @@ public class MouseBasedGameController : GameController
     private Vector3 CameraPosition => targetCamera.transform.position;
     private Vector3 PlayerPosition => IncaData.PlayerPosition;
 
+    private UserActions userActions;
+
     private void Awake()
     {
         targetCamera = GameObject.Find("Render Camera").GetComponent<Camera>();
+
+        userActions = new UserActions();
+        userActions.UserContol.Enable();
+
+        // When user point.
+        userActions.UserContol.Point.performed += (val) =>
+        {
+            Vector2 mousePos = val.ReadValue<Vector2>();
+            OnMovePoint(mousePos);
+        };
+
+        // When the user trigger the button.
+        userActions.UserContol.Click.started += _ =>
+        {
+            TriggerShoot();
+        };
     }
 
-    private void FixedUpdate()
+    private void OnMovePoint(Vector2 mousePosition)
     {
         // On or off debug mode
         if (mouseBallTransfrom.gameObject.activeSelf != debugMode)
@@ -41,7 +61,7 @@ public class MouseBasedGameController : GameController
         }
 
         // Update mouse positions
-        mouseScreenPosition = Input.mousePosition + new Vector3(0, 0, 10f);
+        mouseScreenPosition = new Vector3(mousePosition.x, mousePosition.y, 10f);
         mouseWorldPosition = targetCamera.ScreenToWorldPoint(mouseScreenPosition);
 
         // for Debug
@@ -82,34 +102,22 @@ public class MouseBasedGameController : GameController
         }
 
         // Update aim UI
-        rectTransform.position = Input.mousePosition;
+        rectTransform.position = mousePosition;
         scaleTimer += Time.fixedDeltaTime;
         rectTransform.localScale = Vector3.one * Mathf.Lerp(startScale, targetScale, sizeChangingCurve.Evaluate(scaleTimer / 0.5f));
         prevScale = rectTransform.localScale.x;
 
     }
 
-    private void Update()
-    {
-        // Check trigger button down
-        CheckTriggerDown();
-    }
-
-    private void CheckTriggerDown()
-    {
-        if (!Input.GetMouseButtonDown(0)) return;
-
-        TriggerShoot();
-    }
-
     protected override void SpawnShootEffect()
     {
-        GameObject cloneEffect = Instantiate(shootEffect, shootEffectSpawnTransform.position, Quaternion.identity);
-        cloneEffect.transform.SetParent(IncaData.PlayerTransform);
-
         // Target position that the effect should look at
         Vector3 targetPosition = target != null ? hitPoint : mouseWorldPosition;
-        cloneEffect.transform.LookAt(targetPosition, Vector3.up);
+
+        GameObject cloneEffect = Instantiate(shootEffect, shootEffectSpawnTransform.position, Quaternion.LookRotation(targetPosition - shootEffectSpawnTransform.position));
+        cloneEffect.transform.SetParent(IncaData.PlayerTransform);
+
+        // cloneEffect.transform.LookAt(targetPosition, Vector3.up);
     }
 
     private void OnDrawGizmos()

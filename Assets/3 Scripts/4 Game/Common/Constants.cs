@@ -4,12 +4,6 @@ using UnityEngine;
 
 public static class Constants
 {
-    public static string animation_enemy_idle = "Idle";
-    public static string animation_enemy_hit = "Hit";
-    public static string animation_enemy_take_damage = "Take Damage";
-    public static string animation_enemy_death = "Death";
-    public static string animation_enemy_attack = "Attack";
-
     public static class Animation
     {
         public const string ENEMY_ANIMATION_ID = "animation";

@@ -6,6 +6,8 @@ using UnityEngine;
 public class Bullet_OctopusBubble : Enemy_Fly
 {
     [SerializeField]
+    private float rangeY = 5;
+    [SerializeField]
     private float minMass;
     [SerializeField]
     private float maxMoveSpeed;
@@ -36,14 +38,19 @@ public class Bullet_OctopusBubble : Enemy_Fly
 
     public override void Init(DetectedObject detectedObject = null)
     {
+        // 범위를 생성 위치 기준으로 변경
+        wanderPositionRangeMin.y = transform.localPosition.y - rangeY / 2;
+        wanderPositionRangeMax.y = transform.localPosition.y + rangeY / 2;
+
         base.Init(detectedObject);
 
         distanceOnSpawn = Vector3.Distance(IncaData.PlayerPosition, this.transform.position);
 
         initialScale = Random.Range(minInitialScale, maxInitialScale);
+        targetScale = initialScale;
         finalScale = Random.Range(minFinalScale, maxFinalScale);
 
-        transform.localScale = Vector3.one * initialScale;
+        transform.localScale = Vector3.zero;
 
         status.OnChangeCurrentHp.AddListener((curHp, _) =>
         {
