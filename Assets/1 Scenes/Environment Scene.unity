@@ -1314,8 +1314,7 @@ MonoBehaviour:
   shootEffectSpawnTransform: {fileID: 1277756525}
   shootEffect: {fileID: 1431870940730195036, guid: 5b71014f150391d439c81cca10bd298e,
     type: 3}
-  hitEffect: {fileID: 3836726219069090429, guid: f1d2de64eaadf3740ab024ef5b48a260,
-    type: 3}
+  hitEffect: {fileID: 1974592250055434, guid: b15a120c1390db449b8eb5af19d62424, type: 3}
   audioSource: {fileID: 427020298}
   shootAudioClip: {fileID: 8300000, guid: 935f87d8da8fb184fb167ece25420548, type: 3}
   controllerTransform: {fileID: 242281207}
@@ -1369,10 +1368,9 @@ MonoBehaviour:
   hitPoint: {x: 0, y: 0, z: 0}
   target: {fileID: 0}
   shootEffectSpawnTransform: {fileID: 931763386}
-  shootEffect: {fileID: 1431870940730195036, guid: 5b71014f150391d439c81cca10bd298e,
+  shootEffect: {fileID: 1096327089596252, guid: 7babbc54056405d44a273c371d1cd741,
     type: 3}
-  hitEffect: {fileID: 3836726219069090429, guid: f1d2de64eaadf3740ab024ef5b48a260,
-    type: 3}
+  hitEffect: {fileID: 1553327564893038, guid: 8b585bd4793e2404c9ce7e3770159d4b, type: 3}
   audioSource: {fileID: 427020298}
   shootAudioClip: {fileID: 8300000, guid: 935f87d8da8fb184fb167ece25420548, type: 3}
   debugMode: 0
@@ -6419,6 +6417,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 7.113736
+      objectReference: {fileID: 0}
+    - target: {fileID: 5864552588543065529, guid: 5f6ef34d8432e4309805347efc774f83,
+        type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[0]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5864552588543065529, guid: 5f6ef34d8432e4309805347efc774f83,
+        type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[1]
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5887790807527780675, guid: 5f6ef34d8432e4309805347efc774f83,
         type: 3}
