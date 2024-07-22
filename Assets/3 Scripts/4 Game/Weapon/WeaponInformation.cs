@@ -6,6 +6,9 @@ using UnityEngine;
 public class WeaponInformation : ScriptableObject
 {
     [SerializeField]
+    private int power;
+    public int Power => power;
+    [SerializeField]
     private float shootDelay;
     public float ShootDelay => shootDelay;
     [SerializeField]

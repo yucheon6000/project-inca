@@ -24,7 +24,7 @@ public class ViveControllerBasedGameController : GameController
     {
         ViveInput.AddListenerEx(HandRole.RightHand, ControllerButton.FullTrigger, ButtonEventType.Down, () =>
         {
-            TriggerShoot();
+            TriggerShoot(1);
         });
     }
 

@@ -49,13 +49,6 @@ public class MouseBasedGameController : GameController
         userActions.UserContol.Click.started += _ => { isPressingShootButton = true; };
         userActions.UserContol.Click.canceled += _ => { isPressingShootButton = false; };
 
-        // Switch weapon
-        // gameActions = new GameActions();
-        // gameActions.PlayerControl.SwitchWeapon.started += _ =>
-        // {
-
-        // };
-
         currentWeapon = weaponInformations[weaponIndex];
     }
 
@@ -65,7 +58,7 @@ public class MouseBasedGameController : GameController
 
         if (isPressingShootButton && shootTimer >= currentWeapon.ShootDelay)
         {
-            TriggerShoot();
+            TriggerShoot(currentWeapon.Power);
             shootTimer = 0;
         }
 

@@ -105,7 +105,7 @@ public abstract class GameController : MonoBehaviour
         Instantiate(currentWeapon.HitEffectPrefab, hitPoint, Quaternion.identity);
     }
 
-    public void TriggerShoot()
+    public void TriggerShoot(int power)
     {
         SpawnShootEffect();
 
@@ -113,7 +113,7 @@ public abstract class GameController : MonoBehaviour
 
         if (target == null) return;
 
-        target.TakeDamage(1);
+        target.TakeDamage(power);
 
         SpawnHitEffect();
     }
