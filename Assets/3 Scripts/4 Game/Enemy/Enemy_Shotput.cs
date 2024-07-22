@@ -63,14 +63,6 @@ public class Enemy_Shotput : DamagableEnemy
         attackTimer = 0;
     }
 
-    public override int TakeDamage(int attckAmount)
-    {
-        int curHp = base.TakeDamage(attckAmount);
-        if (IsDead) return curHp;
-
-        return curHp;
-    }
-
     protected override void OnDeath()
     {
         base.OnDeath();

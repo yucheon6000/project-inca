@@ -48,7 +48,6 @@ public class Enemy_Tree : DamagableEnemy
     protected override void Awake()
     {
         base.Awake();
-
         rigidbody = GetComponent<Rigidbody>();
 
         states = new Dictionary<State, IState<Enemy_Tree>>
@@ -83,12 +82,24 @@ public class Enemy_Tree : DamagableEnemy
         stateMachine.Setup(this, states[State.Idle]);
     }
 
-    private void FixedUpdate() => stateMachine?.Execute();
+    private void FixedUpdate()
+    {
+        if (IsDead) return;
+
+        stateMachine?.Execute();
+    }
 
     protected override void OnDeath()
     {
-        ChangeState(State.Fly);
-        Invoke(nameof(DeactivateGameObject), 5f);
+        lookAtPlayer.Look(false);
+
+        if (isFall)
+            ChangeState(State.Fly);
+        else
+        {
+            PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_DIE);
+            Invoke(nameof(DeactivateGameObject), 5f);
+        }
     }
 
     public void ChangeState(State newState)
@@ -161,7 +172,6 @@ public class Enemy_Tree : DamagableEnemy
             print(IncaData.PlayerLaneIndex);
 
             targetPos = entity.transformByLaneIndex[IncaData.PlayerLaneIndex].position;
-            print(targetPos);
 
             entity.lookAtPlayer.Look(true);
             entity.SetDefaultAnimation(Constants.Animation.ENEMY_ANIMATION_MOVE);

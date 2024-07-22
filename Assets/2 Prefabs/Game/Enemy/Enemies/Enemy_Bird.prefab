@@ -70,8 +70,12 @@ MonoBehaviour:
   initOnAwake: 0
   animator: {fileID: 8855993009608231113}
   audioSource: {fileID: 0}
-  hitAudioClip: {fileID: 0}
-  dieAudioClip: {fileID: 0}
+  audioStorage:
+    audios: []
+  spawnEffectPrefab: {fileID: 7226888052703040409, guid: 7ec363c8df426644ea85f8d6d570561c,
+    type: 3}
+  dieEffectPrefab: {fileID: 5642766282230003982, guid: b5c8ca7ed10b61e499cce8ec3b6e2e4c,
+    type: 3}
   attackTime: 3
   bulletPrefab: {fileID: 1370727570811104193, guid: b24580121c48d45a7bc78842eec1331a,
     type: 3}
@@ -246,6 +250,12 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1386519982043737419, guid: 531692559fdde2747af9fcbae4a0d041,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 22100000, guid: d88832e95231349479c23d788e2f64b0,
+        type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

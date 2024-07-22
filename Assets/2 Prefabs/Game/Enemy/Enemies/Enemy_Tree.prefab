@@ -137,6 +137,10 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   audioStorage:
     audios: []
+  spawnEffectPrefab: {fileID: 7226888052703040409, guid: 7ec363c8df426644ea85f8d6d570561c,
+    type: 3}
+  dieEffectPrefab: {fileID: 5642766282230003982, guid: b5c8ca7ed10b61e499cce8ec3b6e2e4c,
+    type: 3}
   currentState: 0
   followDistance: 100
   followTime: 1
@@ -171,10 +175,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.89
-  m_Height: 3.2
+  m_Radius: 1.36
+  m_Height: 6.34
   m_Direction: 1
-  m_Center: {x: 0.72, y: 1.52, z: 0}
+  m_Center: {x: 0.69, y: 2.95, z: 0}
 --- !u!54 &7393422787603782205
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -386,10 +390,6 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1446593019466990370}
-    - targetCorrespondingSourceObject: {fileID: 3724572471564977760, guid: 3869ca982ead0c54688e41291e691359,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6732208025260529815}
   m_SourcePrefab: {fileID: 100100000, guid: 3869ca982ead0c54688e41291e691359, type: 3}
 --- !u!4 &3942280538788452948 stripped
 Transform:
@@ -415,35 +415,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30509fe82c787f345b39d68c665eda18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &3942280538788480630 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3724572471564977760, guid: 3869ca982ead0c54688e41291e691359,
-    type: 3}
-  m_PrefabInstance: {fileID: 361868718620803094}
-  m_PrefabAsset: {fileID: 0}
---- !u!136 &6732208025260529815
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3942280538788480630}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.55
-  m_Height: 2.49
-  m_Direction: 1
-  m_Center: {x: -0.05, y: 0.96, z: 0}
 --- !u!95 &3942280538797979062 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 3724572471555601824, guid: 3869ca982ead0c54688e41291e691359,

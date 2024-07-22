@@ -49,8 +49,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae662e9ba09c940798245bcffc268986, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 2
-  defaultHp: 2
+  maxHp: 5
+  defaultHp: 5
   currentHp: 0
   maxAttack: 1
   defaultAttack: 1
@@ -70,8 +70,12 @@ MonoBehaviour:
   initOnAwake: 0
   animator: {fileID: 3738872893036080905}
   audioSource: {fileID: 2931816147692053613}
-  hitAudioClip: {fileID: 8300000, guid: 09d085ac4941c11448b7835507d84503, type: 3}
-  dieAudioClip: {fileID: 8300000, guid: fd29596663b10d7409d42c65b64566c2, type: 3}
+  audioStorage:
+    audios: []
+  spawnEffectPrefab: {fileID: 7226888052703040409, guid: 7ec363c8df426644ea85f8d6d570561c,
+    type: 3}
+  dieEffectPrefab: {fileID: 5642766282230003982, guid: b5c8ca7ed10b61e499cce8ec3b6e2e4c,
+    type: 3}
   attackDistance: 80
   attackTimeMin: 2
   attackTimeMax: 5
@@ -367,6 +371,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: Planta_Queen
       objectReference: {fileID: 0}
+    - target: {fileID: 3929847272209597220, guid: 923e4b497ff08d748857ad558b1741e5,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 22100000, guid: de719e568b3ca49a685e39bd454015ff,
+        type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

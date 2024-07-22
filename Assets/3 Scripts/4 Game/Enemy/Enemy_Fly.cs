@@ -107,7 +107,7 @@ public class Enemy_Fly : DamagableEnemy
 
     protected virtual void FixedUpdate()
     {
-        stateMachine.Execute();
+        stateMachine?.Execute();
     }
 
     public void HasReachedCurrentWanderPosition()
@@ -175,7 +175,10 @@ public class Enemy_Fly : DamagableEnemy
         if (isUsedByItself)
             DeactivateGameObject();
         else
+        {
             gameObject.SetActive(false);
+            SpawnEffect(dieEffectPrefab);
+        }
     }
 
     public void LookAt(Vector3 direction)

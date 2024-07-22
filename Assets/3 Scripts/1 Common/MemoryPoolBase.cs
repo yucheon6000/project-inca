@@ -150,7 +150,7 @@ public class MemoryPoolBase
             }
         }
 
-        GameObject.Destroy(removeObject);
+        removeObject.SetActive(false);
     }
 
     private class PoolItem

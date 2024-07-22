@@ -862,7 +862,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &69381988
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -915,11 +915,11 @@ Transform:
   m_GameObject: {fileID: 69381987}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.61, y: 0, z: -230.2}
+  m_LocalPosition: {x: 0, y: 0, z: 3.600006}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 2051102767}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &77160222
 GameObject:
@@ -10269,6 +10269,8 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   audioStorage:
     audios: []
+  spawnEffectPrefab: {fileID: 0}
+  dieEffectPrefab: {fileID: 0}
   onClick:
     m_PersistentCalls:
       m_Calls:
@@ -13999,7 +14001,6 @@ MonoBehaviour:
   audioSource: {fileID: 856328252}
   audioStorage:
     audios: []
-  audioSource: {fileID: 856328252}
   hitAudioClip: {fileID: 0}
 --- !u!82 &856328252
 AudioSource:
@@ -25200,7 +25201,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2017595537
 Transform:
   m_ObjectHideFlags: 0
@@ -25778,7 +25779,9 @@ Transform:
   m_LocalPosition: {x: 5.61, y: 0, z: -233.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2133514709}
+  - {fileID: 69381990}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2061657511
@@ -26604,7 +26607,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!65 &2133514708
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -26635,11 +26638,11 @@ Transform:
   m_GameObject: {fileID: 2133514706}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.61, y: 0, z: -230.2}
+  m_LocalPosition: {x: 0, y: 0, z: 3.600006}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 2051102767}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2133514710
 MonoBehaviour:
@@ -27999,7 +28002,7 @@ PrefabInstance:
     - target: {fileID: 3881745504384717589, guid: a4935f7b126b44bfa8895e2a06b36657,
         type: 3}
       propertyPath: onClick.m_PersistentCalls.m_Calls.Array.size
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3881745504384717589, guid: a4935f7b126b44bfa8895e2a06b36657,
         type: 3}
@@ -28034,7 +28037,7 @@ PrefabInstance:
     - target: {fileID: 3881745504384717589, guid: a4935f7b126b44bfa8895e2a06b36657,
         type: 3}
       propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[6].m_Mode
-      value: 1
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3881745504384717589, guid: a4935f7b126b44bfa8895e2a06b36657,
         type: 3}
@@ -28080,7 +28083,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[6].m_Target
       value: 
-      objectReference: {fileID: 1632615341}
+      objectReference: {fileID: 2051102764}
     - target: {fileID: 3881745504384717589, guid: a4935f7b126b44bfa8895e2a06b36657,
         type: 3}
       propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[7].m_Target
@@ -28164,7 +28167,7 @@ PrefabInstance:
     - target: {fileID: 3881745504384717589, guid: a4935f7b126b44bfa8895e2a06b36657,
         type: 3}
       propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[6].m_MethodName
-      value: PrintNextMessage
+      value: SetActive
       objectReference: {fileID: 0}
     - target: {fileID: 3881745504384717589, guid: a4935f7b126b44bfa8895e2a06b36657,
         type: 3}
@@ -28209,7 +28212,7 @@ PrefabInstance:
     - target: {fileID: 3881745504384717589, guid: a4935f7b126b44bfa8895e2a06b36657,
         type: 3}
       propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[6].m_TargetAssemblyTypeName
-      value: Dialog, Assembly-CSharp
+      value: UnityEngine.GameObject, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 3881745504384717589, guid: a4935f7b126b44bfa8895e2a06b36657,
         type: 3}
@@ -28449,7 +28452,7 @@ PrefabInstance:
     - target: {fileID: 7417988495449878017, guid: a4935f7b126b44bfa8895e2a06b36657,
         type: 3}
       propertyPath: canSelect
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7417988495449878017, guid: a4935f7b126b44bfa8895e2a06b36657,
         type: 3}
@@ -29427,8 +29430,6 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 2133514709}
-  - {fileID: 69381990}
   - {fileID: 856328246}
   - {fileID: 329252855}
   - {fileID: 2051102767}
