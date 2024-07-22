@@ -10267,8 +10267,8 @@ MonoBehaviour:
   initOnAwake: 1
   animator: {fileID: 0}
   audioSource: {fileID: 0}
-  hitAudioClip: {fileID: 0}
-  dieAudioClip: {fileID: 0}
+  audioStorage:
+    audios: []
   onClick:
     m_PersistentCalls:
       m_Calls:
@@ -13995,6 +13995,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initOnAwake: 1
+  animator: {fileID: 0}
+  audioSource: {fileID: 856328252}
+  audioStorage:
+    audios: []
   audioSource: {fileID: 856328252}
   hitAudioClip: {fileID: 0}
 --- !u!82 &856328252
@@ -27910,7 +27914,7 @@ PrefabInstance:
     - target: {fileID: 2156500102265105169, guid: a4935f7b126b44bfa8895e2a06b36657,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3065716943200204707, guid: a4935f7b126b44bfa8895e2a06b36657,
         type: 3}
@@ -28030,7 +28034,7 @@ PrefabInstance:
     - target: {fileID: 3881745504384717589, guid: a4935f7b126b44bfa8895e2a06b36657,
         type: 3}
       propertyPath: canSelect
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3881745504384717589, guid: a4935f7b126b44bfa8895e2a06b36657,
         type: 3}

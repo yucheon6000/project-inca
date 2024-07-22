@@ -91,8 +91,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
   m_LocalPosition: {x: -0.03999996, y: 1.5, z: -0.120010376}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6757841338780714746}
   m_Father: {fileID: 0}
@@ -134,13 +134,12 @@ MonoBehaviour:
     audios: []
   bubbleBulletPrefab: {fileID: 4657252473636324481, guid: 0fe1def4a67264cafb70626f8eadd849,
     type: 3}
-  bubbleAttackDelay: 1
-  minBubbleAttackSpawnCount: 1
-  maxBubbleAttackSpawnCount: 4
+  bubbleAttackDelay: 5
+  minBubbleAttackSpawnCount: 2
+  maxBubbleAttackSpawnCount: 5
   bulletAttackSpawnTransforms:
   - {fileID: 293962157163276540}
   - {fileID: 644327283767991722}
-  - {fileID: 8303794655575403262}
 --- !u!136 &2969046431933047355
 CapsuleCollider:
   m_ObjectHideFlags: 0
