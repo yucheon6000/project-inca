@@ -8,7 +8,7 @@ public class Enemy_Fly : DamagableEnemy
     private StateMachine<Enemy_Fly> stateMachine;
 
     [SerializeField]
-    protected State<Enemy_Fly> flyingState;
+    protected StateMonoBehaviour<Enemy_Fly> flyingState;
 
     [SerializeField]
     private Transform modelTransform;

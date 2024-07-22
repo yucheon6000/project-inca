@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Inca;
 using UnityEngine;
 
-public class CarStateDrive : State<Car>
+public class CarStateDrive : StateMonoBehaviour<Car>
 {
     [SerializeField]
     private float originalMoveSpeed;

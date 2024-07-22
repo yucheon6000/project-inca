@@ -117,6 +117,8 @@ public class NavigationDisplayManager : IncaManager
 
         LanePoint lanePoint = userCar.NextLanePoint;
 
+        if (lanePoint == null) return;
+
         Vector3 nextLanePointPos = CovertToOurCoordinate(lanePoint.Position);
         Vector3 startPoint = transform.position;
 

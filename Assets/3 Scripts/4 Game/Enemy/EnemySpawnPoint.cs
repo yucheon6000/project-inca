@@ -31,9 +31,7 @@ public class EnemySpawnPoint : MonoBehaviour
 
     public void SpawnOwnPosition()
     {
-        GameObject enemy = MemoryPool.Instance(MemoryPoolType.Enemy).ActivatePoolItem(enemyPrefab);
-        enemy.transform.position = transform.position;
-        enemy.transform.rotation = transform.rotation;
+        GameObject enemy = MemoryPool.Instance(MemoryPoolType.Enemy).ActivatePoolItem(enemyPrefab, transform.position, transform.rotation);
 
         enemy.GetComponent<Enemy>().Init();
     }

@@ -45,7 +45,11 @@ namespace Inca
         public Vector3 GetPlayerForward() => this.player.transform.forward;
         public Transform GetPlayerTransform() => this.player.transform;
         public Transform GetPlayerCarTransform() => this.car.transform;
-        public int GetPlayerLaneIndex() => this.car.CurrentLanePoint.LaneIndex;
+        public int GetPlayerLaneIndex()
+        {
+            if (this.car.CurrentLanePoint == null) return 1;
+            return this.car.CurrentLanePoint.LaneIndex;
+        }
         public Vector3 GetPlayerVelocity()
         {
             return carStateDrive.CurrentVelocity;

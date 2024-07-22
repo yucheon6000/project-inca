@@ -135,47 +135,23 @@ MonoBehaviour:
   initOnAwake: 0
   animator: {fileID: 3942280538797979062}
   audioSource: {fileID: 0}
-  hitAudioClip: {fileID: 0}
-  dieAudioClip: {fileID: 0}
+  audioStorage:
+    audios: []
+  currentState: 0
   followDistance: 100
-  attackDistance: 50
   followTime: 1
-  fallTime: 1
-  fallCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  lookAtPlayer: {fileID: 1446593019466990370}
   transformByLaneIndex:
   - {fileID: 0}
   - {fileID: 5843113044814360728}
   - {fileID: 534488092873679634}
   - {fileID: 3183457421013734876}
+  attackDistance: 50
+  fallSpeed: 70
   explosionTf: {fileID: 108614799949056141}
   exFor: 8000
   exRa: 4
   exMo: 1
-  dir: {x: 0, y: 0, z: 1}
+  lookAtPlayer: {fileID: 1446593019466990370}
 --- !u!136 &1952778150544316168
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -296,6 +272,12 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6237168169755372576}
     m_Modifications:
+    - target: {fileID: 3724572471555601824, guid: 3869ca982ead0c54688e41291e691359,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 22100000, guid: 4f19a36f66fef478da1b9e6143b6bdc1,
+        type: 2}
     - target: {fileID: 3724572471564950080, guid: 3869ca982ead0c54688e41291e691359,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

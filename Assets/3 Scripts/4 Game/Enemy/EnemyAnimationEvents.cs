@@ -8,4 +8,9 @@ public class EnemyAnimationEvents : CharacterAnimationEvents
     {
         ((Enemy)target).Init(null);
     }
+
+    public void FinishCurrentAnimation()
+    {
+        // ((Enemy)target).FinishCurrentAnimation();
+    }
 }

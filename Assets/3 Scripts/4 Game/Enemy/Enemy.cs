@@ -5,12 +5,8 @@ using Inca;
 using UnityEngine;
 using UnityEngine.Events;
 
-public enum EnemyState { Idle, Move, Attack, Die }
-
 public abstract class Enemy : Character
 {
-    protected EnemyState state = EnemyState.Idle;
-
     protected override void Awake()
     {
         base.Awake();
@@ -78,15 +74,35 @@ public abstract class Enemy : Character
     }
 
     int lastAnimationUpdateFrameCount = -1;
-    protected override void PlayAnimationByValue(int animationValue)
+    Coroutine playDefaultAnimationRoutine = null;
+    protected override void PlayAnimationByValue(int animationId)
     {
         if (animator == null) return;
-        if (lastAnimationUpdateFrameCount == Time.frameCount && animationValue == Constants.Animation.ENEMY_ANIMATION_IDLE) return;
+        if (lastAnimationUpdateFrameCount == Time.frameCount && animationId == Constants.Animation.ENEMY_ANIMATION_IDLE) return;
 
-        animator.SetInteger(Constants.Animation.ENEMY_ANIMATION_ID, -1);
-        animator.SetInteger(Constants.Animation.ENEMY_ANIMATION_ID, animationValue);
+        animator.SetInteger(Constants.Animation.ENEMY_ANIMATION_ID, animationId);
+
+        if (animationId != defaultAnimationId)
+        {
+            if (playDefaultAnimationRoutine != null)
+                StopCoroutine(playDefaultAnimationRoutine);
+
+            playDefaultAnimationRoutine = StartCoroutine(PlayDefaultAnimationRoutine());
+        }
 
         lastAnimationUpdateFrameCount = Time.frameCount;
+    }
+
+    int defaultAnimationId = 1;
+    protected void SetDefaultAnimation(int animationId)
+    {
+        defaultAnimationId = animationId;
+    }
+
+    private IEnumerator PlayDefaultAnimationRoutine()
+    {
+        yield return null;
+        PlayAnimationByValue(defaultAnimationId);
     }
 
     protected void DeactivateGameObject()

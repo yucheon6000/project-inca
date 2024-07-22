@@ -114,7 +114,6 @@ public abstract class GameController : MonoBehaviour
         if (target == null) return;
 
         target.TakeDamage(1);
-        print("asdf");
 
         SpawnHitEffect();
     }
