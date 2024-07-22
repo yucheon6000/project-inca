@@ -6,8 +6,6 @@ public class Player : Character
     public static Player Instance { get; private set; }
 
     [SerializeField]
-    private AudioSource audioSource;
-    [SerializeField]
     private AudioClip hitAudioClip;
 
     protected override void Awake()

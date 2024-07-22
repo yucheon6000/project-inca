@@ -25,7 +25,7 @@ public abstract class Character : MonoBehaviour
     [SerializeField]
     protected Animator animator;
     [SerializeField]
-    private AudioSource audioSource;
+    protected AudioSource audioSource;
 
     [Header("Audio Clips")]
     [SerializeField]
