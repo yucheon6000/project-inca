@@ -174,7 +174,7 @@ public class CarStateDrive : StateMonoBehaviour<Car>
 
         transform.SetPositionAndRotation(pos, rot);
 
-        IncaDetectManager.Instance.UpdateDetectedMyCar();
+        //IncaDetectManager.Instance.UpdateDetectedMyCar();
     }
 
     public override void Exit(Car car) { }

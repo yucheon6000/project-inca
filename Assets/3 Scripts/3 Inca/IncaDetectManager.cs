@@ -6,102 +6,109 @@ using UnityEngine.Events;
 using Environment;
 using System.Linq;
 using Unity.VisualScripting;
+using UnityEngine.SceneManagement;
 
 namespace Inca
 {
+    /// <summary>
+    /// This class is for detecting environment objects and updating detected objects' position in the Detected World.
+    /// </summary>
     public class IncaDetectManager : IncaManager
     {
         public static IncaDetectManager Instance { get; private set; }
 
-        [Header("User Car")]
+        [Header("Detected World")]
         [SerializeField]
-        private Transform envCar;
-        [SerializeField]
-        private Transform detCar;
-        public void SetUserCar(Transform userCar) => detCar = userCar;
+        private string detectedWorldSceneName;
 
         [Header("Detected Objects")]
         [SerializeField]
         private GameObject detectedObjectPrefab;
 
+        [Header("User Car")]
         [SerializeField]
-        private SphereCollider lidarCollider;
+        private Transform envCar;       // environment object
+        [SerializeField]
+        private Transform detCar;       // detected object
+        public void SetUserCar(Transform userCar) => detCar = userCar;
+
+        [Header("Sensor")]
+        [SerializeField]
+        private SphereCollider lidarCollider;       // to detect environment objects
 
         private static Dictionary<Guid, DetectedObject> detectedObjects = new Dictionary<Guid, DetectedObject>();
 
         public static List<DetectedObject> GetAllDetectedObjects()
-        {
-            return detectedObjects.Values.ToList();
-        }
+            => detectedObjects.Values.ToList();
 
-        #region Methods related on UnityAction
-
-        /* onTriggerEnterDetectedObject */
-        private static List<UnityAction<DetectedObject, bool>> onTriggerEnterDetectedObject
-            = new List<UnityAction<DetectedObject, bool>>();
-
-        public static UnityAction<DetectedObject, bool> AddOnTriggerEnterDetectedObject
-            (UnityAction<DetectedObject, bool> action)
-        {
-            onTriggerEnterDetectedObject.Add(action);
-            return action;
-        }
-
-        public static bool RemoveOnTriggerEnterDetectedObject(UnityAction<DetectedObject, bool> action)
-            => onTriggerEnterDetectedObject.Remove(action);
-
-        /* onTriggerExitDetectedObject */
-        [SerializeField]
-        private static List<UnityAction<DetectedObject>> onTriggerExitDetectedObject = new List<UnityAction<DetectedObject>>();
-
-        public static UnityAction<DetectedObject> AddOnTriggerExitDetectedObject
-            (UnityAction<DetectedObject> action)
-        {
-            onTriggerExitDetectedObject.Add(action);
-            return action;
-        }
-
-        public static bool RemoveOnTriggerExitDetectedObject(UnityAction<DetectedObject> action)
-            => onTriggerExitDetectedObject.Remove(action);
-
-        #endregion
+        public UnityEvent<DetectedObject, bool> OnTriggerEnterDetectedObject { get; private set; }
+            = new UnityEvent<DetectedObject, bool>();
+        public UnityEvent<DetectedObject> OnTriggerExitDetectedObject { get; private set; }
+            = new UnityEvent<DetectedObject>();
 
         private void Awake()
         {
+            // Set sigleton
             if (Instance == null)
                 Instance = this;
+
+            // Load the Detected World.
+            LoadDetectedWorld();
+
+            StartCoroutine(CheckEnvironmentObjectIsDetectableRoutine());
         }
 
-        public void UpdateDetectedMyCar()
+        private void LoadDetectedWorld()
         {
-            if (detCar == null) return;
+            SceneManager.LoadScene(detectedWorldSceneName, LoadSceneMode.Additive);
+        }
 
-            detCar.SetPositionAndRotation(envCar.position, envCar.rotation);
+        // This is a coroutine which checks if some environment objects are detectable(visible) or not.
+        private IEnumerator CheckEnvironmentObjectIsDetectableRoutine()
+        {
+            WaitForSeconds wait = new WaitForSeconds(1);
+            while (true)
+            {
+                yield return wait;
+
+                foreach (DetectedObject detObj in detectedObjects.Values)
+                {
+                    if (detObj == null) continue;
+                    if (canDetectEnvironmentObject(detObj.EnvironmentObject) == false)
+                        ExitEnvironmentObject(detObj.EnvironmentObject);
+                }
+            }
+        }
+
+        private bool canDetectEnvironmentObject(EnvironmentObject environmentObject)
+        {
+            return environmentObject != null && environmentObject.gameObject.activeSelf && environmentObject.gameObject.activeInHierarchy;
         }
 
         private void EnterEnvironmentObject(EnvironmentObject environmentObject)
         {
             Guid guid = environmentObject.GUID;
-            bool firstTime = !detectedObjects.ContainsKey(guid);
 
-            GameObject newGameObj = MemoryPool
+            // Check if it was detected.
+            bool isFirstDetection = !detectedObjects.ContainsKey(guid);
+
+            // Get a detected object from the pool.
+            DetectedObject detObj = MemoryPool
                                         .Instance(MemoryPoolType.DetectedObject)
-                                        .ActivatePoolItem(detectedObjectPrefab);
+                                        .ActivatePoolItem(detectedObjectPrefab)
+                                        .GetComponent<DetectedObject>();
 
-            DetectedObject newDetObj = newGameObj.GetComponent<DetectedObject>();
+            // If it is first time detecting this object, add this detected object to the list.
+            if (isFirstDetection)
+                detectedObjects.Add(guid, detObj);
+            else
+                detectedObjects[guid] = detObj;
 
-            if (firstTime)
-                detectedObjects.Add(guid, newDetObj);
+            detObj.Initialize(environmentObject);
+            detObj.IsVisible(true);
 
-            detectedObjects[guid] = newDetObj;
-            DetectedObject obj = detectedObjects[guid];
-
-            obj.Initialize(environmentObject);
-
-            obj.IsVisible(true);
-
-            foreach (var action in onTriggerEnterDetectedObject)
-                action.Invoke(obj, firstTime);
+            // Invoke the event.
+            OnTriggerEnterDetectedObject.Invoke(detObj, isFirstDetection);
         }
 
         private void ExitEnvironmentObject(EnvironmentObject environmentObject)
@@ -109,17 +116,20 @@ namespace Inca
             Guid guid = environmentObject.GUID;
 
             DetectedObject detObj = detectedObjects[guid];
-            if (!detObj) return;
+            if (detObj == null) return;
+
+            detectedObjects[guid] = null;
 
             detObj.IsVisible(false);
 
-            foreach (var action in onTriggerExitDetectedObject)
-                action.Invoke(detObj);
+            // Invoke the event.
+            OnTriggerExitDetectedObject.Invoke(detObj);
 
+            // Return the detected object to the pool.
             MemoryPool.Instance(MemoryPoolType.DetectedObject).DeactivatePoolItem(detObj.gameObject);
         }
 
-        /* Lidar Events */
+        /*********** Lidar Events ***********/
         private void OnTriggerEnter(Collider other)
         {
             if (other.TryGetComponent<EnvironmentObject>(out EnvironmentObject obj))
@@ -129,16 +139,7 @@ namespace Inca
         private void OnTriggerExit(Collider other)
         {
             if (other.TryGetComponent<EnvironmentObject>(out EnvironmentObject obj))
-            {
                 ExitEnvironmentObject(obj);
-            }
-        }
-
-        private void OnDrawGizmos()
-        {
-            // Draw Lidar range
-            Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(lidarCollider.transform.position, lidarCollider.radius);
         }
     }
 }

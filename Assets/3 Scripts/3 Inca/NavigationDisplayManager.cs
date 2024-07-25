@@ -31,7 +31,7 @@ public class NavigationDisplayManager : IncaManager
     {
         transform.localScale *= scale;
 
-        IncaDetectManager.AddOnTriggerEnterDetectedObject((DetectedObject detObj, bool first) =>
+        IncaDetectManager.Instance.OnTriggerEnterDetectedObject.AddListener((DetectedObject detObj, bool first) =>
         {
             GameObject clone = null;
 
@@ -50,7 +50,7 @@ public class NavigationDisplayManager : IncaManager
             detectedObjects.Add(detObj, clone.transform);
 
             // When the detected object is hiden, remove it and model object.
-            detObj.RegisterOnHideAction(() => RemoveDetectedObject(detObj));
+            detObj.OnHideDetectedObject.AddListener(() => RemoveDetectedObject(detObj));
         });
     }
 

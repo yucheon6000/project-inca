@@ -13,7 +13,7 @@ namespace Environment
         protected Guid guid = Guid.NewGuid();       // [ASSUME] Environment objects have each GUID.
         public Guid GUID => guid;
 
-        [Header("Type")]
+        [Header("Environment Object Type")]
         [SerializeField]
         protected EnvironmentObjectType objectType = EnvironmentObjectType.None;
         public EnvironmentObjectType ObjectType => objectType;
@@ -25,23 +25,17 @@ namespace Environment
         public Vector3 ColliderSize => boundCollider.size;
         public Bounds ColliderBounds => boundCollider.bounds;
 
-        public List<UnityAction> onDisableActions = new List<UnityAction>();
+        public UnityEvent OnDisableEnvironmentObject { get; private set; } = new UnityEvent();
 
         private void OnEnable()
         {
             guid = Guid.NewGuid();
-            onDisableActions.Clear();
-        }
-
-        public void RegisterOnDisableAction(UnityAction action)
-        {
-            onDisableActions.Add(action);
+            OnDisableEnvironmentObject.RemoveAllListeners();
         }
 
         private void OnDisable()
         {
-            foreach (var action in onDisableActions)
-                action.Invoke();
+            OnDisableEnvironmentObject.Invoke();
         }
     }
 }

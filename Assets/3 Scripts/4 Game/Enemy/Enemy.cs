@@ -40,7 +40,7 @@ public abstract class Enemy : Character
         if (detectedObject != null)
         {
             this.detectedObject = detectedObject;
-            detectedObject.RegisterOnHideAction(OnHideDetectedObject);
+            detectedObject.OnHideDetectedObject.AddListener(OnHideDetectedObject);
         }
 
         if (animator != null)

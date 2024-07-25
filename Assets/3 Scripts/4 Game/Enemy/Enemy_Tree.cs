@@ -113,7 +113,7 @@ public class Enemy_Tree : DamagableEnemy
     {
         if (IsDead) return;
 
-        if (other.TryGetComponent<UserCar>(out UserCar car))
+        if (other.TryGetComponent<DetectedUserCar>(out DetectedUserCar car))
         {
             ChangeState(State.Fly);
             Player.Instance.TakeDamage(2);
