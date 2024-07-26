@@ -13,6 +13,6 @@ public class LookAtPlayer : MonoBehaviour
     {
         if (look == false) return;
 
-        transform.LookAt(IncaData.PlayerPosition, Vector3.up);
+        transform.LookAt(GGData.PlayerPosition, Vector3.up);
     }
 }

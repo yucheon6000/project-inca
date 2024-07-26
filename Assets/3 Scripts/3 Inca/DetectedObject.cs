@@ -7,7 +7,14 @@ using UnityEngine.Events;
 
 namespace Inca
 {
-    public enum DetectedObjectType { None = -1, Car = 100, Building = 200, Pedestrian = 300 }
+    public enum DetectedObjectType
+    {
+        None = -1,
+        UserHead = 0, UserHandRight, UserHandLeft,
+        Car = 100,
+        Building = 200,
+        Pedestrian = 300
+    }
 
     public class DetectedObject : MonoBehaviour
     {
@@ -31,6 +38,7 @@ namespace Inca
 
         public UnityEvent OnHideDetectedObject { get; private set; } = new UnityEvent();
 
+        // 이거 왜 있는거지?
         private Collider[] colliders;
 
         private void Awake()
@@ -38,6 +46,7 @@ namespace Inca
             colliders = GetComponents<Collider>();
         }
 
+        protected bool init = false;
         public void Initialize(EnvironmentObject environmentObject)
         {
             this.environmentObject = environmentObject;
@@ -46,10 +55,14 @@ namespace Inca
             transform.rotation = Rotation;
 
             OnHideDetectedObject = new UnityEvent();
+
+            init = true;
         }
 
         private void FixedUpdate()
         {
+            if (!init) return;
+
             if (EnvironmentObjectIsVisible() == false)
             {
                 IsVisible(false);
@@ -59,7 +72,7 @@ namespace Inca
             SyncEnvObjPosAndRot();
         }
 
-        public bool EnvironmentObjectIsVisible()
+        public virtual bool EnvironmentObjectIsVisible()
         {
             return environmentObject != null && environmentObject.gameObject.activeSelf && environmentObject.gameObject.activeInHierarchy;
         }
@@ -105,7 +118,7 @@ namespace Inca
         private void OnDisable()
         {
             IsVisible(false);
-
+            init = true;
             // int chCount = transform.childCount;
             // for (int i = chCount - 1; i >= 0; i--)
             //     Destroy(transform.GetChild(i).gameObject);

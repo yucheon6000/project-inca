@@ -51,7 +51,7 @@ public class Enemy_Octopus : DamagableEnemy
             for (int i = 0; i < spawnCnt; ++i)
             {
                 GameObject bullet = MemoryPool.Instance(MemoryPoolType.Enemy).ActivatePoolItem(bubbleBulletPrefab, tf.position);
-                bullet.transform.SetParent(IncaData.PlayerTransform);
+                bullet.transform.SetParent(GGData.PlayerTransform);
                 bullet.GetComponent<Enemy>().Init();
             }
         }

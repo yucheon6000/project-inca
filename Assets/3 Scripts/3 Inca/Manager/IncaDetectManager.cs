@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.Events;
 using Environment;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
 
 namespace Inca
@@ -17,6 +16,16 @@ namespace Inca
     {
         public static IncaDetectManager Instance { get; private set; }
 
+        [Header("User Car")]
+        [SerializeField]
+        private Car userCar;
+        public int UserCarLaneIndex
+            => userCar.CurrentLanePoint == null ? 1 : userCar.CurrentLanePoint.LaneIndex;
+        [SerializeField]
+        private CarStateDrive userCarStateDrive;
+        public float UserCarSpeed => userCarStateDrive.CurrentMoveSpeed;
+
+
         [Header("Detected World")]
         [SerializeField]
         private string detectedWorldSceneName;
@@ -24,29 +33,26 @@ namespace Inca
         [Header("Detected Objects")]
         [SerializeField]
         private GameObject detectedObjectPrefab;
-
-        [Header("User Car")]
-        [SerializeField]
-        private Transform envCar;       // environment object
-        [SerializeField]
-        private Transform detCar;       // detected object
-        public void SetUserCar(Transform userCar) => detCar = userCar;
-
-        [Header("Sensor")]
-        [SerializeField]
-        private SphereCollider lidarCollider;       // to detect environment objects
-
         private static Dictionary<Guid, DetectedObject> detectedObjects = new Dictionary<Guid, DetectedObject>();
 
         public static List<DetectedObject> GetAllDetectedObjects()
             => detectedObjects.Values.ToList();
+
+        // User things
+        public UserObjects<DetectedObject> DetectedUserObjects { get; private set; }
+
+        public void SetDetectedUserObjects(UserObjects<DetectedObject> detectedUserObjects)
+        {
+            DetectedUserObjects = detectedUserObjects;
+        }
 
         public UnityEvent<DetectedObject, bool> OnTriggerEnterDetectedObject { get; private set; }
             = new UnityEvent<DetectedObject, bool>();
         public UnityEvent<DetectedObject> OnTriggerExitDetectedObject { get; private set; }
             = new UnityEvent<DetectedObject>();
 
-        private void Awake()
+
+        public override void Init()
         {
             // Set sigleton
             if (Instance == null)
@@ -60,6 +66,19 @@ namespace Inca
 
         private void LoadDetectedWorld()
         {
+            // SceneManager의 sceneCount를 이용해 현재 로드된 모든 씬을 확인
+            int sceneCount = SceneManager.sceneCount;
+
+            // 모든 씬을 순회하면서 additive로 로드된 씬을 확인
+            for (int i = 0; i < sceneCount; i++)
+            {
+                Scene scene = SceneManager.GetSceneAt(i);
+
+                if (scene.isLoaded && scene.buildIndex != SceneManager.GetActiveScene().buildIndex)
+                    if (scene.name == detectedWorldSceneName) return;
+            }
+
+            // If the Detected World was not loaded, load it.
             SceneManager.LoadScene(detectedWorldSceneName, LoadSceneMode.Additive);
         }
 

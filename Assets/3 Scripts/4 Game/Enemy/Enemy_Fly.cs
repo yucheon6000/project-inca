@@ -68,7 +68,7 @@ public class Enemy_Fly : DamagableEnemy
         }
         else
         {
-            transform.SetParent(IncaData.PlayerTransform);
+            transform.SetParent(GGData.PlayerTransform);
         }
 
         SetWanderPositionsToMeAndChildren();
@@ -152,7 +152,7 @@ public class Enemy_Fly : DamagableEnemy
         }
 
         // Add player's local position.
-        result.Add(transform.parent.InverseTransformPoint(IncaData.PlayerPosition));
+        result.Add(transform.parent.InverseTransformPoint(GGData.PlayerPosition));
 
         return result;
     }

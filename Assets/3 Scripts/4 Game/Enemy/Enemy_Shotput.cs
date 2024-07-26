@@ -39,9 +39,9 @@ public class Enemy_Shotput : DamagableEnemy
     {
         if (IsDead) return;
 
-        transform.LookAt(IncaData.PlayerPosition, Vector3.up);
+        transform.LookAt(GGData.PlayerPosition, Vector3.up);
 
-        if (Vector3.Distance(transform.position, IncaData.PlayerPosition) > attackDistance) return;
+        if (Vector3.Distance(transform.position, GGData.PlayerPosition) > attackDistance) return;
 
         attackTimer += Time.deltaTime;
         if (attackTimer > attackTime)
@@ -55,8 +55,8 @@ public class Enemy_Shotput : DamagableEnemy
         if (IsDead) return;
 
         GameObject bulletClone = MemoryPool.Instance(MemoryPoolType.Enemy).ActivatePoolItem(bulletPrefab);
-        bulletClone.transform.SetPositionAndRotation(transform.position, Quaternion.LookRotation(IncaData.PlayerPosition));
-        Vector3 dir = (IncaData.PlayerPosition - bulletSpawnTransform.position);
+        bulletClone.transform.SetPositionAndRotation(transform.position, Quaternion.LookRotation(GGData.PlayerPosition));
+        Vector3 dir = (GGData.PlayerPosition - bulletSpawnTransform.position);
         bulletClone.GetComponent<Bullet>().Setup(dir);
 
         attackTime = Random.Range(attackTimeMin, attackTimeMax);

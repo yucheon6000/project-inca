@@ -27,13 +27,13 @@ public class MouseBasedGameController : GameController
     float scaleTimer = 0;
 
     private Vector3 CameraPosition => targetCamera.transform.position;
-    private Vector3 PlayerPosition => IncaData.PlayerPosition;
+    private Vector3 PlayerPosition => GGData.PlayerPosition;
 
     private UserActions userActions;
     GameActions gameActions;
     private void Awake()
     {
-        targetCamera = GameObject.Find("Render Camera").GetComponent<Camera>();
+        targetCamera = Camera.main;
 
         userActions = new UserActions();
         userActions.UserContol.Enable();
@@ -135,7 +135,7 @@ public class MouseBasedGameController : GameController
         // Target position that the effect should look at
         Vector3 targetPosition = target != null ? hitPoint : mouseWorldPosition;
 
-        GameObject cloneEffect = Instantiate(currentWeapon.ProjectileEffectPrefab, shootEffectSpawnTransform.position, Quaternion.LookRotation(targetPosition - shootEffectSpawnTransform.position), IncaData.PlayerTransform);
+        GameObject cloneEffect = Instantiate(currentWeapon.ProjectileEffectPrefab, shootEffectSpawnTransform.position, Quaternion.LookRotation(targetPosition - shootEffectSpawnTransform.position), GGData.PlayerTransform);
 
         // cloneEffect.transform.LookAt(targetPosition, Vector3.up);
     }

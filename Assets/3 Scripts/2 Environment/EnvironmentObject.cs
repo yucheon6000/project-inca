@@ -6,7 +6,14 @@ using UnityEngine.Events;
 
 namespace Environment
 {
-    public enum EnvironmentObjectType { None = -1, Car = 100, Building = 200, Pedestrian = 300 }
+    public enum EnvironmentObjectType
+    {
+        None = -1,
+        UserHead = 0, UserHandRight, UserHandLeft,
+        Car = 100,
+        Building = 200,
+        Pedestrian = 300
+    }
 
     public class EnvironmentObject : MonoBehaviour
     {

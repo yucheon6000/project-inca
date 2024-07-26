@@ -44,7 +44,7 @@ public class Bullet_OctopusBubble : Enemy_Fly
 
         base.Init(detectedObject);
 
-        distanceOnSpawn = Vector3.Distance(IncaData.PlayerPosition, this.transform.position);
+        distanceOnSpawn = Vector3.Distance(GGData.PlayerPosition, this.transform.position);
 
         initialScale = Random.Range(minInitialScale, maxInitialScale);
         targetScale = initialScale;
@@ -67,7 +67,7 @@ public class Bullet_OctopusBubble : Enemy_Fly
 
     private void UpdateTargetScale()
     {
-        float dist = Vector3.Distance(IncaData.PlayerPosition, this.transform.position);
+        float dist = Vector3.Distance(GGData.PlayerPosition, this.transform.position);
 
         float newScale = Mathf.Lerp(finalScale, initialScale, scaleCurve.Evaluate(dist / distanceOnSpawn));
         targetScale = Mathf.Max(targetScale, newScale);

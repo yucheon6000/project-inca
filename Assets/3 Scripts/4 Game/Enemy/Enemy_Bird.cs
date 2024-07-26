@@ -144,10 +144,10 @@ public class Enemy_Bird : DamagableEnemy
     {
         base.Attack();
 
-        GameObject clone = Instantiate(bulletPrefab, bulletSpawnTransform.transform.position, Quaternion.LookRotation(IncaData.PlayerPosition));
+        GameObject clone = Instantiate(bulletPrefab, bulletSpawnTransform.transform.position, Quaternion.LookRotation(GGData.PlayerPosition));
 
         clone.GetComponent<Bullet>().SetAttack(status.CurrentAttack);
-        if (parent) clone.transform.SetParent(IncaData.PlayerTransform);
+        if (parent) clone.transform.SetParent(GGData.PlayerTransform);
 
         attackTimer = 0;
     }

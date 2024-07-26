@@ -12,6 +12,10 @@ public class NavigationDisplayManager : IncaManager
     [SerializeField]
     private GameObject buildingPrefab;
 
+    [Header("Scale")]
+    [SerializeField]
+    private float scale;
+
     [Header("Line Renderer")]
     [SerializeField]
     private LineRenderer lineRenderer;
@@ -20,14 +24,10 @@ public class NavigationDisplayManager : IncaManager
     [SerializeField]
     private int lanePointCount = 10;
 
-    [SerializeField]
-    private float scale;
-
-    /// <typeparam name="DetectedObject">Detected Object</typeparam>
-    /// <typeparam name="Transform">Model Transform</typeparam>
+    // Detected Object, Model Transform
     private Dictionary<DetectedObject, Transform> detectedObjects = new Dictionary<DetectedObject, Transform>();
 
-    private void Awake()
+    public override void Init()
     {
         transform.localScale *= scale;
 
@@ -56,7 +56,7 @@ public class NavigationDisplayManager : IncaManager
 
     private void Update()
     {
-        transform.rotation = IncaData.PlayerCarTransform.rotation;
+        transform.rotation = IncaData.UserCarTransform.rotation;
 
         List<DetectedObject> removedDetectedObjs = new List<DetectedObject>();
 
@@ -141,7 +141,7 @@ public class NavigationDisplayManager : IncaManager
 
     private Vector3 CovertToOurCoordinate(Vector3 point)
     {
-        Vector3 toObj = point - IncaData.PlayerPosition;            // A direction vector
+        Vector3 toObj = point - GGData.PlayerPosition;            // A direction vector
 
         Vector3 result = transform.position + (toObj * scale);
 

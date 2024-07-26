@@ -113,7 +113,7 @@ public class Enemy_Tree : DamagableEnemy
     {
         if (IsDead) return;
 
-        if (other.TryGetComponent<DetectedUserCar>(out DetectedUserCar car))
+        if (other.TryGetComponent<DetectedUser>(out DetectedUser car))
         {
             ChangeState(State.Fly);
             Player.Instance.TakeDamage(2);
@@ -145,7 +145,7 @@ public class Enemy_Tree : DamagableEnemy
             // If entity finished everything.
             if (entity.isFall) return;
 
-            float carDist = Vector3.Distance(entity.transform.position, IncaData.PlayerCarTransform.position);
+            float carDist = Vector3.Distance(entity.transform.position, IncaData.UserCarTransform.position);
 
             if (!entity.arrivedTargetLane && carDist <= entity.followDistance)
                 entity.ChangeState(State.Move);
@@ -169,9 +169,9 @@ public class Enemy_Tree : DamagableEnemy
             progress = 0;
 
             print("Enter Move");
-            print(IncaData.PlayerLaneIndex);
+            print(IncaData.UserCarLaneIndex);
 
-            targetPos = entity.transformByLaneIndex[IncaData.PlayerLaneIndex].position;
+            targetPos = entity.transformByLaneIndex[IncaData.UserCarLaneIndex].position;
 
             entity.lookAtPlayer.Look(true);
             entity.SetDefaultAnimation(Constants.Animation.ENEMY_ANIMATION_MOVE);

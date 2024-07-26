@@ -40,7 +40,7 @@ public class EnemySpawnPoint : MonoBehaviour
     {
         GameObject enemy = MemoryPool.Instance(MemoryPoolType.Enemy).ActivatePoolItem(enemyPrefab);
 
-        enemy.transform.SetParent(IncaData.PlayerCarTransform.transform);
+        enemy.transform.SetParent(IncaData.UserCarTransform.transform);
 
         enemy.transform.localPosition = Vector3.zero;
         enemy.transform.localRotation = Quaternion.identity;
