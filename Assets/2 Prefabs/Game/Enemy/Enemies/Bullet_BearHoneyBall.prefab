@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6060351667427897409}
   - component: {fileID: 5309953975707640312}
   - component: {fileID: 7974963298691959089}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -154,6 +154,8 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   audioStorage:
     audios: []
+  spawnEffectPrefab: {fileID: 0}
+  dieEffectPrefab: {fileID: 0}
   bounceCount: 3
   bounceProgressSpeed: 0.6
   hitPower: 50

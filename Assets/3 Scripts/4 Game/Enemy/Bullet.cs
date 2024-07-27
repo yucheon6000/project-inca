@@ -13,10 +13,10 @@ public class Bullet : NonDamagableEnemy
 
     protected virtual void OnEnable()
     {
-        dir = (IncaData.PlayerPosition - transform.position).normalized;
-        // Vector3 desiredVelocity = (IncaData.PlayerPosition - transform.position).normalized * 30;
+        dir = (GGData.PlayerPosition - transform.position).normalized;
+        // Vector3 desiredVelocity = (GGData.PlayerPosition - transform.position).normalized * 30;
         // dir = desiredVelocity;
-        transform.SetParent(IncaData.PlayerTransform);
+        transform.SetParent(GGData.PlayerTransform);
     }
 
     public virtual void Setup(Vector3 dir)
@@ -31,7 +31,7 @@ public class Bullet : NonDamagableEnemy
 
         // Vector3 steerForce = desiredVelocity - IncaData.PlayerVelocity;
 
-        dir = (IncaData.PlayerPosition - transform.position);
+        dir = (GGData.PlayerPosition - transform.position);
         dir.Normalize();
 
         transform.position += dir * moveSpeed * Time.deltaTime;
@@ -42,7 +42,7 @@ public class Bullet : NonDamagableEnemy
 
     protected bool hasReachedPlayer()
     {
-        return Vector3.Distance(IncaData.PlayerPosition, transform.position) <= 1;
+        return Vector3.Distance(GGData.PlayerPosition, transform.position) <= 1;
     }
 
     protected virtual void HitPlayer()

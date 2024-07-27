@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Inca;
 using UnityEngine;
 
-public class Enemy_Fly_FlyingState : State<Enemy_Fly>
+public class Enemy_Fly_FlyingState : StateMonoBehaviour<Enemy_Fly>
 {
     private Vector3 velocity;       // 속력
     private Vector3 acceleration;   // 가속도

@@ -8,7 +8,7 @@ public class Enemy_Fly : DamagableEnemy
     private StateMachine<Enemy_Fly> stateMachine;
 
     [SerializeField]
-    protected State<Enemy_Fly> flyingState;
+    protected StateMonoBehaviour<Enemy_Fly> flyingState;
 
     [SerializeField]
     private Transform modelTransform;
@@ -68,7 +68,7 @@ public class Enemy_Fly : DamagableEnemy
         }
         else
         {
-            transform.SetParent(IncaData.PlayerTransform);
+            transform.SetParent(GGData.PlayerTransform);
         }
 
         SetWanderPositionsToMeAndChildren();
@@ -107,7 +107,7 @@ public class Enemy_Fly : DamagableEnemy
 
     protected virtual void FixedUpdate()
     {
-        stateMachine.Execute();
+        stateMachine?.Execute();
     }
 
     public void HasReachedCurrentWanderPosition()
@@ -152,7 +152,7 @@ public class Enemy_Fly : DamagableEnemy
         }
 
         // Add player's local position.
-        result.Add(transform.parent.InverseTransformPoint(IncaData.PlayerPosition));
+        result.Add(transform.parent.InverseTransformPoint(GGData.PlayerPosition));
 
         return result;
     }
@@ -175,7 +175,10 @@ public class Enemy_Fly : DamagableEnemy
         if (isUsedByItself)
             DeactivateGameObject();
         else
+        {
             gameObject.SetActive(false);
+            SpawnEffect(dieEffectPrefab);
+        }
     }
 
     public void LookAt(Vector3 direction)

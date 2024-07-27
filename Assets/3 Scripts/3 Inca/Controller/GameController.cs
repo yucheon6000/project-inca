@@ -35,16 +35,21 @@ public abstract class GameController : MonoBehaviour
     [Header("Effects")]
     [SerializeField]
     protected Transform shootEffectSpawnTransform;
-    [SerializeField]
-    protected GameObject shootEffect;
-    [SerializeField]
-    protected GameObject hitEffect;
 
     [Header("Audios")]
     [SerializeField]
     private AudioSource audioSource;
     [SerializeField]
     private AudioClip shootAudioClip;
+
+    [Header("Weapon")]
+    [SerializeField]
+    protected List<WeaponInformation> weaponInformations;
+    [SerializeField]
+    protected WeaponInformation currentWeapon;
+    protected int weaponIndex = 0;
+    protected float shootTimer = 0;
+    protected bool isPressingShootButton = false;
 
     protected bool CheckTarget(Ray ray)
     {
@@ -97,10 +102,10 @@ public abstract class GameController : MonoBehaviour
 
     private void SpawnHitEffect()
     {
-        Instantiate(hitEffect, hitPoint, Quaternion.identity);
+        Instantiate(currentWeapon.HitEffectPrefab, hitPoint, Quaternion.identity);
     }
 
-    public void TriggerShoot()
+    public void TriggerShoot(int power)
     {
         SpawnShootEffect();
 
@@ -108,8 +113,7 @@ public abstract class GameController : MonoBehaviour
 
         if (target == null) return;
 
-        target.TakeDamage(1);
-        print("asdf");
+        target.TakeDamage(power);
 
         SpawnHitEffect();
     }

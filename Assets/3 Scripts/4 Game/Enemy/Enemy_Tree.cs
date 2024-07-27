@@ -1,32 +1,37 @@
-using System.Collections;
 using System.Collections.Generic;
-using Inca;
-using Unity.VisualScripting;
 using UnityEngine;
+using Inca;
 
 public class Enemy_Tree : DamagableEnemy
 {
+    public enum State { Idle = 0, Move, Fall, Fly }
+    [SerializeField]
+    private State currentState = State.Idle;
+    private Dictionary<State, IState<Enemy_Tree>> states;
+    private StateMachine<Enemy_Tree> stateMachine;
+
+    private Vector3 originPos;
+
+    // Move
+    [Space]
     [SerializeField]
     private float followDistance;
     [SerializeField]
-    private float attackDistance;
-
-    [Space]
-    [SerializeField]
     private float followTime;
-
-    [Space]
-    [SerializeField]
-    private float fallTime;
-    [SerializeField]
-    private AnimationCurve fallCurve;
-    private bool isFall = false;
-
-    [SerializeField]
-    private LookAtPlayer lookAtPlayer;
-
+    private bool arrivedTargetLane = false;
     [SerializeField]
     private List<Transform> transformByLaneIndex;
+
+    // Fall (Attack)
+    [Space]
+    [SerializeField]
+    private float attackDistance;
+    [SerializeField]
+    private float fallSpeed;
+    private bool isFall = false;        // is falling or finished falling
+
+    // Fly
+    [Space]
     [SerializeField]
     private Transform explosionTf;
     [SerializeField]
@@ -36,130 +41,217 @@ public class Enemy_Tree : DamagableEnemy
     [SerializeField]
     private float exMo = 1;
 
-    private Rigidbody rigidbody;
-
     [SerializeField]
-    private Vector3 dir = Vector3.zero;
+    private LookAtPlayer lookAtPlayer;
+    private Rigidbody rigidbody;
 
     protected override void Awake()
     {
         base.Awake();
         rigidbody = GetComponent<Rigidbody>();
+
+        states = new Dictionary<State, IState<Enemy_Tree>>
+        {
+            { State.Idle, new IdleState() },
+            { State.Move, new MoveState() },
+            { State.Fall, new FallState() },
+            { State.Fly, new FlyState() }
+        };
     }
 
     public override void Init(DetectedObject detectedObject = null)
     {
         base.Init(detectedObject);
 
+        currentState = State.Idle;
+
+        Vector3 rot = transform.rotation.eulerAngles;
+        transform.rotation = Quaternion.Euler(rot.x, rot.y, 0);
+
+        originPos = transform.position;
+        isFall = false;
+        arrivedTargetLane = false;
+
         rigidbody.isKinematic = true;
         rigidbody.useGravity = false;
-        state = EnemyState.Idle;
         rigidbody.velocity = Vector3.zero;
-        transform.rotation = Quaternion.Euler(0, 0, 0);
+
         lookAtPlayer.Look(true);
+
+        stateMachine = new StateMachine<Enemy_Tree>();
+        stateMachine.Setup(this, states[State.Idle]);
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (IsDead) return;
 
-        float dist = Vector3.Distance(transform.position, IncaData.PlayerPosition);
-
-        if (state == EnemyState.Idle && dist < followDistance)
-        {
-            state = EnemyState.Move;
-            lookAtPlayer.Look(true);
-            PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_MOVE);
-            StartCoroutine(MoveRoutine());
-        }
-
-        else if (state == EnemyState.Move && dist < attackDistance)
-        {
-            state = EnemyState.Attack;
-            lookAtPlayer.Look(false);
-            PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_IDLE);
-            StartCoroutine(FallRoutine());
-        }
-    }
-
-    private IEnumerator MoveRoutine()
-    {
-        float followTimer = 0;
-        float progress = 0;
-
-        Vector3 originPos = transform.position;
-        Vector3 targetPos = transformByLaneIndex[IncaData.PlayerLaneIndex].position;
-
-        WaitForFixedUpdate wait = new WaitForFixedUpdate();
-
-        while (progress < 1)
-        {
-            followTimer += Time.deltaTime;
-            progress = followTimer / followTime;
-
-            transform.position = Vector3.Lerp(originPos, targetPos, progress);
-
-            yield return wait;
-        }
-    }
-
-    private IEnumerator FallRoutine()
-    {
-        float fallTimer = 0;
-        float progress = 0;
-        isFall = true;
-        while (progress < 1)
-        {
-            WaitForFixedUpdate wait = new WaitForFixedUpdate();
-
-            fallTimer += Time.deltaTime;
-            progress = fallTimer / fallTime;
-
-            float angleZ = Mathf.Lerp(0, 90, fallCurve.Evaluate(progress));
-
-            transform.rotation = Quaternion.Euler(dir.x * angleZ, dir.y * angleZ, dir.z * angleZ);
-
-            yield return wait;
-        }
+        stateMachine?.Execute();
     }
 
     protected override void OnDeath()
     {
-        base.OnDeath();
-
-        state = EnemyState.Die;
+        lookAtPlayer.Look(false);
 
         if (isFall)
+            ChangeState(State.Fly);
+        else
         {
-            StopAllCoroutines();
-            PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_IDLE);
-
-            transform.rotation = Quaternion.Euler(dir.x * 90, dir.y * 90, dir.z * 90);
-            rigidbody.isKinematic = false;
-            rigidbody.useGravity = true;
-            rigidbody.AddExplosionForce(exFor, explosionTf.position, exRa, 1f);
+            PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_DIE);
+            Invoke(nameof(DeactivateGameObject), 5f);
         }
-
-        Invoke(nameof(DeactivateGameObject), 5f);
     }
 
+    public void ChangeState(State newState)
+    {
+        if (currentState == newState) return;
+        currentState = newState;
+        stateMachine.ChangeState(states[newState]);
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (state == EnemyState.Die || IsDead) return;
+        if (IsDead) return;
 
-        if (other.TryGetComponent<UserCar>(out UserCar car))
+        if (other.TryGetComponent<DetectedUser>(out DetectedUser car))
         {
-            ForceKill();
+            ChangeState(State.Fly);
             Player.Instance.TakeDamage(2);
         }
     }
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, followDistance);
         Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, followDistance);
+        Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackDistance);
+    }
+
+    private void OnDisable()
+    {
+        stateMachine = null;
+    }
+
+    private class IdleState : IState<Enemy_Tree>
+    {
+        public void Enter(Enemy_Tree entity)
+        {
+            entity.SetDefaultAnimation(Constants.Animation.ENEMY_ANIMATION_IDLE);
+        }
+
+        public void Execute(Enemy_Tree entity)
+        {
+            // If entity finished everything.
+            if (entity.isFall) return;
+
+            float carDist = Vector3.Distance(entity.transform.position, IncaData.UserCarTransform.position);
+
+            if (!entity.arrivedTargetLane && carDist <= entity.followDistance)
+                entity.ChangeState(State.Move);
+            else if (entity.arrivedTargetLane && carDist <= entity.attackDistance)
+                entity.ChangeState(State.Fall);
+        }
+
+        public void Exit(Enemy_Tree entity) { }
+    }
+
+    private class MoveState : IState<Enemy_Tree>
+    {
+        float followTimer = 0;
+        float progress = 0;
+
+        Vector3 targetPos;
+
+        public void Enter(Enemy_Tree entity)
+        {
+            followTimer = 0;
+            progress = 0;
+
+            print("Enter Move");
+            print(IncaData.UserCarLaneIndex);
+
+            targetPos = entity.transformByLaneIndex[IncaData.UserCarLaneIndex].position;
+
+            entity.lookAtPlayer.Look(true);
+            entity.SetDefaultAnimation(Constants.Animation.ENEMY_ANIMATION_MOVE);
+        }
+
+        public void Execute(Enemy_Tree entity)
+        {
+            followTimer += Time.fixedDeltaTime;
+            progress = followTimer / entity.followTime;
+
+            entity.transform.position = Vector3.Lerp(entity.originPos, targetPos, progress);
+
+            if (progress >= 1)
+                entity.ChangeState(State.Idle);
+        }
+
+
+        public void Exit(Enemy_Tree entity)
+        {
+            entity.arrivedTargetLane = true;
+            entity.lookAtPlayer.Look(false);
+        }
+    }
+
+    private class FallState : IState<Enemy_Tree>
+    {
+        float fallDegree = 0;
+
+        public void Enter(Enemy_Tree entity)
+        {
+            fallDegree = 0;
+            entity.isFall = true;
+            entity.lookAtPlayer.Look(false);
+
+            entity.SetDefaultAnimation(Constants.Animation.ENEMY_ANIMATION_IDLE);
+        }
+
+        public void Execute(Enemy_Tree entity)
+        {
+            float amount = entity.fallSpeed * Time.fixedDeltaTime;
+
+            entity.transform.Rotate(0, 0, amount);
+
+            fallDegree += amount;
+
+            if (fallDegree > 90f)
+                entity.ChangeState(State.Idle);
+        }
+
+
+        public void Exit(Enemy_Tree entity) { }
+    }
+
+    private class FlyState : IState<Enemy_Tree>
+    {
+        float flyTimer = 0;
+
+        public void Enter(Enemy_Tree entity)
+        {
+            flyTimer = 0;
+
+            Vector3 rot = entity.transform.localEulerAngles;
+            entity.transform.localEulerAngles = new Vector3(rot.x, rot.y, 90);
+
+            entity.rigidbody.isKinematic = false;
+            entity.rigidbody.useGravity = true;
+            entity.rigidbody.AddExplosionForce(entity.exFor, entity.explosionTf.position, entity.exRa, 1f);
+
+            entity.ForceKill();
+
+            entity.PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_IDLE);
+        }
+
+        public void Execute(Enemy_Tree entity)
+        {
+            flyTimer += Time.fixedDeltaTime;
+            if (flyTimer > 3f)
+                entity.DeactivateGameObject();
+        }
+
+        public void Exit(Enemy_Tree entity) { }
     }
 }

@@ -71,6 +71,9 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   audioStorage:
     audios: []
+  spawnEffectPrefab: {fileID: 0}
+  dieEffectPrefab: {fileID: 5880797563127281583, guid: 265d3a5ba69981a4698ceabcedf368b0,
+    type: 3}
   flyingState: {fileID: 7775751145822729777}
   modelTransform: {fileID: 9166289807722727846}
   wanderPositionIndex: 0
@@ -79,9 +82,11 @@ MonoBehaviour:
   wanderPositionRangeMin: {x: -3.4, y: 1.9, z: 11.05}
   wanderPositionRangeMax: {x: 5.32, y: 3.75, z: 72.68}
   flipY: 0
+  randomFlipY: 0
   isChild: 0
   children: []
   isUsedByItself: 0
+  usesCurrentPositionZAsRangeZ: 0
 --- !u!114 &7775751145822729777
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127,10 +132,86 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 9031311703557706136}
     m_Modifications:
+    - target: {fileID: 5358987655389593827, guid: 41e04faa14fb7a34e8b16750ec910fc3,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 22100000, guid: d88832e95231349479c23d788e2f64b0,
+        type: 2}
+    - target: {fileID: 5358987655396864801, guid: 41e04faa14fb7a34e8b16750ec910fc3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5358987655396864803, guid: 41e04faa14fb7a34e8b16750ec910fc3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5358987655396864805, guid: 41e04faa14fb7a34e8b16750ec910fc3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5358987655396864807, guid: 41e04faa14fb7a34e8b16750ec910fc3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5358987655396864809, guid: 41e04faa14fb7a34e8b16750ec910fc3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 5358987655396864811, guid: 41e04faa14fb7a34e8b16750ec910fc3,
         type: 3}
       propertyPath: m_Name
       value: Beez_Darkness
+      objectReference: {fileID: 0}
+    - target: {fileID: 5358987655396864811, guid: 41e04faa14fb7a34e8b16750ec910fc3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5358987655396864813, guid: 41e04faa14fb7a34e8b16750ec910fc3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5358987655396864815, guid: 41e04faa14fb7a34e8b16750ec910fc3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5358987655396864817, guid: 41e04faa14fb7a34e8b16750ec910fc3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5358987655396864819, guid: 41e04faa14fb7a34e8b16750ec910fc3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5358987655396864821, guid: 41e04faa14fb7a34e8b16750ec910fc3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5358987655396864823, guid: 41e04faa14fb7a34e8b16750ec910fc3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5358987655396864825, guid: 41e04faa14fb7a34e8b16750ec910fc3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5358987655396864827, guid: 41e04faa14fb7a34e8b16750ec910fc3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 5358987655397093131, guid: 41e04faa14fb7a34e8b16750ec910fc3,
         type: 3}

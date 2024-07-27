@@ -69,8 +69,10 @@ MonoBehaviour:
   initOnAwake: 0
   animator: {fileID: 7489703080148098984}
   audioSource: {fileID: 0}
-  hitAudioClip: {fileID: 0}
-  dieAudioClip: {fileID: 0}
+  audioStorage:
+    audios: []
+  spawnEffectPrefab: {fileID: 0}
+  dieEffectPrefab: {fileID: 0}
   moveSpeed: 5
   moveDistance: 50
   minScale: 0.5
@@ -107,7 +109,7 @@ GameObject:
   - component: {fileID: 7500266274515636714}
   - component: {fileID: 4301908527162401797}
   - component: {fileID: 797866720278007943}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -187,10 +189,86 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4828359874181052926}
     m_Modifications:
+    - target: {fileID: 1319869897736093958, guid: e69dd2af53627174a95874b916927ee9,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 22100000, guid: 7ca6b9c29898844bdb2ffbce68755a6e,
+        type: 2}
+    - target: {fileID: 1319869897745625762, guid: e69dd2af53627174a95874b916927ee9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1319869897745625764, guid: e69dd2af53627174a95874b916927ee9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1319869897745625766, guid: e69dd2af53627174a95874b916927ee9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1319869897745625792, guid: e69dd2af53627174a95874b916927ee9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1319869897745625796, guid: e69dd2af53627174a95874b916927ee9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1319869897745625798, guid: e69dd2af53627174a95874b916927ee9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1319869897745625802, guid: e69dd2af53627174a95874b916927ee9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1319869897745625804, guid: e69dd2af53627174a95874b916927ee9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1319869897745625806, guid: e69dd2af53627174a95874b916927ee9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1319869897745625808, guid: e69dd2af53627174a95874b916927ee9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1319869897745625816, guid: e69dd2af53627174a95874b916927ee9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1319869897745625818, guid: e69dd2af53627174a95874b916927ee9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1319869897745625820, guid: e69dd2af53627174a95874b916927ee9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 1319869897745625822, guid: e69dd2af53627174a95874b916927ee9,
         type: 3}
       propertyPath: m_Name
       value: Turnipa_Sweet
+      objectReference: {fileID: 0}
+    - target: {fileID: 1319869897745625822, guid: e69dd2af53627174a95874b916927ee9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 1319869897745657598, guid: e69dd2af53627174a95874b916927ee9,
         type: 3}

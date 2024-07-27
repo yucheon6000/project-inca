@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5595986598437234076}
   - component: {fileID: 1523989334122027273}
   - component: {fileID: -7721000145169682400}
-  m_Layer: 24
+  m_Layer: 15
   m_Name: Enemy_Flies
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -80,6 +80,8 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   audioStorage:
     audios: []
+  spawnEffectPrefab: {fileID: 0}
+  dieEffectPrefab: {fileID: 0}
   flies:
   - {fileID: 6615057629177407744}
   - {fileID: 5264404955383999023}

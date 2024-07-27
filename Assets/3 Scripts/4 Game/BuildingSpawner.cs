@@ -10,7 +10,7 @@ public class BuildingSpawner : MonoBehaviour
 
     private void Start()
     {
-        IncaDetectManager.AddOnTriggerEnterDetectedObject((DetectedObject obj, bool first) =>
+        IncaDetectManager.Instance.OnTriggerEnterDetectedObject.AddListener((DetectedObject obj, bool first) =>
         {
             print("EnterDetectedEnvironmentObject: " + obj.GUID.ToString() + ", " + first.ToString());
 
@@ -21,7 +21,7 @@ public class BuildingSpawner : MonoBehaviour
             }
         });
 
-        IncaDetectManager.AddOnTriggerExitDetectedObject((DetectedObject obj) =>
+        IncaDetectManager.Instance.OnTriggerExitDetectedObject.AddListener((DetectedObject obj) =>
         {
             print("ExitDetectedEnvironmentObject: " + obj.GUID.ToString());
         });

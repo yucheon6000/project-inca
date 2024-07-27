@@ -9,7 +9,7 @@ public class Car : MonoBehaviour
 {
     [Header("States")]
     [SerializeField]
-    private List<State<Car>> states = new List<State<Car>>();
+    private List<StateMonoBehaviour<Car>> states = new List<StateMonoBehaviour<Car>>();
     private StateMachine<Car> stateMachine = new StateMachine<Car>();
     private CarStates currentState = CarStates.Stop;
     public CarStates CurrentState => currentState;

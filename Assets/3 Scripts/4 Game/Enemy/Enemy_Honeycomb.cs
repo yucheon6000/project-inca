@@ -44,7 +44,7 @@ public class Enemy_Honeycomb : NonDamagableEnemy
         base.Attack();
 
         GameObject bullet = MemoryPool.Instance(MemoryPoolType.Enemy).ActivatePoolItem(beePrefab, transform.position);
-        bullet.transform.SetParent(IncaData.PlayerCarTransform);
+        bullet.transform.SetParent(IncaData.UserCarTransform);
         bullet.GetComponent<Enemy>().Init();
         shootTimer = 0;
     }

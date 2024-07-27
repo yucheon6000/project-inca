@@ -71,6 +71,8 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   audioStorage:
     audios: []
+  spawnEffectPrefab: {fileID: 0}
+  dieEffectPrefab: {fileID: 0}
   flyingState: {fileID: 7775751145822729777}
   modelTransform: {fileID: 3849388984681331749}
   wanderPositionIndex: 0
@@ -129,9 +131,65 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 9031311703557706136}
     m_Modifications:
+    - target: {fileID: 100000, guid: 70b2001f2fac3bd45a18981429f7f2ed, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 70b2001f2fac3bd45a18981429f7f2ed, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 70b2001f2fac3bd45a18981429f7f2ed, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 100006, guid: 70b2001f2fac3bd45a18981429f7f2ed, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 100008, guid: 70b2001f2fac3bd45a18981429f7f2ed, type: 3}
       propertyPath: m_Name
       value: Beez
+      objectReference: {fileID: 0}
+    - target: {fileID: 100008, guid: 70b2001f2fac3bd45a18981429f7f2ed, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 100010, guid: 70b2001f2fac3bd45a18981429f7f2ed, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 100012, guid: 70b2001f2fac3bd45a18981429f7f2ed, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 100014, guid: 70b2001f2fac3bd45a18981429f7f2ed, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 100016, guid: 70b2001f2fac3bd45a18981429f7f2ed, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 100018, guid: 70b2001f2fac3bd45a18981429f7f2ed, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 100020, guid: 70b2001f2fac3bd45a18981429f7f2ed, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 100022, guid: 70b2001f2fac3bd45a18981429f7f2ed, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 100024, guid: 70b2001f2fac3bd45a18981429f7f2ed, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 100026, guid: 70b2001f2fac3bd45a18981429f7f2ed, type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 400008, guid: 70b2001f2fac3bd45a18981429f7f2ed, type: 3}
       propertyPath: m_LocalScale.x

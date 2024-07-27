@@ -43,13 +43,13 @@ public class Bullet_BearHoneyBall : DamagableEnemy
 
         currentBounceCount = 0;
 
-        gameObject.transform.SetParent(IncaData.PlayerCarTransform);
-        transform.LookAt(IncaData.PlayerCarTransform);
+        gameObject.transform.SetParent(IncaData.UserCarTransform);
+        transform.LookAt(IncaData.UserCarTransform);
 
         initialY = transform.localPosition.y;
         initialPosition = transform.localPosition;
 
-        Vector3 userPos = transform.parent.InverseTransformPoint(IncaData.PlayerPosition);
+        Vector3 userPos = transform.parent.InverseTransformPoint(GGData.PlayerPosition);
         finalY = userPos.y;
         finalPosition = userPos;
 
@@ -108,7 +108,7 @@ public class Bullet_BearHoneyBall : DamagableEnemy
         rigidbody.useGravity = true;
         rigidbody.isKinematic = false;
 
-        Vector3 dir = transform.position - IncaData.PlayerPosition;
+        Vector3 dir = transform.position - GGData.PlayerPosition;
         dir = dir.normalized * 4 + Random.onUnitSphere * 2;
         dir.Normalize();
         dir.y = Mathf.Abs(dir.y);

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CarStateGlobal : State<Car>
+public class CarStateGlobal : StateMonoBehaviour<Car>
 {
     public override void Enter(Car car) { }
 

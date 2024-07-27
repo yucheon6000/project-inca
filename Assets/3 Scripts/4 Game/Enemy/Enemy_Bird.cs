@@ -39,14 +39,14 @@ public class Enemy_Bird : DamagableEnemy
 
     public override void Init(DetectedObject detectedObject = null)
     {
+        Vector3 startPos = originLocalPosition;
+        startPos.x = Random.Range(minLocalX, minLocalX + ((maxLocalX - minLocalX) / 2));
+        transform.localPosition = startPos;
+
         base.Init(detectedObject);
 
         rigidbody.isKinematic = true;
         rigidbody.useGravity = false;
-
-        Vector3 startPos = originLocalPosition;
-        startPos.x = Random.Range(minLocalX, minLocalX + ((maxLocalX - minLocalX) / 2));
-        transform.localPosition = startPos;
 
         attackTimer = 0;
         maxY = transform.localPosition.y;
@@ -144,10 +144,10 @@ public class Enemy_Bird : DamagableEnemy
     {
         base.Attack();
 
-        GameObject clone = Instantiate(bulletPrefab, bulletSpawnTransform.transform.position, Quaternion.LookRotation(IncaData.PlayerPosition));
+        GameObject clone = Instantiate(bulletPrefab, bulletSpawnTransform.transform.position, Quaternion.LookRotation(GGData.PlayerPosition));
 
         clone.GetComponent<Bullet>().SetAttack(status.CurrentAttack);
-        if (parent) clone.transform.SetParent(IncaData.PlayerTransform);
+        if (parent) clone.transform.SetParent(GGData.PlayerTransform);
 
         attackTimer = 0;
     }
