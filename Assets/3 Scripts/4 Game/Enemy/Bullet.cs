@@ -42,13 +42,13 @@ public class Bullet : NonDamagableEnemy
 
     protected bool hasReachedPlayer()
     {
-        return Vector3.Distance(GGData.PlayerPosition, transform.position) <= 1;
+        return Vector3.Distance(GGData.PlayerPosition, transform.position) <= 2;
     }
 
     protected virtual void HitPlayer()
     {
-        Player.Instance.TakeDamage(attack);
         // MemoryPool.Instance(MemoryPoolType.Enemy).DeactivatePoolItem(gameObject);
+        Player.Instance.TakeDamage(attack);
         Destroy(this.gameObject);
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Inca;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 
 public class Enemy_Fly : DamagableEnemy
@@ -78,6 +79,11 @@ public class Enemy_Fly : DamagableEnemy
         stateMachine = new StateMachine<Enemy_Fly>();
         stateMachine.Setup(this, flyingState);
 
+        Invoke(nameof(PlayAnimation), Random.Range(0.0f, 1.0f));
+    }
+
+    private void PlayAnimation()
+    {
         PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_MOVE);
     }
 
