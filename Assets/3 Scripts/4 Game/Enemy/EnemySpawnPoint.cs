@@ -57,20 +57,27 @@ public class EnemySpawnPoint : MonoBehaviour
 
     private void SpawnEnemyOnCar(DetectedObject detectedObject)
     {
-        if (detectedObject.ObjectType != DetectedObjectType.Car)
-            return;
+        if (detectedObject == null) return;
+        if (detectedObject.ObjectType != DetectedObjectType.Car) return;
 
         // The detected object already has an enemy.
         if (detectedObject.transform.GetComponentsInChildren<Enemy>().Length > 0) return;
 
-        GameObject clone = MemoryPool.Instance(MemoryPoolType.Enemy).ActivatePoolItem(enemyPrefab);
-        Vector3 pos = detectedObject.Position;
-        pos.y += detectedObject.Scale.y;
-        clone.transform.position = pos;
+        try
+        {
+            GameObject clone = MemoryPool.Instance(MemoryPoolType.Enemy).ActivatePoolItem(enemyPrefab);
+            Vector3 pos = detectedObject.Position;
+            pos.y += detectedObject.Scale.y;
+            clone.transform.position = pos;
 
-        clone.transform.SetParent(detectedObject.transform);
+            clone.transform.SetParent(detectedObject.transform);
 
-        clone.GetComponent<Enemy>().Init(detectedObject);
+            clone.GetComponent<Enemy>().Init(detectedObject);
+        }
+        catch (MissingReferenceException error)
+        {
+            print(detectedObject.gameObject);
+        }
     }
 
     private void OnDrawGizmos()

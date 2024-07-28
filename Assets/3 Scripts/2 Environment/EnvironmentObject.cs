@@ -44,5 +44,10 @@ namespace Environment
         {
             OnDisableEnvironmentObject.Invoke();
         }
+
+        private void OnDestroy()
+        {
+            OnDisableEnvironmentObject.Invoke();
+        }
     }
 }

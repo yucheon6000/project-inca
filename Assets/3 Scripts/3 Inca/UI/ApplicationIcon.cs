@@ -59,6 +59,9 @@ public class ApplicationIcon : DamagableEnemy
 
     public void CanSelect(bool value)
     {
+        return;
+        // !!!!!!! 수정 필요
+
         canSelect = value;
 
         Color c = spriteRenderer.color;

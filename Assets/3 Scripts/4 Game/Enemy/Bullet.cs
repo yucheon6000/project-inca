@@ -42,7 +42,7 @@ public class Bullet : NonDamagableEnemy
 
     protected bool hasReachedPlayer()
     {
-        return Vector3.Distance(GGData.PlayerPosition, transform.position) <= 2;
+        return Vector3.Distance(GGData.PlayerPosition, transform.position) <= 1;
     }
 
     protected virtual void HitPlayer()

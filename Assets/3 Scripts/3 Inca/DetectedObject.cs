@@ -28,9 +28,9 @@ namespace Inca
         private Transform originalTransform;
 
         public Vector3 Position
-            => (environmentObject != null) ? originalTransform.position : environmentObject.transform.position;
+            => (originalTransform != null) ? originalTransform.position : environmentObject.transform.position;
         public Quaternion Rotation
-            => (environmentObject != null) ? originalTransform.rotation : environmentObject.transform.rotation;
+            => (originalTransform != null) ? originalTransform.rotation : environmentObject.transform.rotation;
         public Vector3 Scale
             => environmentObject.ColliderSize;
 
