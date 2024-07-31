@@ -58,7 +58,7 @@ public class MouseBasedGameController : GameController
 
         if (isPressingShootButton && shootTimer >= currentWeapon.ShootDelay)
         {
-            TriggerShoot(currentWeapon.Power);
+            TriggerShoot(currentWeapon.WeaponInfoForTargeting.Power);
             shootTimer = 0;
         }
 
@@ -133,11 +133,26 @@ public class MouseBasedGameController : GameController
     protected override void SpawnShootEffect()
     {
         // Target position that the effect should look at
-        Vector3 targetPosition = target != null ? hitPoint : mouseWorldPosition;
+        Vector3 targetPosition = hasTarget ? hitPoint : mouseWorldPosition;
 
-        GameObject cloneEffect = Instantiate(currentWeapon.ProjectileEffectPrefab, shootEffectSpawnTransform.position, Quaternion.LookRotation(targetPosition - shootEffectSpawnTransform.position), GGData.PlayerTransform);
+        GameObject cloneEffect;
+        if (hasTarget)
+            cloneEffect = Instantiate(
+                currentWeapon.WeaponInfoForTargeting.ProjectilePrefab,
+                shootEffectSpawnTransform.position,
+                Quaternion.LookRotation(targetPosition - shootEffectSpawnTransform.position),
+                GGData.PlayerTransform
+            );
+        else
+            cloneEffect = Instantiate(
+                currentWeapon.WeaponInfoForNonTargeting.ProjectilePrefab,
+                shootEffectSpawnTransform.position,
+                Quaternion.LookRotation(targetPosition - shootEffectSpawnTransform.position),
+                GGData.PlayerTransform
+            );
 
-        // cloneEffect.transform.LookAt(targetPosition, Vector3.up);
+
+        cloneEffect.transform.LookAt(targetPosition, Vector3.up);
     }
 
     private void OnDrawGizmos()
@@ -146,7 +161,7 @@ public class MouseBasedGameController : GameController
         Gizmos.DrawLine(CameraPosition, CameraPosition + (dir * 100));
 
         Gizmos.color = Color.red;
-        if (target != null)
+        if (hasTarget)
             Gizmos.DrawSphere(hitPoint, 0.2f);
     }
 }
