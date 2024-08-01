@@ -27,10 +27,13 @@ public class Enemy_Honeycomb : NonDamagableEnemy
         return false;
     }
 
+    private void OnEnable()
+    {
+        Init();
+    }
+
     private void Update()
     {
-        PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_IDLE);
-
         if (IsDead) return;
 
         shootTimer += Time.deltaTime;

@@ -65,7 +65,6 @@ public class Enemy_Bird : DamagableEnemy
 
     private void PlayAttackAnimation()
     {
-        print("Play");
         PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_ATTACK);
     }
 
@@ -158,14 +157,18 @@ public class Enemy_Bird : DamagableEnemy
 
     protected override void OnDeath()
     {
-        base.OnDeath();
-
         onDeath.Invoke();
 
         rigidbody.isKinematic = false;
         rigidbody.useGravity = true;
 
         StopAllCoroutines();
-        Invoke(nameof(DeactivateGameObject), 2);
+
+        base.OnDeath();
+    }
+
+    protected override void OnDisappear()
+    {
+        DeactivateGameObject();
     }
 }

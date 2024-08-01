@@ -199,6 +199,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 3526078812748131877}
+    - targetCorrespondingSourceObject: {fileID: 555592587460610931, guid: daf9667e6d5fc4c55b1539895038088e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7912245807201675897}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: daf9667e6d5fc4c55b1539895038088e, type: 3}
 --- !u!4 &210454700617989566 stripped
@@ -1026,6 +1030,80 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5627027664052763624, guid: 5dd43f229df547e43a989008f7ebde36,
     type: 3}
   m_PrefabInstance: {fileID: 2582039029940316116}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2583595576037560721
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 210454700617989566}
+    m_Modifications:
+    - target: {fileID: 5627027664052763624, guid: 0f4165ea202b546e38148e0852d13ffc,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 5627027664052763624, guid: 0f4165ea202b546e38148e0852d13ffc,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5627027664052763624, guid: 0f4165ea202b546e38148e0852d13ffc,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -4.4946976
+      objectReference: {fileID: 0}
+    - target: {fileID: 5627027664052763624, guid: 0f4165ea202b546e38148e0852d13ffc,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5627027664052763624, guid: 0f4165ea202b546e38148e0852d13ffc,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5627027664052763624, guid: 0f4165ea202b546e38148e0852d13ffc,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5627027664052763624, guid: 0f4165ea202b546e38148e0852d13ffc,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5627027664052763624, guid: 0f4165ea202b546e38148e0852d13ffc,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5627027664052763624, guid: 0f4165ea202b546e38148e0852d13ffc,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5627027664052763624, guid: 0f4165ea202b546e38148e0852d13ffc,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7783810512809079512, guid: 0f4165ea202b546e38148e0852d13ffc,
+        type: 3}
+      propertyPath: m_Name
+      value: Enemy Spawn Point_Octopus
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0f4165ea202b546e38148e0852d13ffc, type: 3}
+--- !u!4 &7912245807201675897 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5627027664052763624, guid: 0f4165ea202b546e38148e0852d13ffc,
+    type: 3}
+  m_PrefabInstance: {fileID: 2583595576037560721}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2956172127712553222
 PrefabInstance:
@@ -1941,6 +2019,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy Spawn Point_Tree
       objectReference: {fileID: 0}
+    - target: {fileID: 7783810512809079512, guid: 480b90c65d041d04286e1863fd52411a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2766,6 +2849,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Enemy Spawn Point_Tree (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7783810512809079512, guid: 480b90c65d041d04286e1863fd52411a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

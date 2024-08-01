@@ -97,9 +97,15 @@ public class Enemy_HermitCrab : DamagableEnemy
             ChangeState(State.Fly);
         else
         {
+            Disappear();
             PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_DIE);
-            Invoke(nameof(DeactivateGameObject), 5f);
         }
+    }
+
+    protected override void OnDisappear()
+    {
+        SpawnEffect(dieEffectPrefab);
+        DeactivateGameObject();
     }
 
     public void ChangeState(State newState)

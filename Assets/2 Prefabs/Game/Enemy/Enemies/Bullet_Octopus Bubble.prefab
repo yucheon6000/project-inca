@@ -120,8 +120,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae662e9ba09c940798245bcffc268986, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 3
-  defaultHp: 3
+  maxHp: 10
+  defaultHp: 10
   currentHp: 0
   maxAttack: 0
   defaultAttack: 0
@@ -143,20 +143,40 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   audioStorage:
     audios: []
+  spawnEffectPrefab: {fileID: 0}
+  dieEffectPrefab: {fileID: 5880797563127281583, guid: ee78651c8b1144723a6294d515e358cc,
+    type: 3}
+  useAppearEffect: 0
+  appearTransform: {fileID: 0}
+  appearScaleCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  appearTime: 0
+  useDisappearEffect: 0
+  disappearScaleCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  disappearTime: 0
   flyingState: {fileID: 4007100624492643721}
   modelTransform: {fileID: 7379200267893483017}
   wanderPositionIndex: 0
   currentWanderPosition: {x: 0, y: 0, z: 0}
   wanderPositionCount: 5
-  wanderPositionRangeMin: {x: -3.1, y: -0.01, z: 4.84}
-  wanderPositionRangeMax: {x: -1.43, y: 1.39, z: 23.1}
+  wanderPositionRangeMin: {x: -2.82, y: 0.81, z: 6}
+  wanderPositionRangeMax: {x: 2.39, y: 3.34, z: 23.1}
   flipY: 0
   randomFlipY: 1
   isChild: 0
   children: []
   isUsedByItself: 1
   usesCurrentPositionZAsRangeZ: 1
-  rangeY: 1.4
+  rangeY: -1
   minMass: 0
   maxMoveSpeed: 2
   minInitialScale: 0.2
@@ -202,6 +222,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxSteerForce: 0.1
-  maxVelocity: 1
+  maxVelocity: 3
   mass: 10
   rotateSpeed: 0.05

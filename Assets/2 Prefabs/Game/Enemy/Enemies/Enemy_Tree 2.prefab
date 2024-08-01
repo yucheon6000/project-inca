@@ -141,6 +141,68 @@ MonoBehaviour:
     type: 3}
   dieEffectPrefab: {fileID: 5642766282230003982, guid: b5c8ca7ed10b61e499cce8ec3b6e2e4c,
     type: 3}
+  useAppearEffect: 1
+  appearTransform: {fileID: 7600273428235861298}
+  appearScaleCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  appearTime: 0.5
+  useDisappearEffect: 0
+  disappearScaleCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.06329315
+      outSlope: 0.06329315
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.32046235
+    - serializedVersion: 3
+      time: 0.5030323
+      value: 0.012664378
+      inSlope: -0.020579878
+      outSlope: 4.479052
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.24891634
+      outWeight: 0.11745457
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.5162734
+      outSlope: 0.5162734
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.25719902
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  disappearTime: 3
   currentState: 0
   followDistance: 100
   followTime: 1

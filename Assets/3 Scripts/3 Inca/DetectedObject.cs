@@ -123,9 +123,13 @@ namespace Inca
         {
             IsVisible(false);
             init = true;
-            // int chCount = transform.childCount;
-            // for (int i = chCount - 1; i >= 0; i--)
-            //     Destroy(transform.GetChild(i).gameObject);
+
+            int childCount = AvailableTransform.childCount;
+            for (int i = childCount - 1; i >= 0; i--)
+            {
+                Transform child = AvailableTransform.GetChild(i);
+                Destroy(child.gameObject);
+            }
         }
 
         private void OnDrawGizmos()
