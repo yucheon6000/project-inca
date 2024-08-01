@@ -92,6 +92,13 @@ public abstract class Enemy : Character
         PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_DIE);
     }
 
+    int defaultAnimationId = 1;
+    protected void SetDefaultAnimation(int animationId)
+    {
+        defaultAnimationId = animationId;
+        PlayAnimationByValue(animationId);
+    }
+
     int lastAnimationUpdateFrameCount = -1;
     Coroutine playDefaultAnimationRoutine = null;
     protected override void PlayAnimationByValue(int animationId)
@@ -112,16 +119,10 @@ public abstract class Enemy : Character
         // lastAnimationUpdateFrameCount = Time.frameCount;
     }
 
-    int defaultAnimationId = 1;
-    protected void SetDefaultAnimation(int animationId)
-    {
-        defaultAnimationId = animationId;
-        PlayAnimationByValue(animationId);
-    }
-
     private IEnumerator PlayDefaultAnimationRoutine()
     {
         yield return null;
+        print("defaultAnimationId: " + defaultAnimationId);
         PlayAnimationByValue(defaultAnimationId);
     }
 

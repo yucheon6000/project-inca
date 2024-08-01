@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2368593617881981161}
   - component: {fileID: 7800988432030510526}
   m_Layer: 15
-  m_Name: Enemy Spawn Point_Shotput
+  m_Name: Enemy Spawn Point_Honey Bear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,14 +45,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35c2c366c3ca30845bf4f85857145711, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 3337080805184279109, guid: e7f76dfa24b2a4df99151955405b039b,
+  enemyPrefab: {fileID: 7270748258497070902, guid: e822ce81a76664bbe8c82e92262bdac8,
     type: 3}
   gizmosIconName: 
   spawnsOwnPosition: 0
-  spawnsAsPlayerChildren: 0
-  localPositionInPlayer: {x: 0, y: 0, z: 0}
+  spawnsAsPlayerChildren: 1
+  localPositionInPlayer: {x: 0, y: 6.54, z: 35.41}
   localRotationInPlayer: {x: 0, y: 0, z: 0}
-  spawnsOnCars: 1
+  spawnsOnCars: 0
 --- !u!135 &7800988432030510526
 SphereCollider:
   m_ObjectHideFlags: 0

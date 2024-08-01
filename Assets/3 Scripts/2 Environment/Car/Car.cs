@@ -146,7 +146,9 @@ public class Car : MonoBehaviour
         if (currentLanePoint != null) return;
 
         if (other.TryGetComponent<LanePoint>(out LanePoint lanePoint))
+        {
             CurrentLanePoint = lanePoint;
+        }
     }
 
     /* Gizmo */

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Inca;
 using UnityEngine;
 
 public class Enemy_Bear : DamagableEnemy
@@ -18,13 +19,20 @@ public class Enemy_Bear : DamagableEnemy
         Init();
     }
 
+    public override void Init(DetectedObject detectedObject = null)
+    {
+        base.Init(detectedObject);
+        SetDefaultAnimation(Constants.Animation.ENEMY_ANIMATION_IDLE);
+    }
+
     private void Update()
     {
         if (IsDead) return;
 
-        PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_IDLE);
-
         shootTimer += Time.deltaTime;
+
+        // 공격 애니메이션 공격하는 시점말고, 공격 애니메이션 끝나는 시점에서 이 분기에서 참이 되어서
+        // 공격 안하는 경우 있음 (shootDelay를 좀 길게 주면 해결 됨)
         if (shootTimer >= shootDelay)
             PlayAttackAnimation();
     }

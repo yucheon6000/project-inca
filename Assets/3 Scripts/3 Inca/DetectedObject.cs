@@ -38,6 +38,10 @@ namespace Inca
 
         public UnityEvent OnHideDetectedObject { get; private set; } = new UnityEvent();
 
+        [SerializeField]
+        protected Transform availableTransform;
+        public Transform AvailableTransform => availableTransform;
+
         // 이거 왜 있는거지?
         private Collider[] colliders;
 

@@ -16,6 +16,10 @@ public class EnemySpawnPoint : MonoBehaviour
     [SerializeField]
     private bool spawnsAsPlayerChildren = false;
     [SerializeField]
+    private Vector3 localPositionInPlayer = Vector3.zero;
+    [SerializeField]
+    private Vector3 localRotationInPlayer = Vector3.zero;
+    [SerializeField]
     private bool spawnsOnCars = false;
 
     private const string ENEMY_SPAWN_RANGE_TAG = "Game_Enemy Spawn Range";
@@ -42,8 +46,8 @@ public class EnemySpawnPoint : MonoBehaviour
 
         enemy.transform.SetParent(IncaData.UserCarTransform.transform);
 
-        enemy.transform.localPosition = Vector3.zero;
-        enemy.transform.localRotation = Quaternion.identity;
+        enemy.transform.localPosition = localPositionInPlayer;
+        enemy.transform.localRotation = Quaternion.Euler(localRotationInPlayer);
 
         enemy.GetComponent<Enemy>().Init();
     }
@@ -68,7 +72,7 @@ public class EnemySpawnPoint : MonoBehaviour
         pos.y += detectedObject.Scale.y;
         clone.transform.position = pos;
 
-        clone.transform.SetParent(detectedObject.transform);
+        clone.transform.SetParent(detectedObject.AvailableTransform);
 
         clone.GetComponent<Enemy>().Init(detectedObject);
     }
