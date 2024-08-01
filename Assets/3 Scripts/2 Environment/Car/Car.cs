@@ -7,6 +7,12 @@ public enum CarStates { Stop = 0, Drive, Global }
 
 public class Car : MonoBehaviour
 {
+    [Header("Model Prefabs")]
+    [SerializeField]
+    private Transform modelTransform;
+    [SerializeField]
+    private List<GameObject> models;
+
     [Header("States")]
     [SerializeField]
     private List<StateMonoBehaviour<Car>> states = new List<StateMonoBehaviour<Car>>();
@@ -84,6 +90,13 @@ public class Car : MonoBehaviour
             if (d == null) return 0;
             return d.CurrentMoveSpeed;
         }
+    }
+
+    private void Awake()
+    {
+        GameObject clone = Instantiate(models[UnityEngine.Random.Range(0, models.Count)], modelTransform);
+        clone.transform.localPosition = Vector3.zero;
+        clone.transform.localRotation = Quaternion.Euler(Vector3.zero);
     }
 
     private IEnumerator Start()

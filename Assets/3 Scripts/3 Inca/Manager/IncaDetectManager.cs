@@ -50,10 +50,14 @@ namespace Inca
         {
             DetectedUserObjects = detectedUserObjects;
 
-            foreach (var envObj in environmentObjectsBeforeInit)
-                EnterEnvironmentObject(envObj);
-
             init = true;
+
+            for (int i = 0; i < environmentObjectsBeforeInit.Count; ++i)
+            {
+                var envObj = environmentObjectsBeforeInit[i];
+                if (envObj != null)
+                    EnterEnvironmentObject(envObj);
+            }
         }
 
         public UnityEvent<DetectedObject, bool> OnTriggerEnterDetectedObject { get; private set; }
