@@ -51,7 +51,7 @@ public class Enemy_Bear : DamagableEnemy
         shootTimer = 0;
     }
 
-    public override int TakeDamage(int attckAmount)
+    public override float TakeDamage(float attckAmount)
     {
         hoenycomb.TakeDamage(attckAmount);
         shootTimer = Mathf.Min(shootTimer, shootDelay - 1f);

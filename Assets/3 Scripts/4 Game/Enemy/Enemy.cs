@@ -95,9 +95,9 @@ public abstract class Enemy : Character
         PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_ATTACK);
     }
 
-    public override int TakeDamage(int attckAmount)
+    public override float TakeDamage(float attckAmount)
     {
-        int curHp = base.TakeDamage(attckAmount);
+        float curHp = base.TakeDamage(attckAmount);
 
         if (IsDead)
         {

@@ -74,7 +74,10 @@ public class Enemy_Bird : DamagableEnemy
 
         GameObject clone = Instantiate(bulletPrefab, bulletSpawnTransform.transform.position, Quaternion.LookRotation(GGData.PlayerPosition));
 
-        clone.GetComponent<Bullet>().SetAttack(status.CurrentAttack);
+        Bullet bullet = clone.GetComponent<Bullet>();
+        bullet.Init();
+        bullet.SetAttack(status.CurrentAttack);
+
         if (parent) clone.transform.SetParent(GGData.PlayerTransform);
 
         attackTimer = 0;
@@ -144,15 +147,6 @@ public class Enemy_Bird : DamagableEnemy
         yield return new WaitForSeconds(nextMoveDelayTime);
 
         StartCoroutine(UpdateMove());
-    }
-
-    public override int TakeDamage(int attckAmount)
-    {
-        int curHp = base.TakeDamage(attckAmount);
-
-        if (IsDead) return curHp;
-
-        return curHp;
     }
 
     protected override void OnDeath()

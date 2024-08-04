@@ -58,9 +58,4 @@ public class Enemy_Octopus : DamagableEnemy
 
         bubbleAttackTimer = 0;
     }
-
-    public override int TakeDamage(int attckAmount)
-    {
-        return base.TakeDamage(attckAmount);
-    }
 }

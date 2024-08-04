@@ -70,7 +70,7 @@ public class ApplicationIcon : DamagableEnemy
         else spriteRenderer.color = new Color(45f / 255, 45f / 255, 45f / 255, c.a);
     }
 
-    public override int TakeDamage(int attckAmount)
+    public override float TakeDamage(float attckAmount)
     {
         if (!canSelect) return 0;
 
