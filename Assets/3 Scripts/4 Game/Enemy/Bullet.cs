@@ -9,14 +9,14 @@ public class Bullet : NonDamagableEnemy
     protected float moveSpeed;
     protected Vector3 dir;
 
-    protected int attack;
+    protected float attack;
 
     protected virtual void OnEnable()
     {
-        dir = (IncaData.PlayerPosition - transform.position).normalized;
-        // Vector3 desiredVelocity = (IncaData.PlayerPosition - transform.position).normalized * 30;
+        dir = (GGData.PlayerPosition - transform.position).normalized;
+        // Vector3 desiredVelocity = (GGData.PlayerPosition - transform.position).normalized * 30;
         // dir = desiredVelocity;
-        transform.SetParent(IncaData.PlayerTransform);
+        transform.SetParent(GGData.PlayerTransform);
     }
 
     public virtual void Setup(Vector3 dir)
@@ -24,14 +24,14 @@ public class Bullet : NonDamagableEnemy
         this.dir = dir.normalized;
     }
 
-    public void SetAttack(int attack) => this.attack = attack;
+    public void SetAttack(float attack) => Status.SetAttack(attack);
 
     protected virtual void FixedUpdate()
     {
 
         // Vector3 steerForce = desiredVelocity - IncaData.PlayerVelocity;
 
-        dir = (IncaData.PlayerPosition - transform.position);
+        dir = (GGData.PlayerPosition - transform.position);
         dir.Normalize();
 
         transform.position += dir * moveSpeed * Time.deltaTime;
@@ -42,13 +42,13 @@ public class Bullet : NonDamagableEnemy
 
     protected bool hasReachedPlayer()
     {
-        return Vector3.Distance(IncaData.PlayerPosition, transform.position) <= 1;
+        return Vector3.Distance(GGData.PlayerPosition, transform.position) <= 1;
     }
 
     protected virtual void HitPlayer()
     {
-        Player.Instance.TakeDamage(attack);
         // MemoryPool.Instance(MemoryPoolType.Enemy).DeactivatePoolItem(gameObject);
+        Player.Instance.TakeDamage(attack);
         Destroy(this.gameObject);
     }
 }

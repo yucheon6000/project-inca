@@ -13,7 +13,7 @@ public class TrafficLightActionTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent<Car>(out Car car) && car.transform == IncaData.PlayerCarTransform)
+        if (other.TryGetComponent<Car>(out Car car) && car.transform == IncaData.UserCarTransform)
             targetTrafficLight.SetPhaseIndex(targetPhaseIndex);
     }
 }

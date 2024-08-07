@@ -39,14 +39,14 @@ public class Enemy_Bird : DamagableEnemy
 
     public override void Init(DetectedObject detectedObject = null)
     {
+        Vector3 startPos = originLocalPosition;
+        startPos.x = Random.Range(minLocalX, minLocalX + ((maxLocalX - minLocalX) / 2));
+        transform.localPosition = startPos;
+
         base.Init(detectedObject);
 
         rigidbody.isKinematic = true;
         rigidbody.useGravity = false;
-
-        Vector3 startPos = originLocalPosition;
-        startPos.x = Random.Range(minLocalX, minLocalX + ((maxLocalX - minLocalX) / 2));
-        transform.localPosition = startPos;
 
         attackTimer = 0;
         maxY = transform.localPosition.y;
@@ -60,11 +60,27 @@ public class Enemy_Bird : DamagableEnemy
 
         attackTimer += Time.deltaTime;
         if (attackTimer > attackTime)
-        {
-            Attack();
-            attackTimer = 0;
-            animator.Play("Attack");
-        }
+            PlayAttackAnimation();
+    }
+
+    private void PlayAttackAnimation()
+    {
+        PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_ATTACK);
+    }
+
+    public override void Attack()
+    {
+        base.Attack();
+
+        GameObject clone = Instantiate(bulletPrefab, bulletSpawnTransform.transform.position, Quaternion.LookRotation(GGData.PlayerPosition));
+
+        Bullet bullet = clone.GetComponent<Bullet>();
+        bullet.Init();
+        bullet.SetAttack(status.CurrentAttack);
+
+        if (parent) clone.transform.SetParent(GGData.PlayerTransform);
+
+        attackTimer = 0;
     }
 
     private int currentMoveDirection = 1;
@@ -89,7 +105,7 @@ public class Enemy_Bird : DamagableEnemy
     public bool parent = true;
     private IEnumerator UpdateMove()
     {
-        animator.SetInteger("animation", 2);
+        PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_MOVE);
 
         float moveTimer = 0;
 
@@ -126,43 +142,27 @@ public class Enemy_Bird : DamagableEnemy
 
         currentMoveDirection *= -1;
 
-        animator.SetInteger("animation", 1);
+        PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_IDLE);
 
         yield return new WaitForSeconds(nextMoveDelayTime);
 
         StartCoroutine(UpdateMove());
     }
 
-    public override int TakeDamage(int attckAmount)
-    {
-        int curHp = base.TakeDamage(attckAmount);
-
-        if (IsDead) return curHp;
-
-        animator.Play("Damage");
-
-        return curHp;
-    }
-
-    public void Attack()
-    {
-        GameObject clone = Instantiate(bulletPrefab, bulletSpawnTransform.transform.position, Quaternion.LookRotation(IncaData.PlayerPosition));
-        clone.GetComponent<Bullet>().SetAttack(status.CurrentAttack);
-        if (parent) clone.transform.SetParent(IncaData.PlayerTransform);
-    }
-
     protected override void OnDeath()
     {
-        base.OnDeath();
-
         onDeath.Invoke();
-
-        animator.SetInteger("animation", 5);
 
         rigidbody.isKinematic = false;
         rigidbody.useGravity = true;
 
         StopAllCoroutines();
-        Invoke(nameof(DeactivateGameObject), 2);
+
+        base.OnDeath();
+    }
+
+    protected override void OnDisappear()
+    {
+        DeactivateGameObject();
     }
 }

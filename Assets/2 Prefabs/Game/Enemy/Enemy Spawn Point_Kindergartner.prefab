@@ -45,10 +45,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35c2c366c3ca30845bf4f85857145711, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 1614773092991764280, guid: c8757bbb5b42945ffa1d3cf43a943236,
+  enemyPrefab: {fileID: 1614773092991764280, guid: ba3ac30a2b3c84e31bad52e4af3c30ee,
     type: 3}
+  gizmosIconName: 
   spawnsOwnPosition: 1
   spawnsAsPlayerChildren: 0
+  localPositionInPlayer: {x: 0, y: 0, z: 0}
+  localRotationInPlayer: {x: 0, y: 0, z: 0}
   spawnsOnCars: 0
 --- !u!135 &7800988432030510526
 SphereCollider:

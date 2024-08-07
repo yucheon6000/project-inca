@@ -5,11 +5,11 @@ using UnityEngine;
 public class StateMachine<T> where T : class
 {
     private T ownerEntity;
-    private State<T> currentState;
-    private State<T> previousState;
-    private State<T> globalState;
+    private IState<T> currentState;
+    private IState<T> previousState;
+    private IState<T> globalState;
 
-    public void Setup(T owner, State<T> entryState)
+    public void Setup(T owner, IState<T> entryState)
     {
         ownerEntity = owner;
         currentState = null;
@@ -25,7 +25,7 @@ public class StateMachine<T> where T : class
         currentState?.Execute(ownerEntity);
     }
 
-    public void ChangeState(State<T> newState)
+    public void ChangeState(IState<T> newState)
     {
         if (newState == null) return;
 
@@ -39,7 +39,7 @@ public class StateMachine<T> where T : class
         currentState.Enter(ownerEntity);
     }
 
-    public void SetGlobalState(State<T> newState)
+    public void SetGlobalState(IState<T> newState)
     {
         globalState = newState;
     }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Inca;
 using UnityEngine;
 
-public class CarStateDrive : State<Car>
+public class CarStateDrive : StateMonoBehaviour<Car>
 {
     [SerializeField]
     private float originalMoveSpeed;
@@ -168,13 +168,14 @@ public class CarStateDrive : State<Car>
         moveDirection = (car.NextLanePoint.Position - transform.position).normalized;
 
         Vector3 pos = Vector3.MoveTowards(transform.position, car.NextLanePoint.Position, currentMoveSpeed * Time.fixedDeltaTime);
+        // Vector3 pos = transform.position + (car.NextLanePoint.Position - transform.position).normalized * currentMoveSpeed * Time.fixedDeltaTime;
         Quaternion rot = Quaternion.Slerp(
               transform.rotation, Quaternion.LookRotation(car.NextLanePoint.Position - car.CurrentLanePoint.Position), Time.fixedDeltaTime * rotateSpeed
         );
 
         transform.SetPositionAndRotation(pos, rot);
 
-        IncaDetectManager.Instance.UpdateDetectedMyCar();
+        //IncaDetectManager.Instance.UpdateDetectedMyCar();
     }
 
     public override void Exit(Car car) { }

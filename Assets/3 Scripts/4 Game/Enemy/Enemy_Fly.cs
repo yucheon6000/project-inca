@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Inca;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 
 public class Enemy_Fly : DamagableEnemy
@@ -8,7 +9,7 @@ public class Enemy_Fly : DamagableEnemy
     private StateMachine<Enemy_Fly> stateMachine;
 
     [SerializeField]
-    protected State<Enemy_Fly> flyingState;
+    protected StateMonoBehaviour<Enemy_Fly> flyingState;
 
     [SerializeField]
     private Transform modelTransform;
@@ -25,9 +26,9 @@ public class Enemy_Fly : DamagableEnemy
     [SerializeField]
     private int wanderPositionCount = 5;
     [SerializeField]
-    private Vector3 wanderPositionRangeMin;     // Local position
+    protected Vector3 wanderPositionRangeMin;     // Local position
     [SerializeField]
-    private Vector3 wanderPositionRangeMax;     // Local position
+    protected Vector3 wanderPositionRangeMax;     // Local position
     [SerializeField]
     private bool flipY = false;
     [SerializeField]
@@ -68,7 +69,7 @@ public class Enemy_Fly : DamagableEnemy
         }
         else
         {
-            transform.SetParent(IncaData.PlayerTransform);
+            transform.SetParent(GGData.PlayerTransform);
         }
 
         SetWanderPositionsToMeAndChildren();
@@ -78,8 +79,12 @@ public class Enemy_Fly : DamagableEnemy
         stateMachine = new StateMachine<Enemy_Fly>();
         stateMachine.Setup(this, flyingState);
 
-        if (animator)
-            animator.SetInteger("animation", 2);
+        Invoke(nameof(PlayAnimation), Random.Range(0.0f, 1.0f));
+    }
+
+    private void PlayAnimation()
+    {
+        PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_MOVE);
     }
 
     private void SetWanderPositionsToMeAndChildren()
@@ -108,7 +113,7 @@ public class Enemy_Fly : DamagableEnemy
 
     protected virtual void FixedUpdate()
     {
-        stateMachine.Execute();
+        stateMachine?.Execute();
     }
 
     public void HasReachedCurrentWanderPosition()
@@ -153,7 +158,7 @@ public class Enemy_Fly : DamagableEnemy
         }
 
         // Add player's local position.
-        result.Add(transform.parent.InverseTransformPoint(IncaData.PlayerPosition));
+        result.Add(transform.parent.InverseTransformPoint(GGData.PlayerPosition));
 
         return result;
     }
@@ -176,7 +181,10 @@ public class Enemy_Fly : DamagableEnemy
         if (isUsedByItself)
             DeactivateGameObject();
         else
+        {
             gameObject.SetActive(false);
+            SpawnEffect(dieEffectPrefab);
+        }
     }
 
     public void LookAt(Vector3 direction)

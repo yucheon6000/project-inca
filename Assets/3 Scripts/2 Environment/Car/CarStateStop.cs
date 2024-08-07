@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CarStateStop : State<Car>
+public class CarStateStop : StateMonoBehaviour<Car>
 {
     [SerializeField]
     private float startDriveWaitTime;

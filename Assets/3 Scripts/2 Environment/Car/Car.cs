@@ -7,9 +7,15 @@ public enum CarStates { Stop = 0, Drive, Global }
 
 public class Car : MonoBehaviour
 {
+    [Header("Model Prefabs")]
+    [SerializeField]
+    private Transform modelTransform;
+    [SerializeField]
+    private List<GameObject> models;
+
     [Header("States")]
     [SerializeField]
-    private List<State<Car>> states = new List<State<Car>>();
+    private List<StateMonoBehaviour<Car>> states = new List<StateMonoBehaviour<Car>>();
     private StateMachine<Car> stateMachine = new StateMachine<Car>();
     private CarStates currentState = CarStates.Stop;
     public CarStates CurrentState => currentState;
@@ -86,6 +92,13 @@ public class Car : MonoBehaviour
         }
     }
 
+    private void Awake()
+    {
+        GameObject clone = Instantiate(models[UnityEngine.Random.Range(0, models.Count)], modelTransform);
+        clone.transform.localPosition = Vector3.zero;
+        clone.transform.localRotation = Quaternion.Euler(Vector3.zero);
+    }
+
     private IEnumerator Start()
     {
         while (true)
@@ -146,7 +159,9 @@ public class Car : MonoBehaviour
         if (currentLanePoint != null) return;
 
         if (other.TryGetComponent<LanePoint>(out LanePoint lanePoint))
+        {
             CurrentLanePoint = lanePoint;
+        }
     }
 
     /* Gizmo */

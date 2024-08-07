@@ -15,7 +15,7 @@ public class SampleEnemySpawner : MonoBehaviour
         foreach (DetectedObject detectedObject in detectedObjects)
             SpawnEnemy(detectedObject);
 
-        IncaDetectManager.AddOnTriggerEnterDetectedObject((DetectedObject detectedObject, bool first) =>
+        IncaDetectManager.Instance.OnTriggerEnterDetectedObject.AddListener((DetectedObject detectedObject, bool first) =>
         {
             if (first) SpawnEnemy(detectedObject);
         });

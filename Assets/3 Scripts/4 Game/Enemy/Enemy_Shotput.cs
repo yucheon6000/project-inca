@@ -32,8 +32,6 @@ public class Enemy_Shotput : DamagableEnemy
         attackTime = Random.Range(attackTimeMin, attackTimeMax);
         attackTimer = 0;
 
-        animator.SetInteger("animation", 1);
-
         onInit.Invoke();
     }
 
@@ -41,45 +39,38 @@ public class Enemy_Shotput : DamagableEnemy
     {
         if (IsDead) return;
 
-        transform.LookAt(IncaData.PlayerPosition, Vector3.up);
+        transform.LookAt(GGData.PlayerPosition, Vector3.up);
 
-        if (Vector3.Distance(transform.position, IncaData.PlayerPosition) > attackDistance) return;
+        if (Vector3.Distance(transform.position, GGData.PlayerPosition) > attackDistance) return;
 
         attackTimer += Time.deltaTime;
         if (attackTimer > attackTime)
-        {
-            attackTime = Random.Range(attackTimeMin, attackTimeMax);
-            attackTimer = 0;
-            animator.Play("Attack");
-            Attack();
-        }
+            PlayAttackAnimation();
     }
 
-    public void Attack()
+    private void PlayAttackAnimation()
     {
+        PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_ATTACK);
+    }
+
+    public override void Attack()
+    {
+        base.Attack();
+
         if (IsDead) return;
 
         GameObject bulletClone = MemoryPool.Instance(MemoryPoolType.Enemy).ActivatePoolItem(bulletPrefab);
-        bulletClone.transform.SetPositionAndRotation(transform.position, Quaternion.LookRotation(IncaData.PlayerPosition));
-        Vector3 dir = (IncaData.PlayerPosition - bulletSpawnTransform.position);
+        bulletClone.transform.SetPositionAndRotation(bulletSpawnTransform.position, Quaternion.LookRotation(GGData.PlayerPosition));
+        Vector3 dir = (GGData.PlayerPosition - bulletSpawnTransform.position);
         bulletClone.GetComponent<Bullet>().Setup(dir);
-    }
 
-    public override int TakeDamage(int attckAmount)
-    {
-        int curHp = base.TakeDamage(attckAmount);
-        if (IsDead) return curHp;
-
-        animator.Play("Damage");
-
-        return curHp;
+        attackTime = Random.Range(attackTimeMin, attackTimeMax);
+        attackTimer = 0;
     }
 
     protected override void OnDeath()
     {
         base.OnDeath();
-
-        animator.SetInteger("animation", 5);
 
         Invoke(nameof(DeactivateGameObject), 2);
     }

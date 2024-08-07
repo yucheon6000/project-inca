@@ -28,8 +28,6 @@ public class Enemy_Kindergartner : DamagableEnemy
 
     public override void Init(DetectedObject detectedObject = null)
     {
-        base.Init(detectedObject);
-
         lookAtPlayer.Look(false);
 
         Invoke(nameof(PlayAnimation), Random.Range(0f, 1f));
@@ -37,11 +35,13 @@ public class Enemy_Kindergartner : DamagableEnemy
         startPosition = transform.position;
 
         transform.localScale = Vector3.one * Random.Range(minScale, maxScale);
+
+        base.Init(detectedObject);
     }
 
     private void PlayAnimation()
     {
-        animator.SetInteger("animation", 2);
+        PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_MOVE);
     }
 
     private void FixedUpdate()
@@ -59,10 +59,12 @@ public class Enemy_Kindergartner : DamagableEnemy
         base.OnDeath();
 
         transform.rotation = Quaternion.Euler(0, Random.Range(150f, 210f), 0);
-        animator.SetInteger("animation", 5);
 
         lookAtPlayer.Look(true);
+    }
 
-        Invoke(nameof(DeactivateGameObject), 4);
+    protected override void OnDisappear()
+    {
+        DeactivateGameObject();
     }
 }

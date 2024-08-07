@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CarStateGlobal : State<Car>
+public class CarStateGlobal : StateMonoBehaviour<Car>
 {
     public override void Enter(Car car) { }
 
@@ -43,6 +43,13 @@ public class CarStateGlobal : State<Car>
 
             // If the car is me, continue.
             if (carMovement == this) continue;
+
+            // It the car is stopped, continue.
+            if (carMovement.CurrentLanePoint == null) continue;
+
+            // It the car is not on my line or my next line, continue.
+            if (car.CurrentLanePoint.LaneIndex != carMovement.CurrentLanePoint.LaneIndex
+                && car.NextLanePoint.LaneIndex != carMovement.CurrentLanePoint.LaneIndex) continue;
 
             else return true;
         }

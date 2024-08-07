@@ -7,51 +7,84 @@ using UnityEngine.Events;
 
 namespace Inca
 {
-    public enum DetectedObjectType { None = -1, Car = 100, Building = 200, Pedestrian = 300 }
+    public enum DetectedObjectType
+    {
+        None = -1,
+        UserHead = 0, UserHandRight, UserHandLeft,
+        Car = 100,
+        Building = 200,
+        Pedestrian = 300
+    }
 
     public class DetectedObject : MonoBehaviour
     {
         [SerializeField]
-        private EnvironmentObject environmentObject;
-        private Transform originalTransform;
+        protected EnvironmentObject environmentObject;
+        public EnvironmentObject EnvironmentObject => environmentObject;
 
         public Guid GUID => environmentObject.GUID;
-
         public DetectedObjectType ObjectType => (DetectedObjectType)environmentObject.ObjectType;
 
-        public Vector3 Position => originalTransform.position;
-        public Quaternion Rotation => originalTransform.rotation;
-        public Vector3 Scale => environmentObject.ColliderSize;
+        private Transform originalTransform;
+
+        public Vector3 Position
+            => (originalTransform != null) ? originalTransform.position : environmentObject.transform.position;
+        public Quaternion Rotation
+            => (originalTransform != null) ? originalTransform.rotation : environmentObject.transform.rotation;
+        public Vector3 Scale
+            => environmentObject.ColliderSize;
 
         private bool isVisible = false;     // = is being detected by Inca system, is in range of Inca system
 
+        public UnityEvent OnHideDetectedObject { get; private set; } = new UnityEvent();
+
+        [SerializeField]
+        protected Transform availableTransform;
+        public Transform AvailableTransform => availableTransform;
+
+        // 이거 왜 있는거지?
+        private Collider[] colliders;
+
+        private void Awake()
+        {
+            colliders = GetComponents<Collider>();
+        }
+
+        protected bool init = false;
         public void Initialize(EnvironmentObject environmentObject)
         {
             this.environmentObject = environmentObject;
-            this.originalTransform = environmentObject.transform;
+            originalTransform = environmentObject.transform;
             transform.position = Position;
             transform.rotation = Rotation;
 
-            onHideActions = new List<UnityAction>();
-            // environmentObject.RegisterOnDisableAction(() => IsVisible(false));
-            // transform.localScale = Scale;    // ??
+            OnHideDetectedObject = new UnityEvent();
+
+            init = true;
         }
 
         private void FixedUpdate()
         {
-            if (originalTransform == null || !originalTransform.gameObject.activeSelf || !originalTransform.gameObject.activeInHierarchy)
+            if (!init) return;
+
+            if (EnvironmentObjectIsVisible() == false)
             {
                 IsVisible(false);
-                MemoryPool.Instance(MemoryPoolType.DetectedObject).DeactivatePoolItem(this.gameObject);
                 return;
             }
 
-            UpdatePositionAndRotation();
+            SyncEnvObjPosAndRot();
         }
 
-        private void UpdatePositionAndRotation()
+        public virtual bool EnvironmentObjectIsVisible()
         {
-            if (!environmentObject) return;
+            return environmentObject != null && environmentObject.gameObject.activeSelf && environmentObject.gameObject.activeInHierarchy;
+        }
+
+        [ContextMenu("Synchronize the Environment Object")]
+        protected void SyncEnvObjPosAndRot()
+        {
+            if (environmentObject == null) return;
 
             transform.SetPositionAndRotation(Position, Rotation);
         }
@@ -69,77 +102,54 @@ namespace Inca
                 OnHide();
         }
 
-        public void OnHide()
+        private void OnHide()
         {
-            // Deactivate colliders
-            var colliders = GetComponents<Collider>();
+            // Deactivate all colliders
+            foreach (var col in colliders)
+                col.enabled = false;
 
-            if (colliders != null)
-                foreach (var col in colliders)
-                    col.enabled = false;
-
-            // call OnHide events
-            foreach (var action in onHideActions)
-                action.Invoke();
-        }
-
-        private List<UnityAction> onHideActions = new List<UnityAction>();
-        public void RegisterOnHideAction(UnityAction action)
-        {
-            onHideActions.Add(action);
+            // Invoke the event
+            OnHideDetectedObject.Invoke();
         }
 
         private void OnEnable()
         {
-            var colliders = GetComponents<Collider>();
-
-            if (colliders != null)
-                foreach (var col in colliders)
-                    col.enabled = true;
+            // Activate all colliders
+            foreach (var col in colliders)
+                col.enabled = true;
         }
 
         private void OnDisable()
         {
             IsVisible(false);
+            init = true;
 
-            int chCount = transform.childCount;
-            for (int i = chCount - 1; i >= 0; i--)
-                Destroy(transform.GetChild(i).gameObject);
-        }
-
-        /* Gizmos */
-        private void OnDrawGizmosSelected()
-        {
-            print("Self:" + originalTransform.gameObject.activeSelf.ToString());
-            print("Hi" + originalTransform.gameObject.activeInHierarchy.ToString());
+            int childCount = AvailableTransform.childCount;
+            for (int i = childCount - 1; i >= 0; i--)
+            {
+                Transform child = AvailableTransform.GetChild(i);
+                Destroy(child.gameObject);
+            }
         }
 
         private void OnDrawGizmos()
         {
             // if (!isVisible) return;
+            if (environmentObject == null) return;
 
-            if (ObjectType == DetectedObjectType.Car)
-                DrawMyGizmos(Color.green);
-
-            if (ObjectType == DetectedObjectType.Building)
-            {
-                if (IsVisible())
-                    DrawMyGizmos(Color.blue);
-                else
-                    DrawMyGizmos(Color.red);
-            }
+            DrawGizmos(Color.red);
         }
 
-        private void DrawMyGizmos(Color color)
+        private void DrawGizmos(Color color)
         {
             Gizmos.color = color;
 
             Vector3 c = originalTransform.TransformPoint(environmentObject.ColliderCenter);
-            Matrix4x4 rotationMatrix = Matrix4x4.TRS(c, originalTransform.rotation, originalTransform.lossyScale);
+            Matrix4x4 rotationMatrix = Matrix4x4.TRS(c, Rotation, Vector3.one);
             Gizmos.matrix = rotationMatrix;
 
             // Gizmos.DrawCube(Vector3.zero, environmentObject.ColliderSize);
-            Gizmos.DrawWireCube(Vector3.zero, environmentObject.ColliderSize);
+            Gizmos.DrawWireCube(Vector3.zero, Scale);
 
             Gizmos.matrix = Matrix4x4.zero;
         }

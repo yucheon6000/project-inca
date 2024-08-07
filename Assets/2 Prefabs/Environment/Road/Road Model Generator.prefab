@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &433418045602633441
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8911470669359289350}
+  - component: {fileID: 4727065319163996816}
+  m_Layer: 0
+  m_Name: Road Model Generator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8911470669359289350
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 433418045602633441}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 11.699973, y: -3.2007332, z: -235.64926}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4727065319163996816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 433418045602633441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d00ad183823e4253938cf4ca9595586, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roadModelPrefabs:
+  - {fileID: 636372922170278716, guid: 6532f9bfc59a19c4e803e2319c0563fd, type: 3}
+  - {fileID: 2941927735780062831, guid: f7a225be34cfe1e44a5be1757ca60eea, type: 3}
+  - {fileID: 8670052672166932795, guid: 6f95381f3d2c5a94b97a447fa63b9d48, type: 3}
+  - {fileID: 2659042319272488259, guid: faa5c6cacb636de4ba7123ab232bd4d9, type: 3}
+  - {fileID: 7851144864829038368, guid: 3548ff5cb6f898f47b5f42198f1f8b7d, type: 3}
+  - {fileID: 3117472724887031260, guid: 3d0b78702baabcf469582cb3d1ecd27b, type: 3}
+  - {fileID: 1138098685845274543, guid: 17bdd6289f75cb84d98521eb4448471e, type: 3}
+  - {fileID: 5250829094080157027, guid: f498e5ae827419e44b3a9b86fb7422f6, type: 3}
+  gap: {x: 0, y: 0, z: 3.6}
+  count: 138
+  startPosition: {x: 0, y: 0, z: 0}
+  scale: {x: 0.6, y: 0.6, z: 0.6}
+  rotation: {x: 0, y: -90, z: 0}

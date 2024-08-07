@@ -17,7 +17,7 @@ public class Enemy_Sample : DamagableEnemy
 
     void Update()
     {
-        transform.LookAt(IncaData.PlayerPosition, Vector3.up);
+        transform.LookAt(GGData.PlayerPosition, Vector3.up);
     }
 
     private IEnumerator ShootRoutine()

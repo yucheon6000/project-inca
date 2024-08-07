@@ -24,7 +24,7 @@ public class ViveControllerBasedGameController : GameController
     {
         ViveInput.AddListenerEx(HandRole.RightHand, ControllerButton.FullTrigger, ButtonEventType.Down, () =>
         {
-            TriggerShoot();
+            TriggerShoot(1);
         });
     }
 
@@ -67,8 +67,8 @@ public class ViveControllerBasedGameController : GameController
 
     protected override void SpawnShootEffect()
     {
-        GameObject cloneEffect = Instantiate(shootEffect, shootEffectSpawnTransform.position, Quaternion.identity);
-        cloneEffect.transform.rotation = controllerTransform.rotation;
+        // GameObject cloneEffect = Instantiate(currentWeapon.ProjectileEffectPrefab, shootEffectSpawnTransform.position, Quaternion.identity);
+        // cloneEffect.transform.rotation = controllerTransform.rotation;
     }
 
     // protected override void SpawnShootEffect()

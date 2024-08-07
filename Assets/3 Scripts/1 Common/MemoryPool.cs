@@ -90,6 +90,20 @@ public class MemoryPool : MonoBehaviour
         return result;
     }
 
+    public GameObject ActivatePoolItem(GameObject prefab, Vector3 position, Quaternion rotation)
+    {
+        if (pools.ContainsKey(prefab) == false)
+        {
+            AddMemeoryPoolBase(prefab, defaultIncreaesCount, transform);
+            return ActivatePoolItem(prefab);
+        }
+
+        GameObject result = pools[prefab].ActivatePoolItem(position, rotation);
+        cloneToPrefab.Add(result, prefab);
+
+        return result;
+    }
+
     public void DeactivatePoolItem(GameObject removeObject)
     {
         if (cloneToPrefab.ContainsKey(removeObject) == false)

@@ -1,6 +1,9 @@
 using Inca;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
+using Viveport;
+using System.Collections.Generic;
 
 public class MouseBasedGameController : GameController
 {
@@ -24,14 +27,52 @@ public class MouseBasedGameController : GameController
     float scaleTimer = 0;
 
     private Vector3 CameraPosition => targetCamera.transform.position;
-    private Vector3 PlayerPosition => IncaData.PlayerPosition;
+    private Vector3 PlayerPosition => GGData.PlayerPosition;
 
+    private UserActions userActions;
+    GameActions gameActions;
     private void Awake()
     {
-        targetCamera = GameObject.Find("Render Camera").GetComponent<Camera>();
+        targetCamera = Camera.main;
+
+        userActions = new UserActions();
+        userActions.UserContol.Enable();
+
+        // When user point.
+        userActions.UserContol.Point.performed += (val) =>
+        {
+            Vector2 mousePos = val.ReadValue<Vector2>();
+            OnMovePoint(mousePos);
+        };
+
+        // When the user trigger the button.
+        userActions.UserContol.Click.started += _ => { isPressingShootButton = true; };
+        userActions.UserContol.Click.canceled += _ => { isPressingShootButton = false; };
+
+        currentWeapon = weaponInformations[weaponIndex];
     }
 
-    private void FixedUpdate()
+    private void Update()
+    {
+        shootTimer += Time.deltaTime;
+
+        if (isPressingShootButton && shootTimer >= currentWeapon.ShootDelay)
+        {
+            TriggerShoot(currentWeapon.WeaponInfoForTargeting.Power);
+            shootTimer = 0;
+        }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            print("s weapon");
+            weaponIndex++;
+            if (weaponIndex == weaponInformations.Count) weaponIndex = 0;
+
+            currentWeapon = weaponInformations[weaponIndex];
+        }
+    }
+
+    private void OnMovePoint(Vector2 mousePosition)
     {
         // On or off debug mode
         if (mouseBallTransfrom.gameObject.activeSelf != debugMode)
@@ -41,7 +82,7 @@ public class MouseBasedGameController : GameController
         }
 
         // Update mouse positions
-        mouseScreenPosition = Input.mousePosition + new Vector3(0, 0, 10f);
+        mouseScreenPosition = new Vector3(mousePosition.x, mousePosition.y, 10f);
         mouseWorldPosition = targetCamera.ScreenToWorldPoint(mouseScreenPosition);
 
         // for Debug
@@ -82,33 +123,35 @@ public class MouseBasedGameController : GameController
         }
 
         // Update aim UI
-        rectTransform.position = Input.mousePosition;
+        rectTransform.position = mousePosition;
         scaleTimer += Time.fixedDeltaTime;
         rectTransform.localScale = Vector3.one * Mathf.Lerp(startScale, targetScale, sizeChangingCurve.Evaluate(scaleTimer / 0.5f));
         prevScale = rectTransform.localScale.x;
 
     }
 
-    private void Update()
-    {
-        // Check trigger button down
-        CheckTriggerDown();
-    }
-
-    private void CheckTriggerDown()
-    {
-        if (!Input.GetMouseButtonDown(0)) return;
-
-        TriggerShoot();
-    }
-
     protected override void SpawnShootEffect()
     {
-        GameObject cloneEffect = Instantiate(shootEffect, shootEffectSpawnTransform.position, Quaternion.identity);
-        cloneEffect.transform.SetParent(IncaData.PlayerTransform);
-
         // Target position that the effect should look at
-        Vector3 targetPosition = target != null ? hitPoint : mouseWorldPosition;
+        Vector3 targetPosition = hasTarget ? hitPoint : mouseWorldPosition;
+
+        GameObject cloneEffect;
+        if (hasTarget)
+            cloneEffect = Instantiate(
+                currentWeapon.WeaponInfoForTargeting.ProjectilePrefab,
+                shootEffectSpawnTransform.position,
+                Quaternion.LookRotation(targetPosition - shootEffectSpawnTransform.position),
+                GGData.PlayerTransform
+            );
+        else
+            cloneEffect = Instantiate(
+                currentWeapon.WeaponInfoForNonTargeting.ProjectilePrefab,
+                shootEffectSpawnTransform.position,
+                Quaternion.LookRotation(targetPosition - shootEffectSpawnTransform.position),
+                GGData.PlayerTransform
+            );
+
+
         cloneEffect.transform.LookAt(targetPosition, Vector3.up);
     }
 
@@ -118,7 +161,7 @@ public class MouseBasedGameController : GameController
         Gizmos.DrawLine(CameraPosition, CameraPosition + (dir * 100));
 
         Gizmos.color = Color.red;
-        if (target != null)
+        if (hasTarget)
             Gizmos.DrawSphere(hitPoint, 0.2f);
     }
 }

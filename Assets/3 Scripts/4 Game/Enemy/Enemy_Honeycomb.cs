@@ -17,6 +17,8 @@ public class Enemy_Honeycomb : NonDamagableEnemy
     [SerializeField]
     private Enemy[] hinges;
 
+    public override bool IsAlive => bear.IsDead && HingesAreFine();
+
     private bool HingesAreFine()
     {
         foreach (Enemy hinge in hinges)
@@ -25,19 +27,34 @@ public class Enemy_Honeycomb : NonDamagableEnemy
         return false;
     }
 
-    public override bool IsAlive => bear.IsDead && HingesAreFine();
+    private void OnEnable()
+    {
+        Init();
+    }
 
     private void Update()
     {
         if (IsDead) return;
 
         shootTimer += Time.deltaTime;
+
         if (shootTimer >= shootDelay)
-        {
-            GameObject bullet = MemoryPool.Instance(MemoryPoolType.Enemy).ActivatePoolItem(beePrefab, transform.position);
-            bullet.transform.SetParent(IncaData.PlayerCarTransform);
-            bullet.GetComponent<Enemy>().Init();
-            shootTimer = 0;
-        }
+            Attack();
+    }
+
+    public override void Attack()
+    {
+        base.Attack();
+
+        GameObject bullet = MemoryPool.Instance(MemoryPoolType.Enemy).ActivatePoolItem(beePrefab, transform.position);
+        bullet.transform.SetParent(IncaData.UserCarTransform);
+        bullet.GetComponent<Enemy>().Init();
+        shootTimer = 0;
+    }
+
+    public override float TakeDamage(float attckAmount)
+    {
+        PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_TAKE_DAMAGE);
+        return base.TakeDamage(attckAmount);
     }
 }

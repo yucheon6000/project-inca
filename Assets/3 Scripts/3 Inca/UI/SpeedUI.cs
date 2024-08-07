@@ -15,6 +15,6 @@ public class SpeedUI : MonoBehaviour
 
     void Update()
     {
-        speedText.text = $"{Mathf.FloorToInt(IncaData.Speed)} <size=60><i>km/h</i></size>";
+        speedText.text = $"{Mathf.FloorToInt(IncaData.UserCarSpeed)} <size=60><i>km/h</i></size>";
     }
 }

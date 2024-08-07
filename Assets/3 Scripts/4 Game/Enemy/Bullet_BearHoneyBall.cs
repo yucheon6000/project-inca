@@ -29,6 +29,9 @@ public class Bullet_BearHoneyBall : DamagableEnemy
     [SerializeField]
     private float hitPower = 10;
 
+    [SerializeField]
+    private Transform modelTransform;
+
     private Rigidbody rigidbody;
 
     protected override void Awake()
@@ -37,17 +40,19 @@ public class Bullet_BearHoneyBall : DamagableEnemy
         rigidbody = GetComponent<Rigidbody>();
     }
 
-    private void OnEnable()
+    public override void Init(DetectedObject detectedObject = null)
     {
+        base.Init(detectedObject);
+
         currentBounceCount = 0;
 
-        gameObject.transform.SetParent(IncaData.PlayerCarTransform);
-        transform.LookAt(IncaData.PlayerCarTransform);
+        gameObject.transform.SetParent(IncaData.UserCarTransform);
+        transform.LookAt(IncaData.UserCarTransform);
 
         initialY = transform.localPosition.y;
         initialPosition = transform.localPosition;
 
-        Vector3 userPos = transform.parent.InverseTransformPoint(IncaData.PlayerPosition);
+        Vector3 userPos = transform.parent.InverseTransformPoint(GGData.PlayerPosition);
         finalY = userPos.y;
         finalPosition = userPos;
 
@@ -92,6 +97,8 @@ public class Bullet_BearHoneyBall : DamagableEnemy
         Vector3 newPos = Vector3.Lerp(bounceStartZ, bounceEndZ, bounceProgress);
         newPos.y = s * (initialY - gapY * currentBounceCount);
 
+        transform.rotation.SetLookRotation(newPos - transform.localPosition);
+
         transform.localPosition = newPos;
     }
 
@@ -106,12 +113,14 @@ public class Bullet_BearHoneyBall : DamagableEnemy
         rigidbody.useGravity = true;
         rigidbody.isKinematic = false;
 
-        Vector3 dir = transform.position - IncaData.PlayerPosition;
+        Vector3 dir = transform.position - GGData.PlayerPosition;
         dir = dir.normalized * 4 + Random.onUnitSphere * 2;
         dir.Normalize();
         dir.y = Mathf.Abs(dir.y);
 
         rigidbody.AddForce(dir * hitPower, ForceMode.Impulse);
+
+        modelTransform.rotation.SetLookRotation(dir);
 
         Invoke(nameof(DeactivateGameObject), 3f);
     }

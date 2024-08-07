@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using Valve.VR.InteractionSystem;
 
 public enum RoadBlockDirection { North = 0, South = 180, East = 90, West = 270 }
@@ -34,6 +35,9 @@ public class RoadBlock : MonoBehaviour
     private List<Vector3> carPositions = null;
     private List<Quaternion> carRotations = null;
 
+    [SerializeField]
+    private UnityEvent onSetup = new UnityEvent();
+
     private void OnEnable()
     {
         if (carPositions == null)
@@ -63,6 +67,15 @@ public class RoadBlock : MonoBehaviour
         }
     }
 
+    public void Setup(RoadBlockDirection currentDirection)
+    {
+        this.currentDirection = currentDirection;
+        transform.rotation = Quaternion.Euler(0, (int)currentDirection, 0);
+        triggerEnter = false;
+
+        onSetup.Invoke();
+    }
+
     /// <summary>
     /// Find start lane points and end lane points. And it is added to each lists.
     /// It is a feature for only Inspector or only RoadBlockGenerator!
@@ -89,13 +102,6 @@ public class RoadBlock : MonoBehaviour
     public void Test_SetNextRoadBlock()
     {
         SetNextRoadBlock(test_nextRoadBlock);
-    }
-
-    public void Setup(RoadBlockDirection currentDirection)
-    {
-        this.currentDirection = currentDirection;
-        transform.rotation = Quaternion.Euler(0, (int)currentDirection, 0);
-        triggerEnter = false;
     }
 
     private bool triggerEnter = false;

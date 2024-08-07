@@ -31,20 +31,26 @@ public abstract class GameController : MonoBehaviour
     protected Vector3 hitPoint = Vector3.zero;
     [SerializeField]
     protected DamagableEnemy target = null;
+    protected bool hasTarget => target != null;
 
     [Header("Effects")]
     [SerializeField]
     protected Transform shootEffectSpawnTransform;
-    [SerializeField]
-    protected GameObject shootEffect;
-    [SerializeField]
-    protected GameObject hitEffect;
 
     [Header("Audios")]
     [SerializeField]
     private AudioSource audioSource;
     [SerializeField]
     private AudioClip shootAudioClip;
+
+    [Header("Weapon")]
+    [SerializeField]
+    protected List<WeaponInformation> weaponInformations;
+    [SerializeField]
+    protected WeaponInformation currentWeapon;
+    protected int weaponIndex = 0;
+    protected float shootTimer = 0;
+    protected bool isPressingShootButton = false;
 
     protected bool CheckTarget(Ray ray)
     {
@@ -73,7 +79,7 @@ public abstract class GameController : MonoBehaviour
         // If enemy is hitable
         if (enemy.IsInteractableType(InteractableType.Hitable))
         {
-            if (target == null)
+            if (hasTarget == false)
             {
                 enemy.OnHoverStart();
             }
@@ -97,19 +103,18 @@ public abstract class GameController : MonoBehaviour
 
     private void SpawnHitEffect()
     {
-        Instantiate(hitEffect, hitPoint, Quaternion.identity);
+        Instantiate(currentWeapon.WeaponInfoForTargeting.HitEffectPrefab, hitPoint, Quaternion.identity);
     }
 
-    public void TriggerShoot()
+    public void TriggerShoot(int power)
     {
         SpawnShootEffect();
 
         audioSource.PlayOneShot(shootAudioClip);
 
-        if (target == null) return;
+        if (hasTarget == false) return;
 
-        target.TakeDamage(1);
-        print("asdf");
+        target.TakeDamage(power);
 
         SpawnHitEffect();
     }

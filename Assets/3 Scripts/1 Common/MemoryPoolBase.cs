@@ -92,6 +92,15 @@ public class MemoryPoolBase
     /// </summary>
     public GameObject ActivatePoolItem(Vector3 position)
     {
+        return ActivatePoolItem(position, Quaternion.identity);
+    }
+
+    /// <summary>
+    /// Get a game object that you can use.
+    /// If you don't use the game object anymore, Call 'DeactivatePoolItem' method with the game object.
+    /// </summary>
+    public GameObject ActivatePoolItem(Vector3 position, Quaternion rotation)
+    {
         if (poolItems == null) return null;
 
         if (maxCount == activeCount) InstatiateObjects();
@@ -99,13 +108,16 @@ public class MemoryPoolBase
         foreach (var item in poolItems)
         {
             if (item == null) continue; ///!!!!!!
-            if (!item.isActive)
+
+            if (item.isActive == false)
             {
                 activeCount++;
 
                 item.isActive = true;
-                item.gameObject.transform.position = position;
                 item.gameObject.SetActive(true);
+
+                item.gameObject.transform.position = position;
+                item.gameObject.transform.rotation = rotation;
 
                 return item.gameObject;
             }
@@ -138,7 +150,7 @@ public class MemoryPoolBase
             }
         }
 
-        GameObject.Destroy(removeObject);
+        removeObject.SetActive(false);
     }
 
     private class PoolItem
