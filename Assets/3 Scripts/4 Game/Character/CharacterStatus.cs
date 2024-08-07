@@ -5,61 +5,84 @@ public class CharacterStatus : MonoBehaviour
 {
     [Header("Hp")]
     [SerializeField]
-    private int maxHp;
+    private float maxHp;
+    public float MaxHp => maxHp;
     [SerializeField]
-    private int defaultHp;
-    public int DefaultHp => defaultHp;
+    private float defaultHp;
+    public float DefaultHp => defaultHp;
     [SerializeField]
-    private int currentHp;
-    public int CurrentHp => currentHp;
+    private float currentHp;
+    public float CurrentHp => currentHp;
 
-    [Header("Attack")]
+    [Header("Attack Power")]
     [SerializeField]
-    private int maxAttack;
+    private float maxAttack;
     [SerializeField]
-    private int defaultAttack;
+    private float defaultAttack;
     [SerializeField]
-    private int currentAttack;
-    public int CurrentAttack => currentAttack;
+    private float currentAttack;
+    public float CurrentAttack => currentAttack;
 
-    /// <summary>OnChangeCurrentHp(int currentHp, int previousHp)</summary>
-    public UnityEvent<int, int> OnChangeCurrentHp { get; private set; }
-    /// <summary>OnChangeCurrentAttack(int currentAttack, int previousAttack)</summary>
-    public UnityEvent<int, int> OnChangeCurrentAttack { get; private set; }
+    /// <summary>OnChangeCurrentHp(float currentHp, float previousHp)</summary>
+    public UnityEvent<float, float> OnChangeCurrentHp { get; private set; }
+    /// <summary>OnChangeCurrentAttack(float currentAttack, float previousAttack)</summary>
+    public UnityEvent<float, float> OnChangeCurrentAttack { get; private set; }
     public UnityEvent OnDeath { get; private set; }
 
-    public void Init()
+    public virtual void Init()
     {
         // Set current values
         currentHp = Mathf.Min(maxHp, defaultHp);
         currentAttack = Mathf.Min(maxAttack, defaultAttack);
 
         // Reset UnityEvents.
-        OnChangeCurrentHp = new UnityEvent<int, int>();
-        OnChangeCurrentAttack = new UnityEvent<int, int>();
+        OnChangeCurrentHp = new UnityEvent<float, float>();
+        OnChangeCurrentAttack = new UnityEvent<float, float>();
         OnDeath = new UnityEvent();
     }
 
-    /// <returns>currentHp</returns>
-    public int IncreaseHp(int amout)
+    /// <returns>maxHp</returns>
+    public float IncreaseMaxHp(float amount)
     {
-        int prevHp = currentHp;
+        maxHp += amount;
 
-        currentHp = Mathf.Clamp(currentHp + amout, 0, maxHp);
+        return maxHp;
+    }
 
-        OnChangeCurrentHp.Invoke(currentHp, prevHp);
+    /// <returns>currentHp</returns>
+    public float IncreaseHp(float amout)
+    {
+        float prevHp = currentHp;
+
+        currentHp = Mathf.Min(currentHp + amout, maxHp);
 
         // When the character dies, call the character's method
-        if (currentHp == 0)
+        if (currentHp <= 0)
+        {
+            currentHp = 0;
             OnDeath.Invoke();
+        }
+
+        OnChangeCurrentHp.Invoke(currentHp, prevHp);
 
         return currentHp;
     }
 
-    /// <returns>currentAttack</returns>
-    public int IncreaseAttack(int amout)
+    public float SetAttack(float value)
     {
-        int prevAttack = currentAttack;
+        float prevAttack = currentAttack;
+
+        currentAttack = Mathf.Clamp(value, 0, maxAttack);
+
+        OnChangeCurrentAttack.Invoke(currentAttack, prevAttack);
+
+        return currentAttack;
+    }
+
+    /// <returns>currentAttack</returns>
+    public float IncreaseAttack(float amout)
+    {
+        float prevAttack = currentAttack;
 
         currentAttack = Mathf.Clamp(currentAttack + amout, 0, maxAttack);
 

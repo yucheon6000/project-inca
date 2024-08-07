@@ -44,6 +44,13 @@ public class CarStateGlobal : StateMonoBehaviour<Car>
             // If the car is me, continue.
             if (carMovement == this) continue;
 
+            // It the car is stopped, continue.
+            if (carMovement.CurrentLanePoint == null) continue;
+
+            // It the car is not on my line or my next line, continue.
+            if (car.CurrentLanePoint.LaneIndex != carMovement.CurrentLanePoint.LaneIndex
+                && car.NextLanePoint.LaneIndex != carMovement.CurrentLanePoint.LaneIndex) continue;
+
             else return true;
         }
 

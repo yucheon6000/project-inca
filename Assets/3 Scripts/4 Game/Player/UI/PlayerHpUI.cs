@@ -18,23 +18,24 @@ public class PlayerHpUI : MonoBehaviour
         OnChangeHp(playerStatus.CurrentHp, 0);
     }
 
-    public void OnChangeHp(int currentHp, int prevHp)
+    public void OnChangeHp(float currentHp, float prevHp)
     {
         UpdateUI(currentHp);
     }
 
-    private void UpdateUI(int hp)
+    private void UpdateUI(float hp)
     {
-        int lastIndex = hp - 1;
-        for (int i = 0; i < images.Count; ++i)
-        {
-            Image img = images[i];
+        // int lastIndex = hp - 1;
 
-            if (i > lastIndex)
-                img.color = new Color(0, 0, 0, 0);
-            else
-                img.color = new Color(1, 1, 1, 1);
+        // for (int i = 0; i < images.Count; ++i)
+        // {
+        //     Image img = images[i];
 
-        }
+        //     if (i > lastIndex)
+        //         img.color = new Color(0, 0, 0, 0);
+        //     else
+        //         img.color = new Color(1, 1, 1, 1);
+
+        // }
     }
 }

@@ -12,9 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3acfb3abbaef048d8bcf0299cce78b77, type: 3}
   m_Name: Star Weapon Information
   m_EditorClassIdentifier: 
-  power: 1
   shootDelay: 0.1
-  projectileEffectPrefab: {fileID: 279039152662636270, guid: bf7d87de5cf35fc4e8c1ea181ad99e89,
-    type: 3}
-  hitEffectPrefab: {fileID: 4704828273798450257, guid: a54fa295721614d4f87dde2fe5607ca1,
-    type: 3}
+  weaponInfoForTargeting:
+    power: 1
+    projectilePrefab: {fileID: 8076862317718561353, guid: b9241f8afd0a144279411f35d74396c2,
+      type: 3}
+    hitEffectPrefab: {fileID: 4704828273798450257, guid: a54fa295721614d4f87dde2fe5607ca1,
+      type: 3}
+  weaponInfoForNonTargeting:
+    power: 0
+    projectilePrefab: {fileID: 2137224036380465920, guid: 50e866b8b43d54afa89395c2c2a92720,
+      type: 3}
+    hitEffectPrefab: {fileID: 4704828273798450257, guid: a54fa295721614d4f87dde2fe5607ca1,
+      type: 3}

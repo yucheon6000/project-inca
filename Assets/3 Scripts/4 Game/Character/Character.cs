@@ -12,10 +12,10 @@ public abstract class Character : MonoBehaviour
     public virtual bool IsAlive => status.CurrentHp > 0;
     public virtual bool IsDead => !IsAlive;
 
-    /// <summary>OnChangeCurrentHp(int currentHp, int previousHp)</summary>
-    public UnityEvent<int, int> OnChangeCurrentHp => status.OnChangeCurrentHp;
-    /// <summary>OnChangeCurrentAttack(int currentAttack, int previousAttack)</summary>
-    public UnityEvent<int, int> OnChangeCurrentAttack => status.OnChangeCurrentAttack;
+    /// <summary>OnChangeCurrentHp(float currentHp, float previousHp)</summary>
+    public UnityEvent<float, float> OnChangeCurrentHp => status.OnChangeCurrentHp;
+    /// <summary>OnChangeCurrentAttack(float currentAttack, float previousAttack)</summary>
+    public UnityEvent<float, float> OnChangeCurrentAttack => status.OnChangeCurrentAttack;
     public UnityEvent OnDeathEvent => status.OnDeath;
 
     [SerializeField]
@@ -46,7 +46,7 @@ public abstract class Character : MonoBehaviour
         OnDeathEvent.AddListener(OnDeath);
     }
 
-    public virtual int TakeDamage(int damageAmount)
+    public virtual float TakeDamage(float damageAmount)
     {
         return status.IncreaseHp(-damageAmount);
     }

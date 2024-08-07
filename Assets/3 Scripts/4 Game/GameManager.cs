@@ -10,9 +10,17 @@ public class GameManager : MonoBehaviour
     private Transform player;
     public Transform Player => player;
 
+    [SerializeField]
+    private GameObject enemySapwnRange;
+
     private void Awake()
     {
         if (Instance == null)
             Instance = this;
+    }
+
+    private void StartGame()
+    {
+        enemySapwnRange.SetActive(true);
     }
 }

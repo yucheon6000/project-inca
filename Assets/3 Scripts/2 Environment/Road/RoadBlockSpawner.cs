@@ -31,6 +31,7 @@ public class RoadBlockSpawner : MonoBehaviour
             Debug.LogError("Please input your preseted RoadBlock.");
 
         currentRoadBlock = presetedRoadBlock;
+        currentRoadBlock.Setup(RoadBlockDirection.North);
     }
 
     private void Update()

@@ -31,6 +31,7 @@ public abstract class GameController : MonoBehaviour
     protected Vector3 hitPoint = Vector3.zero;
     [SerializeField]
     protected DamagableEnemy target = null;
+    protected bool hasTarget => target != null;
 
     [Header("Effects")]
     [SerializeField]
@@ -78,7 +79,7 @@ public abstract class GameController : MonoBehaviour
         // If enemy is hitable
         if (enemy.IsInteractableType(InteractableType.Hitable))
         {
-            if (target == null)
+            if (hasTarget == false)
             {
                 enemy.OnHoverStart();
             }
@@ -102,7 +103,7 @@ public abstract class GameController : MonoBehaviour
 
     private void SpawnHitEffect()
     {
-        Instantiate(currentWeapon.HitEffectPrefab, hitPoint, Quaternion.identity);
+        Instantiate(currentWeapon.WeaponInfoForTargeting.HitEffectPrefab, hitPoint, Quaternion.identity);
     }
 
     public void TriggerShoot(int power)
@@ -111,7 +112,7 @@ public abstract class GameController : MonoBehaviour
 
         audioSource.PlayOneShot(shootAudioClip);
 
-        if (target == null) return;
+        if (hasTarget == false) return;
 
         target.TakeDamage(power);
 

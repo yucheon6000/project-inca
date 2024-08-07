@@ -38,12 +38,26 @@ namespace Inca
         public static List<DetectedObject> GetAllDetectedObjects()
             => detectedObjects.Values.ToList();
 
+        // Init
+        private bool init = false;
+        private List<EnvironmentObject> environmentObjectsBeforeInit = new List<EnvironmentObject>();
+
         // User things
         public UserObjects<DetectedObject> DetectedUserObjects { get; private set; }
 
+        // This method is a kind of "Init" method. Because it is called after loading the Detected World scene.
         public void SetDetectedUserObjects(UserObjects<DetectedObject> detectedUserObjects)
         {
             DetectedUserObjects = detectedUserObjects;
+
+            init = true;
+
+            for (int i = 0; i < environmentObjectsBeforeInit.Count; ++i)
+            {
+                var envObj = environmentObjectsBeforeInit[i];
+                if (envObj != null)
+                    EnterEnvironmentObject(envObj);
+            }
         }
 
         public UnityEvent<DetectedObject, bool> OnTriggerEnterDetectedObject { get; private set; }
@@ -90,7 +104,8 @@ namespace Inca
             {
                 yield return wait;
 
-                foreach (DetectedObject detObj in detectedObjects.Values)
+                List<DetectedObject> detObjs = detectedObjects.Values.ToList();
+                foreach (DetectedObject detObj in detObjs)
                 {
                     if (detObj == null) continue;
                     if (canDetectEnvironmentObject(detObj.EnvironmentObject) == false)
@@ -106,6 +121,12 @@ namespace Inca
 
         private void EnterEnvironmentObject(EnvironmentObject environmentObject)
         {
+            if (!init)
+            {
+                environmentObjectsBeforeInit.Add(environmentObject);
+                return;
+            }
+
             Guid guid = environmentObject.GUID;
 
             // Check if it was detected.
@@ -132,10 +153,15 @@ namespace Inca
 
         private void ExitEnvironmentObject(EnvironmentObject environmentObject)
         {
+            if (!init)
+            {
+                environmentObjectsBeforeInit.Remove(environmentObject);
+                return;
+            }
+
             Guid guid = environmentObject.GUID;
 
-            DetectedObject detObj = detectedObjects[guid];
-            if (detObj == null) return;
+            if (detectedObjects.TryGetValue(guid, out DetectedObject detObj) == false) return;
 
             detectedObjects[guid] = null;
 

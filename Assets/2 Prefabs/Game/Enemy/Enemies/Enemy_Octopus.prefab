@@ -109,8 +109,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae662e9ba09c940798245bcffc268986, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 10
-  defaultHp: 10
+  maxHp: 30
+  defaultHp: 30
   currentHp: 0
   maxAttack: 0
   defaultAttack: 0
@@ -132,13 +132,78 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   audioStorage:
     audios: []
-  spawnEffectPrefab: {fileID: 0}
-  dieEffectPrefab: {fileID: 0}
+  spawnEffectPrefab: {fileID: 7226888052703040409, guid: 7ec363c8df426644ea85f8d6d570561c,
+    type: 3}
+  dieEffectPrefab: {fileID: 5642766282230003982, guid: b5c8ca7ed10b61e499cce8ec3b6e2e4c,
+    type: 3}
+  useAppearEffect: 1
+  appearTransform: {fileID: 0}
+  appearScaleCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  appearTime: 0.5
+  useDisappearEffect: 1
+  disappearScaleCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: -32.08492
+      outSlope: -32.08492
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.20584677
+    - serializedVersion: 3
+      time: 0.06434414
+      value: -0.5576224
+      inSlope: 4.3027625
+      outSlope: 4.3027625
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.8685489
+      outWeight: 0.12561221
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.021439606
+      outSlope: 0.021439606
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.3306968
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  disappearTime: 1.5
   bubbleBulletPrefab: {fileID: 4657252473636324481, guid: 0fe1def4a67264cafb70626f8eadd849,
     type: 3}
-  bubbleAttackDelay: 5
-  minBubbleAttackSpawnCount: 2
-  maxBubbleAttackSpawnCount: 5
+  bubbleAttackDelay: 600
+  bubbleAttackInitialTimer: 595
+  minBubbleAttackSpawnCount: 5
+  maxBubbleAttackSpawnCount: 10
   bulletAttackSpawnTransforms:
   - {fileID: 293962157163276540}
   - {fileID: 644327283767991722}
@@ -161,10 +226,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.01
-  m_Height: 5.09
+  m_Radius: 2.25
+  m_Height: 9.96
   m_Direction: 1
-  m_Center: {x: 0, y: 2.12, z: 0}
+  m_Center: {x: 0, y: 4.73, z: 0}
 --- !u!1 &7199812491917629678
 GameObject:
   m_ObjectHideFlags: 0
@@ -261,6 +326,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c1db25dc9b901d74aba11281144891ca,
         type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c1db25dc9b901d74aba11281144891ca,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c1db25dc9b901d74aba11281144891ca,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c1db25dc9b901d74aba11281144891ca,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -308,6 +388,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c1db25dc9b901d74aba11281144891ca,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8558518834806817664, guid: c1db25dc9b901d74aba11281144891ca,
         type: 3}
@@ -2028,6 +2113,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 2224825942270518926}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c1db25dc9b901d74aba11281144891ca,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3785613610439749822}
   m_SourcePrefab: {fileID: 100100000, guid: c1db25dc9b901d74aba11281144891ca, type: 3}
 --- !u!4 &1594717711804884309 stripped
 Transform:
@@ -2087,6 +2176,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 3395751708123115924}
+--- !u!114 &3785613610439749822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6233962957970725952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30509fe82c787f345b39d68c665eda18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &6757841338780714746 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c1db25dc9b901d74aba11281144891ca,

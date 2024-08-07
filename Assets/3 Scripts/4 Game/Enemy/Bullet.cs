@@ -9,7 +9,7 @@ public class Bullet : NonDamagableEnemy
     protected float moveSpeed;
     protected Vector3 dir;
 
-    protected int attack;
+    protected float attack;
 
     protected virtual void OnEnable()
     {
@@ -24,7 +24,7 @@ public class Bullet : NonDamagableEnemy
         this.dir = dir.normalized;
     }
 
-    public void SetAttack(int attack) => this.attack = attack;
+    public void SetAttack(float attack) => Status.SetAttack(attack);
 
     protected virtual void FixedUpdate()
     {
@@ -47,8 +47,8 @@ public class Bullet : NonDamagableEnemy
 
     protected virtual void HitPlayer()
     {
-        Player.Instance.TakeDamage(attack);
         // MemoryPool.Instance(MemoryPoolType.Enemy).DeactivatePoolItem(gameObject);
+        Player.Instance.TakeDamage(attack);
         Destroy(this.gameObject);
     }
 }

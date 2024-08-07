@@ -36,12 +36,12 @@ public class CarActionTrigger : MonoBehaviour
     {
         if (other.TryGetComponent<CarStateDrive>(out CarStateDrive carStateDrive) && triggerSpeedChange)
         {
-            if (onlyForUser && IncaData.UserCarTransform == carStateDrive.transform)
+            if (onlyForUser && carStateDrive.name == "Car For User")
             {
                 float targetMoveSpeed = Random.Range(minTargetSpeed, maxTargetSpeed);
                 carStateDrive.ChangeMoveSpeed(targetMoveSpeed);
             }
-            else if (!onlyForUser && IncaData.UserCarTransform != carStateDrive.transform)
+            else if (!onlyForUser/* && IncaData.UserCarTransform != carStateDrive.transform*/)
             {
                 float targetMoveSpeed = Random.Range(minTargetSpeed, maxTargetSpeed);
                 carStateDrive.ChangeMoveSpeed(targetMoveSpeed);
@@ -50,7 +50,7 @@ public class CarActionTrigger : MonoBehaviour
 
         if (other.TryGetComponent<Car>(out Car car))
         {
-            if (onlyForUser && IncaData.UserCarTransform == carStateDrive.transform)
+            if (onlyForUser && carStateDrive.name == "Car For User")
             {
                 if (triggerLaneChange)
                 {
@@ -67,7 +67,7 @@ public class CarActionTrigger : MonoBehaviour
                 }
             }
 
-            else if (!onlyForUser && IncaData.UserCarTransform != carStateDrive.transform)
+            else if (!onlyForUser/* && IncaData.UserCarTransform != carStateDrive.transform*/)
             {
                 if (triggerLaneChange)
                 {

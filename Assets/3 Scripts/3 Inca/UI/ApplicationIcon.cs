@@ -59,6 +59,9 @@ public class ApplicationIcon : DamagableEnemy
 
     public void CanSelect(bool value)
     {
+        return;
+        // !!!!!!! 수정 필요
+
         canSelect = value;
 
         Color c = spriteRenderer.color;
@@ -67,7 +70,7 @@ public class ApplicationIcon : DamagableEnemy
         else spriteRenderer.color = new Color(45f / 255, 45f / 255, 45f / 255, c.a);
     }
 
-    public override int TakeDamage(int attckAmount)
+    public override float TakeDamage(float attckAmount)
     {
         if (!canSelect) return 0;
 

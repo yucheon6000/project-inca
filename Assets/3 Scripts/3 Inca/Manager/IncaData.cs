@@ -9,7 +9,7 @@ namespace Inca
     public static class IncaData
     {
         public static Transform UserCarTransform
-            => IncaDetectManager.Instance.DetectedUserObjects.userCar.transform;
+            => IncaDetectManager.Instance.DetectedUserObjects.userCar.AvailableTransform;
         public static Vector3 UserCarPosition => UserCarTransform.position;
 
         public static float UserCarSpeed => IncaDetectManager.Instance.UserCarSpeed;
