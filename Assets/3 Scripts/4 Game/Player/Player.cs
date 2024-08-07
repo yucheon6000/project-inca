@@ -5,6 +5,8 @@ public class Player : Character
 {
     public static Player Instance { get; private set; }
 
+    public new PlayerStatus Status => (PlayerStatus)status;
+
     [SerializeField]
     private AudioClip hitAudioClip;
 
@@ -16,7 +18,7 @@ public class Player : Character
             Instance = this;
     }
 
-    public override int TakeDamage(int attckAmount)
+    public override float TakeDamage(float attckAmount)
     {
         if (audioSource != null)
             audioSource.PlayOneShot(hitAudioClip);

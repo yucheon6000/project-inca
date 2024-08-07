@@ -44,6 +44,13 @@ public class CarStateGlobal : StateMonoBehaviour<Car>
             // If the car is me, continue.
             if (carMovement == this) continue;
 
+            // It the car is stopped, continue.
+            if (carMovement.CurrentLanePoint == null) continue;
+
+            // It the car is not on my line or my next line, continue.
+            if (car.CurrentLanePoint.LaneIndex != carMovement.CurrentLanePoint.LaneIndex
+                && car.NextLanePoint.LaneIndex != carMovement.CurrentLanePoint.LaneIndex) continue;
+
             else return true;
         }
 
@@ -66,8 +73,9 @@ public class CarStateGlobal : StateMonoBehaviour<Car>
 
     private bool CheckPointIsBetweenTwoPoints(Vector3 currentPoint, Vector3 startPoint, Vector3 endPoint)
     {
-        // return Vector3.Distance(currentPoint, endPoint) > 0.001f;
+        return Vector3.Distance(currentPoint, endPoint) > 0.001f;
 
+        /*
         Vector2 V2StartPoint = new Vector2(startPoint.x, startPoint.z);
         Vector2 V2EndPoint = new Vector2(endPoint.x, endPoint.z);
         Vector2 V2CurrentPoint = new Vector2(currentPoint.x, currentPoint.z);
@@ -77,6 +85,7 @@ public class CarStateGlobal : StateMonoBehaviour<Car>
         float distC = Vector2.Distance(V2CurrentPoint, V2StartPoint);
 
         return Math.Pow(distA, 2) + Math.Pow(distB, 2) >= Math.Pow(distC, 2) && Math.Pow(distA, 2) + Math.Pow(distC, 2) >= Math.Pow(distB, 2);
+        */
     }
 
     private void SetNextLanePoint(Car car)

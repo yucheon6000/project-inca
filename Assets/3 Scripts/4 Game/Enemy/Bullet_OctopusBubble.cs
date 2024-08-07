@@ -39,8 +39,11 @@ public class Bullet_OctopusBubble : Enemy_Fly
     public override void Init(DetectedObject detectedObject = null)
     {
         // 범위를 생성 위치 기준으로 변경
-        wanderPositionRangeMin.y = transform.localPosition.y - rangeY / 2;
-        wanderPositionRangeMax.y = transform.localPosition.y + rangeY / 2;
+        if (rangeY > 0)
+        {
+            wanderPositionRangeMin.y = transform.localPosition.y - rangeY / 2;
+            wanderPositionRangeMax.y = transform.localPosition.y + rangeY / 2;
+        }
 
         base.Init(detectedObject);
 

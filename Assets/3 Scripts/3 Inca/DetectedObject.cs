@@ -38,6 +38,10 @@ namespace Inca
 
         public UnityEvent OnHideDetectedObject { get; private set; } = new UnityEvent();
 
+        [SerializeField]
+        protected Transform availableTransform;
+        public Transform AvailableTransform => availableTransform;
+
         // 이거 왜 있는거지?
         private Collider[] colliders;
 
@@ -119,9 +123,13 @@ namespace Inca
         {
             IsVisible(false);
             init = true;
-            // int chCount = transform.childCount;
-            // for (int i = chCount - 1; i >= 0; i--)
-            //     Destroy(transform.GetChild(i).gameObject);
+
+            int childCount = AvailableTransform.childCount;
+            for (int i = childCount - 1; i >= 0; i--)
+            {
+                Transform child = AvailableTransform.GetChild(i);
+                Destroy(child.gameObject);
+            }
         }
 
         private void OnDrawGizmos()

@@ -45,7 +45,12 @@ public class Enemy_Shotput : DamagableEnemy
 
         attackTimer += Time.deltaTime;
         if (attackTimer > attackTime)
-            Attack();
+            PlayAttackAnimation();
+    }
+
+    private void PlayAttackAnimation()
+    {
+        PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_ATTACK);
     }
 
     public override void Attack()
@@ -55,7 +60,7 @@ public class Enemy_Shotput : DamagableEnemy
         if (IsDead) return;
 
         GameObject bulletClone = MemoryPool.Instance(MemoryPoolType.Enemy).ActivatePoolItem(bulletPrefab);
-        bulletClone.transform.SetPositionAndRotation(transform.position, Quaternion.LookRotation(GGData.PlayerPosition));
+        bulletClone.transform.SetPositionAndRotation(bulletSpawnTransform.position, Quaternion.LookRotation(GGData.PlayerPosition));
         Vector3 dir = (GGData.PlayerPosition - bulletSpawnTransform.position);
         bulletClone.GetComponent<Bullet>().Setup(dir);
 

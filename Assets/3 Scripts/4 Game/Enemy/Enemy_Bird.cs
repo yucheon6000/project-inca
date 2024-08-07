@@ -60,9 +60,27 @@ public class Enemy_Bird : DamagableEnemy
 
         attackTimer += Time.deltaTime;
         if (attackTimer > attackTime)
-        {
-            Attack();
-        }
+            PlayAttackAnimation();
+    }
+
+    private void PlayAttackAnimation()
+    {
+        PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_ATTACK);
+    }
+
+    public override void Attack()
+    {
+        base.Attack();
+
+        GameObject clone = Instantiate(bulletPrefab, bulletSpawnTransform.transform.position, Quaternion.LookRotation(GGData.PlayerPosition));
+
+        Bullet bullet = clone.GetComponent<Bullet>();
+        bullet.Init();
+        bullet.SetAttack(status.CurrentAttack);
+
+        if (parent) clone.transform.SetParent(GGData.PlayerTransform);
+
+        attackTimer = 0;
     }
 
     private int currentMoveDirection = 1;
@@ -131,37 +149,20 @@ public class Enemy_Bird : DamagableEnemy
         StartCoroutine(UpdateMove());
     }
 
-    public override int TakeDamage(int attckAmount)
-    {
-        int curHp = base.TakeDamage(attckAmount);
-
-        if (IsDead) return curHp;
-
-        return curHp;
-    }
-
-    public override void Attack()
-    {
-        base.Attack();
-
-        GameObject clone = Instantiate(bulletPrefab, bulletSpawnTransform.transform.position, Quaternion.LookRotation(GGData.PlayerPosition));
-
-        clone.GetComponent<Bullet>().SetAttack(status.CurrentAttack);
-        if (parent) clone.transform.SetParent(GGData.PlayerTransform);
-
-        attackTimer = 0;
-    }
-
     protected override void OnDeath()
     {
-        base.OnDeath();
-
         onDeath.Invoke();
 
         rigidbody.isKinematic = false;
         rigidbody.useGravity = true;
 
         StopAllCoroutines();
-        Invoke(nameof(DeactivateGameObject), 2);
+
+        base.OnDeath();
+    }
+
+    protected override void OnDisappear()
+    {
+        DeactivateGameObject();
     }
 }

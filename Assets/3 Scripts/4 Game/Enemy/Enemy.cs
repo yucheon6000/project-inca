@@ -15,6 +15,29 @@ public abstract class Enemy : Character
     [SerializeField]
     protected GameObject dieEffectPrefab;
 
+    // Appear And Disappear
+    protected Vector3 originalScale;
+    protected bool hasOriginalScaleVariable = false;
+
+    [Header("Effect - Appear")]
+    [SerializeField]
+    private bool useAppearEffect = false;
+    [SerializeField]
+    private Transform appearTransform;
+    protected Transform AppearTransform => appearTransform != null ? appearTransform : transform;
+    [SerializeField]
+    private AnimationCurve appearScaleCurve;
+    [SerializeField]
+    private float appearTime;
+
+    [Header("Effect - Disappear")]
+    [SerializeField]
+    private bool useDisappearEffect = false;
+    [SerializeField]
+    private AnimationCurve disappearScaleCurve;
+    [SerializeField]
+    private float disappearTime;
+
     protected override void Awake()
     {
         base.Awake();
@@ -53,6 +76,15 @@ public abstract class Enemy : Character
 
         SpawnEffect(spawnEffectPrefab, detectedObject);
 
+        if (!hasOriginalScaleVariable)
+        {
+            originalScale = AppearTransform.localScale;
+            hasOriginalScaleVariable = true;
+        }
+
+        if (useAppearEffect)
+            Appear();
+
         base.Init();
     }
 
@@ -63,9 +95,9 @@ public abstract class Enemy : Character
         PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_ATTACK);
     }
 
-    public override int TakeDamage(int attckAmount)
+    public override float TakeDamage(float attckAmount)
     {
-        int curHp = base.TakeDamage(attckAmount);
+        float curHp = base.TakeDamage(attckAmount);
 
         if (IsDead)
         {
@@ -85,11 +117,57 @@ public abstract class Enemy : Character
         base.TakeDamage(status.CurrentHp);     // => Call OnDeath method
     }
 
+    /// <summary>
+    /// Play audio clip and animation. 
+    /// Start disappear coroutine.
+    /// </summary>
     protected override void OnDeath()
     {
         PlayAudioClip(AudioType.Die);
 
         PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_DIE);
+
+        if (useDisappearEffect)
+            Disappear();
+    }
+
+    protected void Appear()
+    {
+        StartCoroutine(AppearOrDisappearRoutine(appearTime, Vector3.zero, originalScale, appearScaleCurve, OnAppear));
+    }
+
+    protected virtual void OnAppear() { }
+
+    protected void Disappear()
+    {
+        StartCoroutine(AppearOrDisappearRoutine(disappearTime, originalScale, Vector3.zero, disappearScaleCurve, OnDisappear));
+    }
+
+    protected virtual void OnDisappear() { }
+
+    private IEnumerator AppearOrDisappearRoutine(float time, Vector3 startScale, Vector3 endScale, AnimationCurve scaleCurve, UnityAction onFinish)
+    {
+        float timer = 0;
+        float progress = 0;
+
+        while (progress < 1)
+        {
+            timer += Time.deltaTime;
+            progress = timer / time;
+
+            AppearTransform.localScale = Vector3.LerpUnclamped(startScale, endScale, scaleCurve.Evaluate(progress));
+
+            yield return null;
+        }
+
+        onFinish.Invoke();
+    }
+
+    int defaultAnimationId = 1;
+    protected void SetDefaultAnimation(int animationId)
+    {
+        defaultAnimationId = animationId;
+        PlayAnimationByValue(animationId);
     }
 
     int lastAnimationUpdateFrameCount = -1;
@@ -112,16 +190,10 @@ public abstract class Enemy : Character
         // lastAnimationUpdateFrameCount = Time.frameCount;
     }
 
-    int defaultAnimationId = 1;
-    protected void SetDefaultAnimation(int animationId)
-    {
-        defaultAnimationId = animationId;
-        PlayAnimationByValue(animationId);
-    }
-
     private IEnumerator PlayDefaultAnimationRoutine()
     {
         yield return null;
+        print("defaultAnimationId: " + defaultAnimationId);
         PlayAnimationByValue(defaultAnimationId);
     }
 

@@ -10,6 +10,8 @@ public class Enemy_Octopus : DamagableEnemy
     private GameObject bubbleBulletPrefab;
     [SerializeField]
     private float bubbleAttackDelay;
+    [SerializeField]
+    private float bubbleAttackInitialTimer;
     private float bubbleAttackTimer;
     [SerializeField]
     private int minBubbleAttackSpawnCount;
@@ -18,17 +20,15 @@ public class Enemy_Octopus : DamagableEnemy
     [SerializeField]
     private Transform[] bulletAttackSpawnTransforms;
 
-
-    private void OnEnable()
+    public override void Init(DetectedObject detectedObject = null)
     {
-        Init();
+        base.Init(detectedObject);
+        bubbleAttackTimer = bubbleAttackInitialTimer;
     }
 
     private void Update()
     {
         if (IsDead) return;
-
-        PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_IDLE);
 
         // Attack
         bubbleAttackTimer += Time.deltaTime;
@@ -51,16 +51,11 @@ public class Enemy_Octopus : DamagableEnemy
             for (int i = 0; i < spawnCnt; ++i)
             {
                 GameObject bullet = MemoryPool.Instance(MemoryPoolType.Enemy).ActivatePoolItem(bubbleBulletPrefab, tf.position);
-                bullet.transform.SetParent(GGData.PlayerTransform);
+                bullet.transform.SetParent(IncaData.UserCarTransform);
                 bullet.GetComponent<Enemy>().Init();
             }
         }
 
         bubbleAttackTimer = 0;
-    }
-
-    public override int TakeDamage(int attckAmount)
-    {
-        return base.TakeDamage(attckAmount);
     }
 }

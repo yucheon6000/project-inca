@@ -29,6 +29,9 @@ public class Bullet_BearHoneyBall : DamagableEnemy
     [SerializeField]
     private float hitPower = 10;
 
+    [SerializeField]
+    private Transform modelTransform;
+
     private Rigidbody rigidbody;
 
     protected override void Awake()
@@ -94,6 +97,8 @@ public class Bullet_BearHoneyBall : DamagableEnemy
         Vector3 newPos = Vector3.Lerp(bounceStartZ, bounceEndZ, bounceProgress);
         newPos.y = s * (initialY - gapY * currentBounceCount);
 
+        transform.rotation.SetLookRotation(newPos - transform.localPosition);
+
         transform.localPosition = newPos;
     }
 
@@ -114,6 +119,8 @@ public class Bullet_BearHoneyBall : DamagableEnemy
         dir.y = Mathf.Abs(dir.y);
 
         rigidbody.AddForce(dir * hitPower, ForceMode.Impulse);
+
+        modelTransform.rotation.SetLookRotation(dir);
 
         Invoke(nameof(DeactivateGameObject), 3f);
     }
