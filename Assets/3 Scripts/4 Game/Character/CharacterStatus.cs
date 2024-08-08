@@ -57,7 +57,7 @@ public class CharacterStatus : MonoBehaviour
         currentHp = Mathf.Min(currentHp + amout, maxHp);
 
         // When the character dies, call the character's method
-        if (currentHp <= 0)
+        if (prevHp > 0 && currentHp <= 0)
         {
             currentHp = 0;
             OnDeath.Invoke();

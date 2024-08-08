@@ -141,8 +141,12 @@ MonoBehaviour:
     type: 3}
   dieEffectPrefab: {fileID: 5642766282230003982, guid: b5c8ca7ed10b61e499cce8ec3b6e2e4c,
     type: 3}
-  useAppearEffect: 1
   appearTransform: {fileID: 7600273428235861298}
+  emissionEffectColor: {r: 0, g: 0.5137255, b: 1, a: 1}
+  emissionEffectIntensity: 2
+  emissionEffectTime: 1
+  useAppearEffect: 1
+  appearTime: 0.5
   appearScaleCurve:
     serializedVersion: 2
     m_Curve:
@@ -167,8 +171,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  appearTime: 0.5
+  useAppearEmissionEffect: 1
   useDisappearEffect: 0
+  disappearTime: 3
   disappearScaleCurve:
     serializedVersion: 2
     m_Curve:
@@ -202,7 +207,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  disappearTime: 3
+  useDisappearEmissionEffect: 1
   currentState: 0
   followDistance: 100
   followTime: 1

@@ -19,31 +19,65 @@ public abstract class Enemy : Character
     protected Vector3 originalScale;
     protected bool hasOriginalScaleVariable = false;
 
-    [Header("Effect - Appear")]
-    [SerializeField]
-    private bool useAppearEffect = false;
+    [Header("Effect - Appear/Disappear")]
     [SerializeField]
     private Transform appearTransform;
     protected Transform AppearTransform => appearTransform != null ? appearTransform : transform;
+
+    [Space]
+    [SerializeField]
+    private Color emissionEffectColor;
+    [SerializeField]
+    private float emissionEffectIntensity = 1;
+    [SerializeField]
+    private float emissionEffectTime = 2;
+
+    [Space]
+    [SerializeField]
+    private bool useAppearEffect = false;
+    [SerializeField]
+    private float appearTime;
     [SerializeField]
     private AnimationCurve appearScaleCurve;
     [SerializeField]
-    private float appearTime;
+    private bool useAppearEmissionEffect = false;
 
-    [Header("Effect - Disappear")]
+    [Space]
     [SerializeField]
     private bool useDisappearEffect = false;
     [SerializeField]
+    private float disappearTime;
+    [SerializeField]
     private AnimationCurve disappearScaleCurve;
     [SerializeField]
-    private float disappearTime;
+    private bool useDisappearEmissionEffect = false;
+
+    private Dictionary<Material, Color> originalEmissions;
 
     protected override void Awake()
     {
         base.Awake();
 
+        InitMaterials();
+
         if (initOnAwake)
             Init(null);
+    }
+
+    private void InitMaterials()
+    {
+        List<SkinnedMeshRenderer> meshRenderers = new List<SkinnedMeshRenderer>(GetComponents<SkinnedMeshRenderer>());
+        meshRenderers.AddRange(GetComponentsInChildren<SkinnedMeshRenderer>());
+
+        List<Material> materials = new List<Material>();
+        foreach (var meshRenderer in meshRenderers)
+            materials.AddRange(meshRenderer.materials);
+
+        print(materials.Count);
+
+        originalEmissions = new Dictionary<Material, Color>();
+        foreach (var mat in materials)
+            originalEmissions.Add(mat, mat.GetColor("_EmissionColor"));
     }
 
     [ContextMenu("Init")]
@@ -83,7 +117,7 @@ public abstract class Enemy : Character
         }
 
         if (useAppearEffect)
-            Appear();
+            AppearEffect();
 
         base.Init();
     }
@@ -128,24 +162,28 @@ public abstract class Enemy : Character
         PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_DIE);
 
         if (useDisappearEffect)
-            Disappear();
+            DisappearEffect();
     }
 
-    protected void Appear()
+    protected void AppearEffect()
     {
-        StartCoroutine(AppearOrDisappearRoutine(appearTime, Vector3.zero, originalScale, appearScaleCurve, OnAppear));
+        StartCoroutine(ScaleEffectRoutine(appearTime, Vector3.zero, originalScale, appearScaleCurve, OnAppear));
+        if (useAppearEmissionEffect)
+            StartCoroutine(EmissionEffectRoutine(Mathf.Max(appearTime, emissionEffectTime), emissionEffectIntensity, 0));
     }
 
     protected virtual void OnAppear() { }
 
-    protected void Disappear()
+    protected void DisappearEffect()
     {
-        StartCoroutine(AppearOrDisappearRoutine(disappearTime, originalScale, Vector3.zero, disappearScaleCurve, OnDisappear));
+        StartCoroutine(ScaleEffectRoutine(disappearTime, originalScale, Vector3.zero, disappearScaleCurve, OnDisappear));
+        if (useDisappearEmissionEffect)
+            StartCoroutine(EmissionEffectRoutine(Mathf.Max(disappearTime, emissionEffectTime), 0, emissionEffectIntensity));
     }
 
     protected virtual void OnDisappear() { }
 
-    private IEnumerator AppearOrDisappearRoutine(float time, Vector3 startScale, Vector3 endScale, AnimationCurve scaleCurve, UnityAction onFinish)
+    private IEnumerator ScaleEffectRoutine(float time, Vector3 startScale, Vector3 endScale, AnimationCurve scaleCurve, UnityAction onFinish)
     {
         float timer = 0;
         float progress = 0;
@@ -161,6 +199,37 @@ public abstract class Enemy : Character
         }
 
         onFinish.Invoke();
+    }
+
+    private IEnumerator EmissionEffectRoutine(float time, float startIntensity, float endIntensity)
+    {
+        float timer = 0;
+        float progress = 0;
+
+        foreach (var mat in originalEmissions.Keys)
+            mat.EnableKeyword("_EMISSION");
+
+        AnimationCurve easeOutCurve = new AnimationCurve(
+            new Keyframe(0, 0, 0, 1),  // 시작점 (시간 0, 값 0, 입구 기울기 0, 출구 기울기 1)
+            new Keyframe(1, 1, 1, 0)   // 끝점 (시간 1, 값 1, 입구 기울기 1, 출구 기울기 0)
+        );
+
+        while (progress < 1)
+        {
+            timer += Time.deltaTime;
+            progress = timer / time;
+
+            foreach (var mat in originalEmissions.Keys)
+            {
+                Color finalColor = emissionEffectColor * Mathf.LinearToGammaSpace(Mathf.Lerp(startIntensity, endIntensity, easeOutCurve.Evaluate(progress)));
+                mat.SetColor("_EmissionColor", finalColor);
+            }
+
+            yield return null;
+        }
+
+        foreach (var mat in originalEmissions.Keys)
+            mat.DisableKeyword("_EMISSION");
     }
 
     int defaultAnimationId = 1;

@@ -97,7 +97,7 @@ public class Enemy_HermitCrab : DamagableEnemy
             ChangeState(State.Fly);
         else
         {
-            Disappear();
+            DisappearEffect();
             PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_DIE);
         }
     }
@@ -234,10 +234,12 @@ public class Enemy_HermitCrab : DamagableEnemy
     private class FlyState : IState<Enemy_HermitCrab>
     {
         float flyTimer = 0;
+        bool disappear = false;
 
         public void Enter(Enemy_HermitCrab entity)
         {
             flyTimer = 0;
+            disappear = false;
 
             Vector3 rot = entity.transform.localEulerAngles;
             // entity.transform.localEulerAngles = new Vector3(rot.x, rot.y, 90);
@@ -249,13 +251,17 @@ public class Enemy_HermitCrab : DamagableEnemy
             entity.ForceKill();
 
             entity.PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_IDLE);
+
+            entity.DisappearEffect();
+            disappear = true;
         }
 
         public void Execute(Enemy_HermitCrab entity)
         {
             flyTimer += Time.fixedDeltaTime;
-            if (flyTimer > 3f)
-                entity.DeactivateGameObject();
+            if (flyTimer > 1f && !disappear)
+            {
+            }
         }
 
         public void Exit(Enemy_HermitCrab entity) { }
