@@ -69,6 +69,7 @@ public class MouseBasedGameController : GameController
             if (weaponIndex == weaponInformations.Count) weaponIndex = 0;
 
             currentWeapon = weaponInformations[weaponIndex];
+            image.sprite = currentWeapon.AimSprite;
         }
     }
 

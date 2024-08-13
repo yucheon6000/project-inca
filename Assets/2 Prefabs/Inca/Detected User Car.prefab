@@ -1640,6 +1640,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30509fe82c787f345b39d68c665eda18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lookAtPlayerTargetPoint: 1
+  lookAtPlayerHead: 0
 --- !u!1 &2644005795094224636
 GameObject:
   m_ObjectHideFlags: 0
@@ -3325,17 +3327,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerStatus: {fileID: 0}
-  images:
-  - {fileID: 7770749347593010287}
-  - {fileID: 2666567122483542784}
-  - {fileID: 5630757200543481072}
-  - {fileID: 1887448965106213751}
-  - {fileID: 5490035921778583941}
-  - {fileID: 636373499745728582}
-  - {fileID: 1207455276401386217}
-  - {fileID: 2032590128631219285}
-  - {fileID: 8545037598012889336}
-  - {fileID: 140235198267955278}
+  barImage: {fileID: 0}
+  needleTransform: {fileID: 0}
+  animationTime: 0
+  animationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &5325748861594495905
 GameObject:
   m_ObjectHideFlags: 0
@@ -3640,31 +3640,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initOnAwake: 0
+  initOnStart: 0
   animator: {fileID: 4173596403132669470}
   audioSource: {fileID: 0}
   audioStorage:
     audios: []
+  currentState: 0
+  canAttack: 0
+  canTakeDamage: 1
   spawnEffectPrefab: {fileID: 7226888052703040409, guid: 7ec363c8df426644ea85f8d6d570561c,
     type: 3}
   dieEffectPrefab: {fileID: 5642766282230003982, guid: b5c8ca7ed10b61e499cce8ec3b6e2e4c,
     type: 3}
+  emissionEffectIntensity: 10
   useAppearEffect: 0
-  appearTransform: {fileID: 0}
+  appearTime: 0
   appearScaleCurve:
     serializedVersion: 2
     m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  appearTime: 0
+  useAppearEmissionEffect: 0
   useDisappearEffect: 0
+  disappearTime: 0
   disappearScaleCurve:
     serializedVersion: 2
     m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  disappearTime: 0
+  useDisappearEmissionEffect: 0
   attackTime: 3
   bulletPrefab: {fileID: 1370727570811104193, guid: b24580121c48d45a7bc78842eec1331a,
     type: 3}
@@ -4682,6 +4688,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initOnAwake: 1
+  initOnStart: 0
   animator: {fileID: 0}
   audioSource: {fileID: 3996768017867163777}
   audioStorage:
@@ -5871,7 +5878,7 @@ PrefabInstance:
     - target: {fileID: 7691814830063551470, guid: ab05aa0cb348d4c6a9198c523e9d2f80,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.95
+      value: 2.199
       objectReference: {fileID: 0}
     - target: {fileID: 7691814830063551470, guid: ab05aa0cb348d4c6a9198c523e9d2f80,
         type: 3}
@@ -5881,7 +5888,7 @@ PrefabInstance:
     - target: {fileID: 7691814830063551470, guid: ab05aa0cb348d4c6a9198c523e9d2f80,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7691814830063551470, guid: ab05aa0cb348d4c6a9198c523e9d2f80,
         type: 3}
@@ -5891,7 +5898,7 @@ PrefabInstance:
     - target: {fileID: 7691814830063551470, guid: ab05aa0cb348d4c6a9198c523e9d2f80,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7691814830063551470, guid: ab05aa0cb348d4c6a9198c523e9d2f80,
         type: 3}
@@ -5906,7 +5913,7 @@ PrefabInstance:
     - target: {fileID: 7691814830063551470, guid: ab05aa0cb348d4c6a9198c523e9d2f80,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 7691814830063551470, guid: ab05aa0cb348d4c6a9198c523e9d2f80,
         type: 3}

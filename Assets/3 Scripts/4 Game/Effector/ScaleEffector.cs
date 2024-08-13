@@ -11,9 +11,11 @@ public class ScaleEffector : Effector
     public Transform TargetTransform => targetTransform ? targetTransform : transform;
 
     // Original scale
+    [Header("[@Debug]")]
+    [SerializeField]
     protected Vector3 originalScale;
     protected bool hasOriginalScaleVariable = false;
-    public Vector3 OriginalScale;
+    public Vector3 OriginalScale => originalScale;
 
     private void Awake()
     {

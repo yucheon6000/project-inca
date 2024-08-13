@@ -15,6 +15,11 @@ namespace Inca
         public static float UserCarSpeed => IncaDetectManager.Instance.UserCarSpeed;
         public static int UserCarLaneIndex => IncaDetectManager.Instance.UserCarLaneIndex;
 
+        public static Transform UserHeadTrasnform
+            => IncaDetectManager.Instance.DetectedUserObjects.userHead.transform;
+        public static Vector3 UserHeadPosition => UserHeadTrasnform.position;
+
+
         // User Thing..
     }
 }

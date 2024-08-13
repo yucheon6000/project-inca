@@ -36,9 +36,15 @@ public abstract class Character : MonoBehaviour
 
     protected virtual void Awake()
     {
-        status = GetComponent<CharacterStatus>();
+        GetStatusComponent();
 
         if (initOnAwake) Init();
+    }
+
+    protected void GetStatusComponent()
+    {
+        if (status == null)
+            status = GetComponent<CharacterStatus>();
     }
 
     protected virtual void Start()
@@ -48,6 +54,8 @@ public abstract class Character : MonoBehaviour
 
     public virtual void Init()
     {
+        GetStatusComponent();
+
         status.Init();
 
         OnDeathEvent.AddListener(OnDeath);

@@ -17,6 +17,12 @@ public class AbilityManager : MonoBehaviour
             Instance = this;
     }
 
+    private void Start()
+    {
+        foreach (AbilityCard card in abilityCards)
+            card.SetActivate(false);
+    }
+
     [ContextMenu("Show Ability Cards")]
     public void ShowAbilityCards()
     {

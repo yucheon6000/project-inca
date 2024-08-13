@@ -18,11 +18,11 @@ public class AbilityCard : DamagableEnemy
 
     public override void Init(DetectedObject detectedObject = null)
     {
-        base.Init(detectedObject);
         SetActivate(true);
+        base.Init(detectedObject);
     }
 
-    private void SetActivate(bool value)
+    public void SetActivate(bool value)
         => gameObject.SetActive(value);
 
     protected override void InitStateMachine()

@@ -6,6 +6,11 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Gate Guardian/Weapon Information")]
 public class WeaponInformation : ScriptableObject
 {
+    [Header("Aim")]
+    [SerializeField]
+    private Sprite aimSprite;
+    public Sprite AimSprite => aimSprite;
+
     [Header("Delay")]
     [SerializeField]
     private float shootDelay;
