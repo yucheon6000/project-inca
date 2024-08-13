@@ -7,30 +7,29 @@ using UnityEngine.Events;
 
 public abstract class Enemy : Character
 {
+    public enum EnemyState { Spawn, Idle, Move, Attack, TakeDamage, Die }
+
     private DetectedObject detectedObject;
 
-    [Header("Effects")]
+    [SerializeField]
+    private EnemyState currentState = EnemyState.Spawn;
+
+    [Header("[Attack]")]
+    [SerializeField]
+    private bool canAttack = false;
+    [SerializeField]
+    private bool canTakeDamage = true;
+
+    /*----------------- Effect -----------------*/
+    [Header("[Effect]")]
     [SerializeField]
     protected GameObject spawnEffectPrefab;
     [SerializeField]
     protected GameObject dieEffectPrefab;
 
-    // Appear And Disappear
-    protected Vector3 originalScale;
-    protected bool hasOriginalScaleVariable = false;
-
-    [Header("Effect - Appear/Disappear")]
+    [Header("[Effect - Appear/Disappear]")]
     [SerializeField]
-    private Transform appearTransform;
-    protected Transform AppearTransform => appearTransform != null ? appearTransform : transform;
-
-    [Space]
-    [SerializeField]
-    private Color emissionEffectColor;
-    [SerializeField]
-    private float emissionEffectIntensity = 1;
-    [SerializeField]
-    private float emissionEffectTime = 2;
+    private float emissionEffectIntensity = 10;
 
     [Space]
     [SerializeField]
@@ -52,45 +51,62 @@ public abstract class Enemy : Character
     [SerializeField]
     private bool useDisappearEmissionEffect = false;
 
-    private Dictionary<Material, Color> originalEmissions;
+    /*------------------- FSM -------------------*/
+    protected StateMachine<Enemy> stateMachine;
+    protected Dictionary<EnemyState, IState<Enemy>> states;
+
+    /*---------------- Components ----------------*/
+    protected ScaleEffector scaleEffector;
+    protected EmissionEffector emissionEffector;
+    private LookAtPlayer lookAtPlayer;
 
     protected override void Awake()
     {
         base.Awake();
 
-        InitMaterials();
+        GetMyComponents();
 
         if (initOnAwake)
             Init(null);
     }
 
-    private void InitMaterials()
+    protected virtual void GetMyComponents()
     {
-        List<SkinnedMeshRenderer> meshRenderers = new List<SkinnedMeshRenderer>(GetComponents<SkinnedMeshRenderer>());
-        meshRenderers.AddRange(GetComponentsInChildren<SkinnedMeshRenderer>());
-
-        List<Material> materials = new List<Material>();
-        foreach (var meshRenderer in meshRenderers)
-            materials.AddRange(meshRenderer.materials);
-
-        print(materials.Count);
-
-        originalEmissions = new Dictionary<Material, Color>();
-        foreach (var mat in materials)
-            originalEmissions.Add(mat, mat.GetColor("_EmissionColor"));
+        scaleEffector = GetComponent<ScaleEffector>();
+        emissionEffector = GetComponent<EmissionEffector>();
+        lookAtPlayer = GetComponent<LookAtPlayer>();
+        if (lookAtPlayer == null)
+            lookAtPlayer = GetComponentInChildren<LookAtPlayer>();
     }
 
-    [ContextMenu("Init")]
-    private void InitWithoutDetectedObject()
+    protected override void Start()
     {
-        Init(null);
+        base.Start();
+
+        if (initOnStart)
+            Init(null);
     }
 
+    /*------------------- Init -------------------*/
     /// <summary>
     /// When this enemy is spawned by EnemySpawner, this method is called firstly.
     /// </summary>
     /// <param name="detectedObject"></param>
     public virtual void Init(DetectedObject detectedObject = null)
+    {
+        RegisterInDetectedObject(detectedObject);
+
+        base.Init();
+
+        canAttack = false;
+        canTakeDamage = true;
+
+        ResetAnimator();
+        InitStateMachine();
+        StartStateMachine();
+    }
+
+    private void RegisterInDetectedObject(DetectedObject detectedObject)
     {
         // If the detectedObject is hiden, call OnHideDetectedObject method.
         // Basically, OnHideDetectedObject call ForceKill method.
@@ -99,172 +115,75 @@ public abstract class Enemy : Character
             this.detectedObject = detectedObject;
             detectedObject.OnHideDetectedObject.AddListener(OnHideDetectedObject);
         }
-
-        if (animator != null)
-        {
-            animator.Rebind();
-            animator.Update(0);
-        }
-
-        PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_IDLE);
-
-        SpawnEffect(spawnEffectPrefab, detectedObject);
-
-        if (!hasOriginalScaleVariable)
-        {
-            originalScale = AppearTransform.localScale;
-            hasOriginalScaleVariable = true;
-        }
-
-        if (useAppearEffect)
-            AppearEffect();
-
-        base.Init();
     }
 
-    public override void Attack()
+    private void ResetAnimator()
     {
-        base.Attack();
+        if (animator == null) return;
 
-        PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_ATTACK);
+        animator.Rebind();
+        animator.Update(0);
     }
+
+    protected virtual void InitStateMachine()
+    {
+        stateMachine = new StateMachine<Enemy>();
+        stateMachine.Setup(this, null);
+        states = new Dictionary<EnemyState, IState<Enemy>>
+        {
+            { EnemyState.Spawn, new EnemyState_Spawn<Enemy>(this) },
+            { EnemyState.Idle, new EnemyState_Idle<Enemy>(this) },
+            { EnemyState.Move, new EnemyState_Move<Enemy>(this) },
+            { EnemyState.Attack, new EnemyState_Attack<Enemy>(this) },
+            { EnemyState.TakeDamage, new EnemyState_TakeDamage<Enemy>(this) },
+            { EnemyState.Die, new EnemyState_Die<Enemy>(this) }
+        };
+
+        stateMachine.SetGlobalState(new EnemyState_Global<Enemy>(this));
+    }
+
+    protected virtual void StartStateMachine()
+        => ChangeState(EnemyState.Spawn);
+
+    /*---------------- FixedUpdate ----------------*/
+    protected virtual void FixedUpdate() => stateMachine?.Execute();
+
+    /*-------------- Methods for FSM --------------*/
+    public void LookAtPlayer(bool value)
+    {
+        if (lookAtPlayer == null) return;
+        lookAtPlayer.Look(value);
+    }
+
+    public bool CanAttack()
+        => canAttack;
+
+    public void CanAttack(bool value)
+        => canAttack = value;
+
+    public bool CanTakeDamage()
+        => canTakeDamage;
+
+    public void CanTakeDamage(bool value) { }
 
     public override float TakeDamage(float attckAmount)
     {
         float curHp = base.TakeDamage(attckAmount);
 
-        if (IsDead)
-        {
-            return 0;
-        }
-        else
-        {
-            PlayAudioClip(AudioType.TakeDamage0);
-            PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_TAKE_DAMAGE);
-        }
+        if (IsAlive)
+            ChangeState(EnemyState.TakeDamage);
 
         return curHp;
     }
 
     public void ForceKill()
     {
-        base.TakeDamage(status.CurrentHp);     // => Call OnDeath method
+        if (IsAlive)
+            base.TakeDamage(status.CurrentHp * 2);     // => Call OnDeath method
     }
 
-    /// <summary>
-    /// Play audio clip and animation. 
-    /// Start disappear coroutine.
-    /// </summary>
     protected override void OnDeath()
-    {
-        PlayAudioClip(AudioType.Die);
-
-        PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_DIE);
-
-        if (useDisappearEffect)
-            DisappearEffect();
-    }
-
-    protected void AppearEffect()
-    {
-        StartCoroutine(ScaleEffectRoutine(appearTime, Vector3.zero, originalScale, appearScaleCurve, OnAppear));
-        if (useAppearEmissionEffect)
-            StartCoroutine(EmissionEffectRoutine(Mathf.Max(appearTime, emissionEffectTime), emissionEffectIntensity, 0));
-    }
-
-    protected virtual void OnAppear() { }
-
-    protected void DisappearEffect()
-    {
-        StartCoroutine(ScaleEffectRoutine(disappearTime, originalScale, Vector3.zero, disappearScaleCurve, OnDisappear));
-        if (useDisappearEmissionEffect)
-            StartCoroutine(EmissionEffectRoutine(Mathf.Max(disappearTime, emissionEffectTime), 0, emissionEffectIntensity));
-    }
-
-    protected virtual void OnDisappear() { }
-
-    private IEnumerator ScaleEffectRoutine(float time, Vector3 startScale, Vector3 endScale, AnimationCurve scaleCurve, UnityAction onFinish)
-    {
-        float timer = 0;
-        float progress = 0;
-
-        while (progress < 1)
-        {
-            timer += Time.deltaTime;
-            progress = timer / time;
-
-            AppearTransform.localScale = Vector3.LerpUnclamped(startScale, endScale, scaleCurve.Evaluate(progress));
-
-            yield return null;
-        }
-
-        onFinish.Invoke();
-    }
-
-    private IEnumerator EmissionEffectRoutine(float time, float startIntensity, float endIntensity)
-    {
-        float timer = 0;
-        float progress = 0;
-
-        foreach (var mat in originalEmissions.Keys)
-            mat.EnableKeyword("_EMISSION");
-
-        AnimationCurve easeOutCurve = new AnimationCurve(
-            new Keyframe(0, 0, 0, 1),  // 시작점 (시간 0, 값 0, 입구 기울기 0, 출구 기울기 1)
-            new Keyframe(1, 1, 1, 0)   // 끝점 (시간 1, 값 1, 입구 기울기 1, 출구 기울기 0)
-        );
-
-        while (progress < 1)
-        {
-            timer += Time.deltaTime;
-            progress = timer / time;
-
-            foreach (var mat in originalEmissions.Keys)
-            {
-                Color finalColor = emissionEffectColor * Mathf.LinearToGammaSpace(Mathf.Lerp(startIntensity, endIntensity, easeOutCurve.Evaluate(progress)));
-                mat.SetColor("_EmissionColor", finalColor);
-            }
-
-            yield return null;
-        }
-
-        foreach (var mat in originalEmissions.Keys)
-            mat.DisableKeyword("_EMISSION");
-    }
-
-    int defaultAnimationId = 1;
-    protected void SetDefaultAnimation(int animationId)
-    {
-        defaultAnimationId = animationId;
-        PlayAnimationByValue(animationId);
-    }
-
-    int lastAnimationUpdateFrameCount = -1;
-    Coroutine playDefaultAnimationRoutine = null;
-    protected override void PlayAnimationByValue(int animationId)
-    {
-        if (animator == null) return;
-        // if (lastAnimationUpdateFrameCount == Time.frameCount && animationId == Constants.Animation.ENEMY_ANIMATION_IDLE) return;
-
-        animator.SetInteger(Constants.Animation.ENEMY_ANIMATION_ID, animationId);
-
-        if (animationId != defaultAnimationId)
-        {
-            if (playDefaultAnimationRoutine != null)
-                StopCoroutine(playDefaultAnimationRoutine);
-
-            playDefaultAnimationRoutine = StartCoroutine(PlayDefaultAnimationRoutine());
-        }
-
-        // lastAnimationUpdateFrameCount = Time.frameCount;
-    }
-
-    private IEnumerator PlayDefaultAnimationRoutine()
-    {
-        yield return null;
-        print("defaultAnimationId: " + defaultAnimationId);
-        PlayAnimationByValue(defaultAnimationId);
-    }
+        => ChangeState(EnemyState.Die);
 
     protected void DeactivateGameObject()
     {
@@ -277,6 +196,33 @@ public abstract class Enemy : Character
         ForceKill();
         // MemoryPool.Instance(MemoryPoolType.Enemy).DeactivatePoolItem(gameObject);
     }
+
+    /*--------------------- Effect ---------------------*/
+    protected void PlayAppearEffect(UnityAction onFinishEffect = null)
+    {
+        if (!useAppearEffect) return;
+
+        if (scaleEffector)
+            scaleEffector.PlayFromZeroToOriginalScale(appearTime, appearScaleCurve, onFinishEffect);
+        if (emissionEffector)
+            emissionEffector.Play(appearTime, emissionEffectIntensity, 0);
+    }
+
+    protected void PlayDisappearEffect(UnityAction onFinishEffect = null)
+    {
+        if (!useDisappearEffect) return;
+
+        if (scaleEffector)
+            scaleEffector.PlayFromCurrentScaleToZero(disappearTime, disappearScaleCurve, onFinishEffect);
+        if (emissionEffector)
+            emissionEffector.Play(disappearTime, 0, emissionEffectIntensity);
+    }
+
+    protected virtual void SpawnSpawnEffect()
+        => SpawnEffect(spawnEffectPrefab, detectedObject);
+
+    protected virtual void SpawnDieEffect()
+        => SpawnEffect(dieEffectPrefab, detectedObject);
 
     protected void SpawnEffect(GameObject effecPrefab, DetectedObject detectedObject = null)
     {
@@ -303,6 +249,234 @@ public abstract class Enemy : Character
         }
     }
 
+    /*------------------- Animation -------------------*/
+    int defaultAnimationId = 1;
+    // 지울 함수
+    protected void SetDefaultAnimation(int animationId)
+    {
+        defaultAnimationId = animationId;
+        PlayAnimationByValue(animationId);
+    }
+
+    int lastAnimationUpdateFrameCount = -1;
+    Coroutine playDefaultAnimationRoutine = null;
+    protected override void PlayAnimationByValue(int animationId)
+    {
+        if (animator == null) return;
+        // if (lastAnimationUpdateFrameCount == Time.frameCount && animationId == Constants.Animation.ENEMY_ANIMATION_IDLE) return;
+
+        animator.SetInteger(Constants.Animation.ENEMY_ANIMATION_ID, animationId);
+
+        if (animationId != defaultAnimationId)
+        {
+            if (playDefaultAnimationRoutine != null)
+                StopCoroutine(playDefaultAnimationRoutine);
+
+            playDefaultAnimationRoutine = StartCoroutine(PlayDefaultAnimationRoutine());
+        }
+
+        // lastAnimationUpdateFrameCount = Time.frameCount;
+    }
+
+    // 지울 함수
+    private IEnumerator PlayDefaultAnimationRoutine()
+    {
+        yield return null;
+        print("defaultAnimationId: " + defaultAnimationId);
+        PlayAnimationByValue(defaultAnimationId);
+    }
+
+    protected void PlayAnimationByName(string animationName)
+    {
+        if (animator == null) return;
+
+        animator.Play(animationName, 0, 0);
+    }
+
+    protected bool IsAnimationFinished(string animationName)
+    {
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+
+        if (stateInfo.IsName(animationName))
+            // 애니메이션 진행도가 1이면 애니메이션이 끝난 것
+            if (stateInfo.normalizedTime >= 1.0f)
+                return true;
+
+        return false;
+    }
+
     public virtual void OnHoverStart() { }
     public virtual void OnHoverEnd() { }
+
+    /*--------------------- FSM ---------------------*/
+    public void ChangeState(EnemyState newState)
+    {
+        if (stateMachine == null || states == null) return;
+        if (states.ContainsKey(newState) == false) return;
+
+        currentState = newState;
+        stateMachine.ChangeState(states[newState]);
+    }
+
+    public class EnemyState_Spawn<T> : IState<T> where T : Enemy
+    {
+        public EnemyState_Spawn(T entity) { }
+
+        /// <summary>
+        /// Spawn Effect, Appear Effect, Spawn Animation, Spawn Audio
+        /// After appear effect, call the OnAppear method.
+        /// </summary>
+        public virtual void Enter(T entity)
+        {
+            entity.SpawnSpawnEffect();
+            entity.PlayAppearEffect(() => OnAppear(entity));
+
+            entity.PlayAnimationByName("Spawn");
+            entity.PlayAudioClip(AudioType.Spawn);
+        }
+        public virtual void Execute(T entity) { }
+        public virtual void Exit(T entity) { }
+
+        /// <summary>
+        /// Change state to Idle.
+        /// </summary>
+        public virtual void OnAppear(T entity)
+        {
+            entity.ChangeState(EnemyState.Idle);
+        }
+    }
+
+    public class EnemyState_Idle<T> : IState<T> where T : Enemy
+    {
+        public EnemyState_Idle(T entity) { }
+
+        /// <summary>
+        /// Idle Animation
+        /// </summary>
+        public virtual void Enter(T entity)
+        {
+            entity.PlayAnimationByName("Idle");
+        }
+
+        public virtual void Execute(T entity) { }
+        public virtual void Exit(T entity) { }
+    }
+
+    public class EnemyState_Move<T> : IState<T> where T : Enemy
+    {
+        public EnemyState_Move(T entity) { }
+
+        /// <summary>
+        /// Move Animation
+        /// </summary>
+        public virtual void Enter(T entity)
+        {
+            entity.PlayAnimationByName("Move");
+        }
+        public virtual void Execute(T entity) { }
+        public virtual void Exit(T entity) { }
+    }
+
+    public class EnemyState_Attack<T> : IState<T> where T : Enemy
+    {
+        public EnemyState_Attack(T entity) { }
+
+        /// <summary>
+        /// Attack Animation
+        /// </summary>
+        public virtual void Enter(T entity)
+        {
+            entity.PlayAnimationByName("Attack");
+        }
+        public virtual void Execute(T entity)
+        {
+            if (entity.IsAnimationFinished("Attack"))
+                OnFinishAttackAnimation(entity);
+
+        }
+        public virtual void Exit(T entity) { }
+
+        /// <summary>
+        /// Call entity's Attack method, Make CanAttack false, Attack Audio
+        /// </summary>
+        public virtual void Attack(T entity)
+        {
+            entity.Attack();
+            entity.CanAttack(false);
+            entity.PlayAudioClip(AudioType.Attack0);
+        }
+
+        public virtual void OnFinishAttackAnimation(T entity)
+        {
+            entity.ChangeState(EnemyState.Idle);
+        }
+    }
+
+    public class EnemyState_TakeDamage<T> : IState<T> where T : Enemy
+    {
+        public EnemyState_TakeDamage(T entity) { }
+
+        /// <summary>
+        /// Take Damage Animation, TakeDamage Audio
+        /// </summary>
+        public virtual void Enter(T entity)
+        {
+            entity.PlayAnimationByName("Take Damage");
+            entity.PlayAudioClip(AudioType.TakeDamage0);
+        }
+
+        public virtual void Execute(T entity)
+        {
+            if (entity.IsAnimationFinished("Take Damage"))
+                OnFinishTakeDamageAnimation(entity);
+
+            if (entity.CanTakeDamage())
+                OnCanTakeDamage(entity);
+        }
+
+        public virtual void Exit(T entity) { }
+
+        public virtual void OnCanTakeDamage(T entity) { }
+
+        public virtual void OnFinishTakeDamageAnimation(T entity)
+        {
+            entity.ChangeState(EnemyState.Idle);
+        }
+    }
+
+    public class EnemyState_Die<T> : IState<T> where T : Enemy
+    {
+        public EnemyState_Die(T entity) { }
+
+        /// <summary>
+        /// Disappear Effect, Die Animation, Die Audio
+        /// After disappear effect, call the OnDisappear method.
+        /// </summary>
+        public virtual void Enter(T entity)
+        {
+            entity.PlayDisappearEffect(() => OnDisappear(entity));
+
+            entity.PlayAnimationByName("Die");
+            entity.PlayAudioClip(AudioType.Die);
+        }
+        public virtual void Execute(T entity) { }
+        public virtual void Exit(T entity) { }
+
+        /// <summary>
+        /// Die Effect, Deactivate Game Object
+        /// </summary>
+        public virtual void OnDisappear(T entity)
+        {
+            entity.SpawnDieEffect();
+            entity.DeactivateGameObject();
+        }
+    }
+
+    public class EnemyState_Global<T> : IState<T> where T : Enemy
+    {
+        public EnemyState_Global(T entity) { }
+        public virtual void Enter(T entity) { }
+        public virtual void Execute(T entity) { }
+        public virtual void Exit(T entity) { }
+    }
 }

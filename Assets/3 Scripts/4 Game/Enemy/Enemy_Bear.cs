@@ -43,7 +43,7 @@ public class Enemy_Bear : DamagableEnemy
         PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_ATTACK);
     }
 
-    public override void Attack()
+    protected override void Attack()
     {
         GameObject bullet = MemoryPool.Instance(MemoryPoolType.Enemy).ActivatePoolItem(bulletPrefab, transform.position);
         bullet.transform.position = transform.position;

@@ -18,8 +18,17 @@ public class AbilityCard : DamagableEnemy
 
     public override void Init(DetectedObject detectedObject = null)
     {
-        gameObject.SetActive(true);
         base.Init(detectedObject);
+        SetActivate(true);
+    }
+
+    private void SetActivate(bool value)
+        => gameObject.SetActive(value);
+
+    protected override void InitStateMachine()
+    {
+        base.InitStateMachine();
+        states[EnemyState.Die] = (IState<Enemy>)new State_Die(this);
     }
 
     /// <summary>
@@ -48,9 +57,17 @@ public class AbilityCard : DamagableEnemy
         return base.TakeDamage(attckAmount);
     }
 
-    protected override void OnDisappear()
+    public class State_Die : EnemyState_Die<Enemy>
     {
-        base.OnDisappear();
-        gameObject.SetActive(false);
+        AbilityCard owner;
+
+        public State_Die(Enemy entity) : base(entity)
+            => owner = (AbilityCard)entity;
+
+        public override void OnDisappear(Enemy entity)
+        {
+            // base.OnDisappear(entity); => Deactivate 막기 위해서
+            owner.SetActivate(false);
+        }
     }
 }

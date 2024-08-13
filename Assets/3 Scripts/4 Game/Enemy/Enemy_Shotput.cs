@@ -6,6 +6,8 @@ using UnityEngine.Events;
 
 public class Enemy_Shotput : DamagableEnemy
 {
+    [Header("[[Shotput]]")]
+    [Header("[Attack]")]
     [SerializeField]
     private float attackDistance;
     [SerializeField]
@@ -16,14 +18,11 @@ public class Enemy_Shotput : DamagableEnemy
     private float attackTime;
     private float attackTimer;
 
+    [Space]
     [SerializeField]
     private GameObject bulletPrefab;
     [SerializeField]
     private Transform bulletSpawnTransform;
-
-    [Space]
-    [SerializeField]
-    private UnityEvent onInit = new UnityEvent();
 
     public override void Init(DetectedObject detectedObject = null)
     {
@@ -31,21 +30,30 @@ public class Enemy_Shotput : DamagableEnemy
 
         attackTime = Random.Range(attackTimeMin, attackTimeMax);
         attackTimer = 0;
-
-        onInit.Invoke();
     }
 
-    private void FixedUpdate()
+    protected override void InitStateMachine()
     {
-        if (IsDead) return;
+        base.InitStateMachine();
 
+        states[EnemyState.Idle] = new State_Idle(this);
+        states[EnemyState.Attack] = new State_Attack(this);
+
+        stateMachine.SetGlobalState(new State_Global(this));
+    }
+
+    private void LookAtPlayer()
+    {
         transform.LookAt(GGData.PlayerPosition, Vector3.up);
+    }
 
-        if (Vector3.Distance(transform.position, GGData.PlayerPosition) > attackDistance) return;
+    private bool CanPlayAttackAnimation()
+    {
+        if (Vector3.Distance(transform.position, GGData.PlayerPosition) > attackDistance) return false;
 
         attackTimer += Time.deltaTime;
-        if (attackTimer > attackTime)
-            PlayAttackAnimation();
+
+        return attackTimer > attackTime;
     }
 
     private void PlayAttackAnimation()
@@ -53,11 +61,10 @@ public class Enemy_Shotput : DamagableEnemy
         PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_ATTACK);
     }
 
-    public override void Attack()
+    protected override void Attack()
     {
-        base.Attack();
-
         if (IsDead) return;
+        base.Attack();
 
         GameObject bulletClone = MemoryPool.Instance(MemoryPoolType.Enemy).ActivatePoolItem(bulletPrefab);
         bulletClone.transform.SetPositionAndRotation(bulletSpawnTransform.position, Quaternion.LookRotation(GGData.PlayerPosition));
@@ -71,13 +78,59 @@ public class Enemy_Shotput : DamagableEnemy
     protected override void OnDeath()
     {
         base.OnDeath();
-
-        Invoke(nameof(DeactivateGameObject), 2);
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackDistance);
+    }
+
+    /********************** FSM **********************/
+    public class State_Idle : EnemyState_Idle<Enemy>
+    {
+        Enemy_Shotput owner;
+
+        public State_Idle(Enemy entity) : base(entity)
+            => owner = (Enemy_Shotput)entity;
+
+        public override void Execute(Enemy entity)
+        {
+            base.Execute(entity);
+
+            if (owner.CanPlayAttackAnimation())
+                owner.ChangeState(EnemyState.Attack);
+        }
+    }
+
+    public class State_Attack : EnemyState_Attack<Enemy>
+    {
+        Enemy_Shotput owner;
+
+        public State_Attack(Enemy entity) : base(entity)
+            => owner = (Enemy_Shotput)entity;
+
+        public override void Execute(Enemy entity)
+        {
+            base.Execute(entity);
+
+            if (entity.CanAttack())
+                Attack(entity);
+        }
+    }
+
+    public class State_Global : EnemyState_Global<Enemy>
+    {
+        Enemy_Shotput owner;
+
+        public State_Global(Enemy entity) : base(entity)
+            => owner = (Enemy_Shotput)entity;
+
+        public override void Execute(Enemy entity)
+        {
+            base.Execute(entity);
+
+            owner.LookAtPlayer();
+        }
     }
 }

@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 6888520781720584837}
   - component: {fileID: 8745386112834273858}
   - component: {fileID: 2931816147692053613}
+  - component: {fileID: 1949191029098204953}
+  - component: {fileID: -6001167537813813777}
   m_Layer: 15
   m_Name: Enemy_Shotput 2
   m_TagString: Untagged
@@ -68,18 +70,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initOnAwake: 0
+  initOnStart: 0
   animator: {fileID: 4591573760448794490}
   audioSource: {fileID: 2931816147692053613}
   audioStorage:
     audios: []
+  canAttack: 0
   spawnEffectPrefab: {fileID: 7226888052703040409, guid: 7ec363c8df426644ea85f8d6d570561c,
     type: 3}
   dieEffectPrefab: {fileID: 5642766282230003982, guid: b5c8ca7ed10b61e499cce8ec3b6e2e4c,
     type: 3}
-  appearTransform: {fileID: 0}
-  emissionEffectColor: {r: 0, g: 0.5137255, b: 1, a: 1}
   emissionEffectIntensity: 10
-  emissionEffectTime: 1
   useAppearEffect: 1
   appearTime: 0.5
   appearScaleCurve:
@@ -150,21 +151,6 @@ MonoBehaviour:
   bulletPrefab: {fileID: 1370727570811104193, guid: 6549b081baeb34459a23447583183086,
     type: 3}
   bulletSpawnTransform: {fileID: 8249748391387298978}
-  onInit:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8745386112834273858}
-        m_TargetAssemblyTypeName: UnityEngine.Collider, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
 --- !u!136 &8745386112834273858
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -182,7 +168,7 @@ CapsuleCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.65
   m_Height: 2.08
@@ -284,6 +270,33 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1949191029098204953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3337080805184279109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a52755e0cd5c549298b10640829a962f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetTransform: {fileID: 0}
+  OriginalScale: {x: 0, y: 0, z: 0}
+--- !u!114 &-6001167537813813777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3337080805184279109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8277c5fce371e45ea9ff04bff8830b44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emissionColor: {r: 0, g: 0.4468634, b: 1, a: 0}
 --- !u!1 &3727536387712640063
 GameObject:
   m_ObjectHideFlags: 0
@@ -1987,7 +2000,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 22100000, guid: a515bb55117f444a4a3597a0060d3040,
+      objectReference: {fileID: 22100000, guid: 3159ca425447e4934a06aa8e0c340881,
         type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -68,7 +68,7 @@ public class Enemy_Bird : DamagableEnemy
         PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_ATTACK);
     }
 
-    public override void Attack()
+    protected override void Attack()
     {
         base.Attack();
 
@@ -159,10 +159,5 @@ public class Enemy_Bird : DamagableEnemy
         StopAllCoroutines();
 
         base.OnDeath();
-    }
-
-    protected override void OnDisappear()
-    {
-        DeactivateGameObject();
     }
 }

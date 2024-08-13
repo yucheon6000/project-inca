@@ -42,7 +42,7 @@ public class Enemy_Honeycomb : NonDamagableEnemy
             Attack();
     }
 
-    public override void Attack()
+    protected override void Attack()
     {
         base.Attack();
 
