@@ -52,9 +52,9 @@ public class Enemy_Honeycomb : NonDamagableEnemy
         shootTimer = 0;
     }
 
-    public override float TakeDamage(float attckAmount)
+    public override float TakeDamage(float attackAmount)
     {
         PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_TAKE_DAMAGE);
-        return base.TakeDamage(attckAmount);
+        return base.TakeDamage(attackAmount);
     }
 }

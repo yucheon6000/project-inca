@@ -70,12 +70,12 @@ public class ApplicationIcon : DamagableEnemy
         else spriteRenderer.color = new Color(45f / 255, 45f / 255, 45f / 255, c.a);
     }
 
-    public override float TakeDamage(float attckAmount)
+    public override float TakeDamage(float attackAmount)
     {
         if (!canSelect) return 0;
 
         onClick.Invoke();
-        return base.TakeDamage(attckAmount);
+        return base.TakeDamage(attackAmount);
     }
 
     public override void OnHoverStart()

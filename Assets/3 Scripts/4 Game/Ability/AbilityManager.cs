@@ -23,6 +23,12 @@ public class AbilityManager : MonoBehaviour
             card.SetActivate(false);
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.A))
+            ShowAbilityCards();
+    }
+
     [ContextMenu("Show Ability Cards")]
     public void ShowAbilityCards()
     {

@@ -28,7 +28,7 @@ public class AbilityCard : DamagableEnemy
     protected override void InitStateMachine()
     {
         base.InitStateMachine();
-        states[EnemyState.Die] = (IState<Enemy>)new State_Die(this);
+        states[EnemyState.Die] = new State_Die(this);
     }
 
     /// <summary>
@@ -44,7 +44,7 @@ public class AbilityCard : DamagableEnemy
         descriptionText.text = ability.AbilityDescription;
     }
 
-    public override float TakeDamage(float attckAmount)
+    public override float TakeDamage(float attackAmount)
     {
         if (IsDead) return 0;
 
@@ -54,10 +54,10 @@ public class AbilityCard : DamagableEnemy
         // Hide all ability cards.
         AbilityManager.Instance.HideAbilityCards();
 
-        return base.TakeDamage(attckAmount);
+        return base.TakeDamage(attackAmount);
     }
 
-    public class State_Die : EnemyState_Die<Enemy>
+    public class State_Die : EnemyState_Die
     {
         AbilityCard owner;
 

@@ -2,23 +2,33 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Inca;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
 public abstract class Enemy : Character
 {
-    public enum EnemyState { Spawn, Idle, Move, Attack, TakeDamage, Die }
+    public enum EnemyState
+    {
+        None, Spawn, Idle, Move, Attack, TakeDamage, Die,       // Default states
+        Fly, Fall,                                              // Specific states
+        Global
+    }
 
     private DetectedObject detectedObject;
 
     [SerializeField]
-    private EnemyState currentState = EnemyState.Spawn;
+    private EnemyState currentState = EnemyState.None;
+    protected EnemyState CurrentState => currentState;
+    private EnemyState previousState = EnemyState.None;
+    protected EnemyState PreviousState => previousState;
 
     [Header("[Attack]")]
     [SerializeField]
     private bool canAttack = false;
     [SerializeField]
     private bool canTakeDamage = true;
+    protected float DistanceToUserCar => Vector3.Distance(transform.position, IncaData.UserCarPosition);
 
     /*----------------- Effect -----------------*/
     [Header("[Effect]")]
@@ -53,9 +63,10 @@ public abstract class Enemy : Character
 
     /*------------------- FSM -------------------*/
     protected StateMachine<Enemy> stateMachine;
-    protected Dictionary<EnemyState, IState<Enemy>> states;
+    protected Dictionary<EnemyState, IEnemyState> states;
 
     /*---------------- Components ----------------*/
+    protected new Rigidbody rigidbody;
     protected ScaleEffector scaleEffector;
     protected EmissionEffector emissionEffector;
     private LookAtPlayer lookAtPlayer;
@@ -72,6 +83,7 @@ public abstract class Enemy : Character
 
     protected virtual void GetMyComponents()
     {
+        rigidbody = GetComponent<Rigidbody>();
         scaleEffector = GetComponent<ScaleEffector>();
         emissionEffector = GetComponent<EmissionEffector>();
         lookAtPlayer = GetComponent<LookAtPlayer>();
@@ -127,23 +139,40 @@ public abstract class Enemy : Character
 
     protected virtual void InitStateMachine()
     {
+        previousState = EnemyState.None;
+
         stateMachine = new StateMachine<Enemy>();
         stateMachine.Setup(this, null);
-        states = new Dictionary<EnemyState, IState<Enemy>>
+
+        states = new Dictionary<EnemyState, IEnemyState>
         {
-            { EnemyState.Spawn, new EnemyState_Spawn<Enemy>(this) },
-            { EnemyState.Idle, new EnemyState_Idle<Enemy>(this) },
-            { EnemyState.Move, new EnemyState_Move<Enemy>(this) },
-            { EnemyState.Attack, new EnemyState_Attack<Enemy>(this) },
-            { EnemyState.TakeDamage, new EnemyState_TakeDamage<Enemy>(this) },
-            { EnemyState.Die, new EnemyState_Die<Enemy>(this) }
+            { EnemyState.Spawn, new EnemyState_Spawn(this) },
+            { EnemyState.Idle, new EnemyState_Idle(this) },
+            { EnemyState.Move, new EnemyState_Move(this) },
+            { EnemyState.Attack, new EnemyState_Attack(this) },
+            { EnemyState.TakeDamage, new EnemyState_TakeDamage(this) },
+            { EnemyState.Die, new EnemyState_Die(this) },
+            { EnemyState.Global, new EnemyState_Global(this) }
         };
 
-        stateMachine.SetGlobalState(new EnemyState_Global<Enemy>(this));
     }
 
-    protected virtual void StartStateMachine()
-        => ChangeState(EnemyState.Spawn);
+    private void StartStateMachine()
+    {
+        ChangeState(EnemyState.Spawn);
+        stateMachine.SetGlobalState(states[EnemyState.Global]);
+    }
+
+    protected void EnableRigidbody(bool enable)
+    {
+        if (rigidbody == null) return;
+
+        rigidbody.isKinematic = !enable;
+        rigidbody.useGravity = enable;
+
+        if (!enable)
+            rigidbody.velocity = Vector3.zero;
+    }
 
     /*---------------- FixedUpdate ----------------*/
     protected virtual void FixedUpdate() => stateMachine?.Execute();
@@ -166,14 +195,24 @@ public abstract class Enemy : Character
 
     public void CanTakeDamage(bool value) { }
 
-    public override float TakeDamage(float attckAmount)
+    public override float TakeDamage(float attackAmount)
     {
-        float curHp = base.TakeDamage(attckAmount);
+        return TakeDamageWithChangingState(attackAmount);
+    }
+
+    protected float TakeDamageWithChangingState(float attackAmount)
+    {
+        float curHp = base.TakeDamage(attackAmount);
 
         if (IsAlive)
-            ChangeState(EnemyState.TakeDamage);
+            ChangeState(EnemyState.TakeDamage, true);
 
         return curHp;
+    }
+
+    protected float TakeDamageWithoutChangingState(float attackAmount)
+    {
+        return base.TakeDamage(attackAmount);
     }
 
     public void ForceKill()
@@ -309,24 +348,31 @@ public abstract class Enemy : Character
     public virtual void OnHoverEnd() { }
 
     /*--------------------- FSM ---------------------*/
-    public void ChangeState(EnemyState newState)
+    public void ChangeState(EnemyState newState, bool force = false)
     {
         if (stateMachine == null || states == null) return;
         if (states.ContainsKey(newState) == false) return;
+
+        if (currentState == newState && !force) return;
+
+        if (currentState != newState)
+            previousState = currentState;
 
         currentState = newState;
         stateMachine.ChangeState(states[newState]);
     }
 
-    public class EnemyState_Spawn<T> : IState<T> where T : Enemy
+    public interface IEnemyState : IState<Enemy> { }
+
+    public class EnemyState_Spawn : IEnemyState
     {
-        public EnemyState_Spawn(T entity) { }
+        public EnemyState_Spawn(Enemy entity) { }
 
         /// <summary>
         /// Spawn Effect, Appear Effect, Spawn Animation, Spawn Audio
         /// After appear effect, call the OnAppear method.
         /// </summary>
-        public virtual void Enter(T entity)
+        public virtual void Enter(Enemy entity)
         {
             entity.SpawnSpawnEffect();
             entity.PlayAppearEffect(() => OnAppear(entity));
@@ -334,98 +380,100 @@ public abstract class Enemy : Character
             entity.PlayAnimationByName("Spawn");
             entity.PlayAudioClip(AudioType.Spawn);
         }
-        public virtual void Execute(T entity) { }
-        public virtual void Exit(T entity) { }
+        public virtual void Execute(Enemy entity) { }
+        public virtual void Exit(Enemy entity) { }
 
         /// <summary>
         /// Change state to Idle.
         /// </summary>
-        public virtual void OnAppear(T entity)
+        public virtual void OnAppear(Enemy entity)
         {
             entity.ChangeState(EnemyState.Idle);
         }
     }
 
-    public class EnemyState_Idle<T> : IState<T> where T : Enemy
+    public class EnemyState_Idle : IEnemyState
     {
-        public EnemyState_Idle(T entity) { }
+        public EnemyState_Idle(Enemy entity) { }
 
         /// <summary>
         /// Idle Animation
         /// </summary>
-        public virtual void Enter(T entity)
+        public virtual void Enter(Enemy entity)
         {
             entity.PlayAnimationByName("Idle");
         }
 
-        public virtual void Execute(T entity) { }
-        public virtual void Exit(T entity) { }
+        public virtual void Execute(Enemy entity) { }
+        public virtual void Exit(Enemy entity) { }
     }
 
-    public class EnemyState_Move<T> : IState<T> where T : Enemy
+    public class EnemyState_Move : IEnemyState
     {
-        public EnemyState_Move(T entity) { }
+        public EnemyState_Move(Enemy entity) { }
 
         /// <summary>
         /// Move Animation
         /// </summary>
-        public virtual void Enter(T entity)
+        public virtual void Enter(Enemy entity)
         {
             entity.PlayAnimationByName("Move");
         }
-        public virtual void Execute(T entity) { }
-        public virtual void Exit(T entity) { }
+        public virtual void Execute(Enemy entity) { }
+        public virtual void Exit(Enemy entity) { }
     }
 
-    public class EnemyState_Attack<T> : IState<T> where T : Enemy
+    public class EnemyState_Attack : IEnemyState
     {
-        public EnemyState_Attack(T entity) { }
+        public EnemyState_Attack(Enemy entity) { }
 
         /// <summary>
         /// Attack Animation
         /// </summary>
-        public virtual void Enter(T entity)
+        public virtual void Enter(Enemy entity)
         {
             entity.PlayAnimationByName("Attack");
         }
-        public virtual void Execute(T entity)
+        public virtual void Execute(Enemy entity)
         {
             if (entity.IsAnimationFinished("Attack"))
                 OnFinishAttackAnimation(entity);
 
         }
-        public virtual void Exit(T entity) { }
+        public virtual void Exit(Enemy entity) { }
 
         /// <summary>
         /// Call entity's Attack method, Make CanAttack false, Attack Audio
         /// </summary>
-        public virtual void Attack(T entity)
+        public virtual void Attack(Enemy entity)
         {
             entity.Attack();
             entity.CanAttack(false);
             entity.PlayAudioClip(AudioType.Attack0);
         }
 
-        public virtual void OnFinishAttackAnimation(T entity)
+        public virtual void OnFinishAttackAnimation(Enemy entity)
         {
             entity.ChangeState(EnemyState.Idle);
         }
     }
 
-    public class EnemyState_TakeDamage<T> : IState<T> where T : Enemy
+    public class EnemyState_TakeDamage : IEnemyState
     {
-        public EnemyState_TakeDamage(T entity) { }
+        public EnemyState_TakeDamage(Enemy entity) { }
 
         /// <summary>
         /// Take Damage Animation, TakeDamage Audio
         /// </summary>
-        public virtual void Enter(T entity)
+        public virtual void Enter(Enemy entity)
         {
             entity.PlayAnimationByName("Take Damage");
             entity.PlayAudioClip(AudioType.TakeDamage0);
+
+            print("AA");
         }
 
-        public virtual void Execute(T entity)
+        public virtual void Execute(Enemy entity)
         {
             if (entity.IsAnimationFinished("Take Damage"))
                 OnFinishTakeDamageAnimation(entity);
@@ -434,49 +482,51 @@ public abstract class Enemy : Character
                 OnCanTakeDamage(entity);
         }
 
-        public virtual void Exit(T entity) { }
+        public virtual void Exit(Enemy entity) { }
 
-        public virtual void OnCanTakeDamage(T entity) { }
+        public virtual void OnCanTakeDamage(Enemy entity) { }
 
-        public virtual void OnFinishTakeDamageAnimation(T entity)
+        public virtual void OnFinishTakeDamageAnimation(Enemy entity)
         {
             entity.ChangeState(EnemyState.Idle);
         }
     }
 
-    public class EnemyState_Die<T> : IState<T> where T : Enemy
+    public class EnemyState_Die : IEnemyState
     {
-        public EnemyState_Die(T entity) { }
+        public EnemyState_Die(Enemy entity) { }
 
         /// <summary>
-        /// Disappear Effect, Die Animation, Die Audio
+        /// LookAtPlayer(false), Disappear Effect, Die Animation, Die Audio
         /// After disappear effect, call the OnDisappear method.
         /// </summary>
-        public virtual void Enter(T entity)
+        public virtual void Enter(Enemy entity)
         {
+            entity.LookAtPlayer(false);
+
             entity.PlayDisappearEffect(() => OnDisappear(entity));
 
             entity.PlayAnimationByName("Die");
             entity.PlayAudioClip(AudioType.Die);
         }
-        public virtual void Execute(T entity) { }
-        public virtual void Exit(T entity) { }
+        public virtual void Execute(Enemy entity) { }
+        public virtual void Exit(Enemy entity) { }
 
         /// <summary>
         /// Die Effect, Deactivate Game Object
         /// </summary>
-        public virtual void OnDisappear(T entity)
+        public virtual void OnDisappear(Enemy entity)
         {
             entity.SpawnDieEffect();
             entity.DeactivateGameObject();
         }
     }
 
-    public class EnemyState_Global<T> : IState<T> where T : Enemy
+    public class EnemyState_Global : IEnemyState
     {
-        public EnemyState_Global(T entity) { }
-        public virtual void Enter(T entity) { }
-        public virtual void Execute(T entity) { }
-        public virtual void Exit(T entity) { }
+        public EnemyState_Global(Enemy entity) { }
+        public virtual void Enter(Enemy entity) { }
+        public virtual void Execute(Enemy entity) { }
+        public virtual void Exit(Enemy entity) { }
     }
 }

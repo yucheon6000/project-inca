@@ -26,10 +26,10 @@ public class Enemy_Shotput : DamagableEnemy
 
     public override void Init(DetectedObject detectedObject = null)
     {
-        base.Init(detectedObject);
-
         attackTime = Random.Range(attackTimeMin, attackTimeMax);
         attackTimer = 0;
+
+        base.Init(detectedObject);
     }
 
     protected override void InitStateMachine()
@@ -38,8 +38,7 @@ public class Enemy_Shotput : DamagableEnemy
 
         states[EnemyState.Idle] = new State_Idle(this);
         states[EnemyState.Attack] = new State_Attack(this);
-
-        stateMachine.SetGlobalState(new State_Global(this));
+        states[EnemyState.Global] = new State_Global(this);
     }
 
     private void LookAtPlayer()
@@ -54,11 +53,6 @@ public class Enemy_Shotput : DamagableEnemy
         attackTimer += Time.deltaTime;
 
         return attackTimer > attackTime;
-    }
-
-    private void PlayAttackAnimation()
-    {
-        PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_ATTACK);
     }
 
     protected override void Attack()
@@ -86,8 +80,8 @@ public class Enemy_Shotput : DamagableEnemy
         Gizmos.DrawWireSphere(transform.position, attackDistance);
     }
 
-    /********************** FSM **********************/
-    public class State_Idle : EnemyState_Idle<Enemy>
+    /*--------------------- FSM ---------------------*/
+    public class State_Idle : EnemyState_Idle
     {
         Enemy_Shotput owner;
 
@@ -103,12 +97,18 @@ public class Enemy_Shotput : DamagableEnemy
         }
     }
 
-    public class State_Attack : EnemyState_Attack<Enemy>
+    public class State_Attack : EnemyState_Attack
     {
         Enemy_Shotput owner;
 
         public State_Attack(Enemy entity) : base(entity)
             => owner = (Enemy_Shotput)entity;
+
+        public override void Enter(Enemy entity)
+        {
+            base.Enter(entity);
+            owner.CanAttack(false);
+        }
 
         public override void Execute(Enemy entity)
         {
@@ -119,7 +119,7 @@ public class Enemy_Shotput : DamagableEnemy
         }
     }
 
-    public class State_Global : EnemyState_Global<Enemy>
+    public class State_Global : EnemyState_Global
     {
         Enemy_Shotput owner;
 

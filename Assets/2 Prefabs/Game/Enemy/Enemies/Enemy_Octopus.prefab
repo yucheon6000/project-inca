@@ -74,6 +74,8 @@ GameObject:
   - component: {fileID: 1228230411906681384}
   - component: {fileID: 3395751708123115924}
   - component: {fileID: 2969046431933047355}
+  - component: {fileID: 476986391927185630}
+  - component: {fileID: -8284770630454357865}
   m_Layer: 15
   m_Name: Enemy_Octopus
   m_TagString: Untagged
@@ -128,16 +130,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initOnAwake: 0
+  initOnStart: 0
   animator: {fileID: 792956677277572358}
   audioSource: {fileID: 0}
   audioStorage:
     audios: []
+  currentState: 0
+  canAttack: 0
+  canTakeDamage: 1
   spawnEffectPrefab: {fileID: 7226888052703040409, guid: 7ec363c8df426644ea85f8d6d570561c,
     type: 3}
   dieEffectPrefab: {fileID: 5642766282230003982, guid: b5c8ca7ed10b61e499cce8ec3b6e2e4c,
     type: 3}
+  emissionEffectIntensity: 10
   useAppearEffect: 1
-  appearTransform: {fileID: 0}
+  appearTime: 0.5
   appearScaleCurve:
     serializedVersion: 2
     m_Curve:
@@ -162,8 +169,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  appearTime: 0.5
+  useAppearEmissionEffect: 0
   useDisappearEffect: 1
+  disappearTime: 1.5
   disappearScaleCurve:
     serializedVersion: 2
     m_Curve:
@@ -197,7 +205,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  disappearTime: 1.5
+  useDisappearEmissionEffect: 0
   bubbleBulletPrefab: {fileID: 4657252473636324481, guid: 0fe1def4a67264cafb70626f8eadd849,
     type: 3}
   bubbleAttackDelay: 600
@@ -230,6 +238,33 @@ CapsuleCollider:
   m_Height: 9.96
   m_Direction: 1
   m_Center: {x: 0, y: 4.73, z: 0}
+--- !u!114 &476986391927185630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1658766927241364544}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8277c5fce371e45ea9ff04bff8830b44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emissionColor: {r: 0, g: 0.4468634, b: 1, a: 0}
+--- !u!114 &-8284770630454357865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1658766927241364544}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a52755e0cd5c549298b10640829a962f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetTransform: {fileID: 0}
+  originalScale: {x: 0, y: 0, z: 0}
 --- !u!1 &7199812491917629678
 GameObject:
   m_ObjectHideFlags: 0
@@ -2188,6 +2223,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30509fe82c787f345b39d68c665eda18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lookAtPlayerTargetPoint: 1
+  lookAtPlayerHead: 0
 --- !u!4 &6757841338780714746 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c1db25dc9b901d74aba11281144891ca,

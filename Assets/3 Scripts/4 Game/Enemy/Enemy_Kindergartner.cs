@@ -31,9 +31,9 @@ public class Enemy_Kindergartner : DamagableEnemy
     {
         base.InitStateMachine();
 
-        states[EnemyState.Spawn] = (IState<Enemy>)new State_Spawn(this);
-        states[EnemyState.Move] = (IState<Enemy>)new State_Move(this);
-        states[EnemyState.Die] = (IState<Enemy>)new State_Die(this);
+        states[EnemyState.Spawn] = new State_Spawn(this);
+        states[EnemyState.Move] = new State_Move(this);
+        states[EnemyState.Die] = new State_Die(this);
     }
 
     private void PlayAnimation()
@@ -51,7 +51,7 @@ public class Enemy_Kindergartner : DamagableEnemy
         return Vector3.Distance(transform.position, startPosition) < moveDistance;
     }
 
-    public class State_Spawn : EnemyState_Spawn<Enemy>
+    public class State_Spawn : EnemyState_Spawn
     {
         private Enemy_Kindergartner owner;
 
@@ -73,7 +73,7 @@ public class Enemy_Kindergartner : DamagableEnemy
         }
     }
 
-    public class State_Move : EnemyState_Move<Enemy>
+    public class State_Move : EnemyState_Move
     {
         private Enemy_Kindergartner owner;
 
@@ -92,7 +92,7 @@ public class Enemy_Kindergartner : DamagableEnemy
         }
     }
 
-    public class State_Die : EnemyState_Die<Enemy>
+    public class State_Die : EnemyState_Die
     {
         private Enemy_Kindergartner owner;
 

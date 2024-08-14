@@ -75,8 +75,10 @@ GameObject:
   - component: {fileID: 226207937737332530}
   - component: {fileID: 1952778150544316168}
   - component: {fileID: 7393422787603782205}
+  - component: {fileID: -2674618303147539989}
+  - component: {fileID: 7986636889124070663}
   m_Layer: 15
-  m_Name: Enemy_Tree 2
+  m_Name: Enemy_Hermit Crab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -133,18 +135,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initOnAwake: 0
+  initOnStart: 0
   animator: {fileID: 7600273428226003666}
   audioSource: {fileID: 0}
   audioStorage:
     audios: []
+  currentState: 0
+  canAttack: 0
+  canTakeDamage: 1
   spawnEffectPrefab: {fileID: 7226888052703040409, guid: 7ec363c8df426644ea85f8d6d570561c,
     type: 3}
   dieEffectPrefab: {fileID: 5642766282230003982, guid: b5c8ca7ed10b61e499cce8ec3b6e2e4c,
     type: 3}
-  appearTransform: {fileID: 7600273428235861298}
-  emissionEffectColor: {r: 0, g: 0.5137255, b: 1, a: 1}
   emissionEffectIntensity: 2
-  emissionEffectTime: 1
   useAppearEffect: 1
   appearTime: 0.5
   appearScaleCurve:
@@ -172,7 +175,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   useAppearEmissionEffect: 1
-  useDisappearEffect: 0
+  useDisappearEffect: 1
   disappearTime: 3
   disappearScaleCurve:
     serializedVersion: 2
@@ -208,16 +211,14 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   useDisappearEmissionEffect: 1
-  currentState: 0
-  followDistance: 100
-  followTime: 1
+  moveTriggerDistance: 100
+  moveSpeed: 3
   transformByLaneIndex:
   - {fileID: 0}
   - {fileID: 5843113044814360728}
   - {fileID: 534488092873679634}
   - {fileID: 3183457421013734876}
-  attackDistance: 50
-  fallSpeed: 0
+  attackTriggerDistance: 50
   explosionTf: {fileID: 108614799949056141}
   exFor: 8000
   exRa: 1.5
@@ -273,6 +274,33 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-2674618303147539989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1225610506173856677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8277c5fce371e45ea9ff04bff8830b44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emissionColor: {r: 0, g: 0.4468634, b: 1, a: 0}
+--- !u!114 &7986636889124070663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1225610506173856677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a52755e0cd5c549298b10640829a962f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetTransform: {fileID: 7600273428235861298}
+  originalScale: {x: 0, y: 0, z: 0}
 --- !u!1 &5579445322927125390
 GameObject:
   m_ObjectHideFlags: 0
@@ -1402,6 +1430,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30509fe82c787f345b39d68c665eda18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lookAtPlayerTargetPoint: 1
+  lookAtPlayerHead: 0
 --- !u!4 &7600273428235861298 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7817129395020021028, guid: dbcc8d6ff0d6aa1439146455fea9d413,
