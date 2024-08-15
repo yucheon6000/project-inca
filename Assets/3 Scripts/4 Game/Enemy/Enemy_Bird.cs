@@ -62,7 +62,6 @@ public class Enemy_Bird : DamagableEnemy
     {
         base.InitStateMachine();
         states[EnemyState.Idle] = new State_Idle(this);
-        states[EnemyState.Attack] = new State_Attack(this);
         states[EnemyState.TakeDamage] = new State_TakeDamage(this);
         states[EnemyState.Die] = new State_Die(this);
         states[EnemyState.Global] = new State_Global(this);
@@ -153,28 +152,6 @@ public class Enemy_Bird : DamagableEnemy
 
             if (owner.CanPlayAttackAnimation())
                 owner.ChangeState(EnemyState.Attack);
-        }
-    }
-
-    public class State_Attack : EnemyState_Attack
-    {
-        Enemy_Bird owner;
-
-        public State_Attack(Enemy entity) : base(entity)
-            => owner = (Enemy_Bird)entity;
-
-        public override void Enter(Enemy entity)
-        {
-            base.Enter(entity);
-            owner.CanAttack(false);
-        }
-
-        public override void Execute(Enemy entity)
-        {
-            base.Execute(entity);
-
-            if (entity.CanAttack())
-                Attack(entity);
         }
     }
 

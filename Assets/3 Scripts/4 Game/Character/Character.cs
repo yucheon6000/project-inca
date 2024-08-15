@@ -23,6 +23,8 @@ public abstract class Character : MonoBehaviour
     protected bool initOnAwake = false;
     [SerializeField]
     protected bool initOnStart = false;
+    [SerializeField]
+    protected bool initOnEable = false;
 
     [Header("[Animation]")]
     [SerializeField]
@@ -80,5 +82,11 @@ public abstract class Character : MonoBehaviour
         if (clip == null) return;
 
         audioSource.PlayOneShot(clip);
+    }
+
+    protected virtual void OnEnable()
+    {
+        if (initOnEable)
+            Init();
     }
 }

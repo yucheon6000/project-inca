@@ -11,8 +11,10 @@ namespace Inca
         public static Transform UserCarTransform
             => IncaDetectManager.Instance.DetectedUserObjects.userCar.AvailableTransform;
         public static Vector3 UserCarPosition => UserCarTransform.position;
+        public static Vector3 UserCarForward => UserCarTransform.forward;
 
         public static float UserCarSpeed => IncaDetectManager.Instance.UserCarSpeed;
+        public static Vector3 UserCarVelocity => IncaDetectManager.Instance.UserCarVelocity;
         public static int UserCarLaneIndex => IncaDetectManager.Instance.UserCarLaneIndex;
 
         public static Transform UserHeadTrasnform

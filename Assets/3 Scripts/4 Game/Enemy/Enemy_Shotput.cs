@@ -14,8 +14,7 @@ public class Enemy_Shotput : DamagableEnemy
     private float attackTimeMin;
     [SerializeField]
     private float attackTimeMax;
-    [SerializeField]
-    private float attackTime;
+    private float attackDelayTime;
     private float attackTimer;
 
     [Space]
@@ -26,7 +25,7 @@ public class Enemy_Shotput : DamagableEnemy
 
     public override void Init(DetectedObject detectedObject = null)
     {
-        attackTime = Random.Range(attackTimeMin, attackTimeMax);
+        attackDelayTime = Random.Range(attackTimeMin, attackTimeMax);
         attackTimer = 0;
 
         base.Init(detectedObject);
@@ -37,7 +36,6 @@ public class Enemy_Shotput : DamagableEnemy
         base.InitStateMachine();
 
         states[EnemyState.Idle] = new State_Idle(this);
-        states[EnemyState.Attack] = new State_Attack(this);
         states[EnemyState.Global] = new State_Global(this);
     }
 
@@ -52,7 +50,7 @@ public class Enemy_Shotput : DamagableEnemy
 
         attackTimer += Time.deltaTime;
 
-        return attackTimer > attackTime;
+        return attackTimer > attackDelayTime;
     }
 
     protected override void Attack()
@@ -65,7 +63,7 @@ public class Enemy_Shotput : DamagableEnemy
         Vector3 dir = (GGData.PlayerPosition - bulletSpawnTransform.position);
         bulletClone.GetComponent<Bullet>().Setup(dir);
 
-        attackTime = Random.Range(attackTimeMin, attackTimeMax);
+        attackDelayTime = Random.Range(attackTimeMin, attackTimeMax);
         attackTimer = 0;
     }
 
@@ -94,28 +92,6 @@ public class Enemy_Shotput : DamagableEnemy
 
             if (owner.CanPlayAttackAnimation())
                 owner.ChangeState(EnemyState.Attack);
-        }
-    }
-
-    public class State_Attack : EnemyState_Attack
-    {
-        Enemy_Shotput owner;
-
-        public State_Attack(Enemy entity) : base(entity)
-            => owner = (Enemy_Shotput)entity;
-
-        public override void Enter(Enemy entity)
-        {
-            base.Enter(entity);
-            owner.CanAttack(false);
-        }
-
-        public override void Execute(Enemy entity)
-        {
-            base.Execute(entity);
-
-            if (entity.CanAttack())
-                Attack(entity);
         }
     }
 

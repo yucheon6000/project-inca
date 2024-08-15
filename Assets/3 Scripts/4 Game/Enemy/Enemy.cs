@@ -22,6 +22,12 @@ public abstract class Enemy : Character
     protected EnemyState CurrentState => currentState;
     private EnemyState previousState = EnemyState.None;
     protected EnemyState PreviousState => previousState;
+    private EnemyState defaultState = EnemyState.Idle;
+    protected EnemyState DefaultState => defaultState;
+    protected void SetDefaultState(EnemyState state) => defaultState = state;
+    private EnemyState startState = EnemyState.Spawn;
+    protected EnemyState StartState => startState;
+    protected void SetStartState(EnemyState state) => startState = state;
 
     [Header("[Attack]")]
     [SerializeField]
@@ -139,6 +145,7 @@ public abstract class Enemy : Character
 
     protected virtual void InitStateMachine()
     {
+        currentState = EnemyState.None;
         previousState = EnemyState.None;
 
         stateMachine = new StateMachine<Enemy>();
@@ -159,7 +166,7 @@ public abstract class Enemy : Character
 
     private void StartStateMachine()
     {
-        ChangeState(EnemyState.Spawn);
+        ChangeState(StartState);
         stateMachine.SetGlobalState(states[EnemyState.Global]);
     }
 
@@ -177,6 +184,14 @@ public abstract class Enemy : Character
     /*---------------- FixedUpdate ----------------*/
     protected virtual void FixedUpdate() => stateMachine?.Execute();
 
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+
+        if (initOnEable)
+            Init(null);
+    }
+
     /*-------------- Methods for FSM --------------*/
     public void LookAtPlayer(bool value)
     {
@@ -184,7 +199,7 @@ public abstract class Enemy : Character
         lookAtPlayer.Look(value);
     }
 
-    public bool CanAttack()
+    public virtual bool CanAttack()
         => canAttack;
 
     public void CanAttack(bool value)
@@ -388,7 +403,7 @@ public abstract class Enemy : Character
         /// </summary>
         public virtual void OnAppear(Enemy entity)
         {
-            entity.ChangeState(EnemyState.Idle);
+            entity.ChangeState(entity.DefaultState);
         }
     }
 
@@ -432,10 +447,13 @@ public abstract class Enemy : Character
         /// </summary>
         public virtual void Enter(Enemy entity)
         {
+            entity.CanAttack(false);
             entity.PlayAnimationByName("Attack");
         }
         public virtual void Execute(Enemy entity)
         {
+            if (entity.CanAttack())
+                Attack(entity);
             if (entity.IsAnimationFinished("Attack"))
                 OnFinishAttackAnimation(entity);
 
@@ -454,7 +472,7 @@ public abstract class Enemy : Character
 
         public virtual void OnFinishAttackAnimation(Enemy entity)
         {
-            entity.ChangeState(EnemyState.Idle);
+            entity.ChangeState(entity.DefaultState);
         }
     }
 
@@ -488,7 +506,7 @@ public abstract class Enemy : Character
 
         public virtual void OnFinishTakeDamageAnimation(Enemy entity)
         {
-            entity.ChangeState(EnemyState.Idle);
+            entity.ChangeState(entity.DefaultState);
         }
     }
 

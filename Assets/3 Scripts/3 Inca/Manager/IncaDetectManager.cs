@@ -24,6 +24,7 @@ namespace Inca
         [SerializeField]
         private CarStateDrive userCarStateDrive;
         public float UserCarSpeed => userCarStateDrive.CurrentMoveSpeed;
+        public Vector3 UserCarVelocity => userCarStateDrive.CurrentVelocity;
 
 
         [Header("Detected World")]
