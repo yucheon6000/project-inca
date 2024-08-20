@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Dalak.LineRenderer3D;
 using Inca;
 using UnityEngine;
 
-[RequireComponent(typeof(LineRenderer))]
 public class Enemy_Chameleon_Tongue : NonDamagableEnemy
 {
     [Header("[[Chameleon_Tongue]]")]
@@ -23,12 +23,12 @@ public class Enemy_Chameleon_Tongue : NonDamagableEnemy
 
     private bool hasHit = false;
 
-    private LineRenderer lineRenderer;
+    private LineRenderer3D lineRenderer;
 
     protected override void GetMyComponents()
     {
         base.GetMyComponents();
-        lineRenderer = GetComponent<LineRenderer>();
+        lineRenderer = GetComponentInChildren<LineRenderer3D>();
     }
 
     public override void Init(DetectedObject detectedObject = null)
@@ -126,6 +126,8 @@ public class Enemy_Chameleon_Tongue : NonDamagableEnemy
 
     private void UpdateLineRenderer(float progress)
     {
+        lineRenderer.pathData.positions.Clear();
+
         targets.RemoveAll(item => item == null || !EnemyIsInFrontOfPlayer(item));
 
         // Calculate total distance.
@@ -142,6 +144,7 @@ public class Enemy_Chameleon_Tongue : NonDamagableEnemy
 
         // Calculate target distance this tongue should move.
         float targetDist = Mathf.Lerp(0, totalDist, progress);
+        if (targetDist == 0) return;
 
         // Colect points to give to LineRenderer.
         List<Vector3> points = new List<Vector3>();
@@ -166,9 +169,12 @@ public class Enemy_Chameleon_Tongue : NonDamagableEnemy
             }
         }
 
+        Vector3[] result = points.ToArray();
+        transform.InverseTransformPoints(result);
+
         // Update the LineRenderer's points.
-        lineRenderer.positionCount = points.Count;
-        lineRenderer.SetPositions(points.ToArray());
+        lineRenderer.pathData.positions = new List<Vector3>(result);
+        lineRenderer.UpdateMesh();
     }
 
     private class State_Move : EnemyState_Move
