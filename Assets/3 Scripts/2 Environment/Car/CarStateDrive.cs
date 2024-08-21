@@ -164,7 +164,7 @@ public class CarStateDrive : StateMonoBehaviour<Car>
 
     private void UpdateMoveAndRotate(Car car)
     {
-        if (car.NextLanePoint == null || car.CurrentLanePoint == null) return;
+        if (CheckInvalidLanePointAndDestoryCar(car)) return;
 
         moveDirection = (car.NextLanePoint.Position - transform.position).normalized;
 
@@ -178,6 +178,8 @@ public class CarStateDrive : StateMonoBehaviour<Car>
         else
         {
             SetNextLanePoint(car);
+            if (CheckInvalidLanePointAndDestoryCar(car)) return;
+
             pos = Vector3.MoveTowards(car.CurrentLanePoint.Position, car.NextLanePoint.Position, moveAmount - distCarToNextLanePoint);
         }
         // Vector3 pos = transform.position + (car.NextLanePoint.Position - transform.position).normalized * currentMoveSpeed * Time.fixedDeltaTime;
@@ -197,6 +199,8 @@ public class CarStateDrive : StateMonoBehaviour<Car>
     bool checkIsInLine = false;
     public void UpdateNextLanePoint(Car car)
     {
+        if (CheckInvalidLanePointAndDestoryCar(car)) return;
+
         checkIsInLine = CheckPointIsBetweenTwoPoints(transform.position, car.CurrentLanePoint.Position, car.NextLanePoint.Position);
 
         if (!checkIsInLine)
@@ -233,14 +237,21 @@ public class CarStateDrive : StateMonoBehaviour<Car>
         car.CurrentLanePoint = car.NextLanePoint;
 
         car.NextLanePoint = car.CurrentLanePoint.GetNextLanePoint(car.TargetLaneIndex);
-        if (car.NextLanePoint == null)
-        {
-            Destroy(gameObject);
-            return;
-        }
+
+        if (CheckInvalidLanePointAndDestoryCar(car)) return;
+
         car.NextLanePoint.RegisterUser(this.gameObject);
         distanceToNextLanePoint = float.MaxValue;
     }
 
     public override void Exit(Car car) { }
+
+    private bool CheckInvalidLanePointAndDestoryCar(Car car)
+    {
+        bool r = car.CurrentLanePoint == null || car.NextLanePoint == null;
+        if (r)
+            Destroy(car.gameObject);
+
+        return r;
+    }
 }
