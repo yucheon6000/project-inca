@@ -9,6 +9,10 @@ public class Enemy_Chameleon : DamagableEnemy
     private float attackDelayTime;
     private float attackTimer;
 
+    [Header("[Aniamtion]")]
+    [SerializeField]
+    private float animationSpeedMps;
+
     private Enemy_Chameleon_Tongue tongue;
 
     protected override void GetMyComponents()
@@ -32,19 +36,29 @@ public class Enemy_Chameleon : DamagableEnemy
         rigidbody.velocity = transform.forward * Vector3.Dot(IncaData.UserCarVelocity, transform.forward);
     }
 
+    protected override void PlayAnimationByName(string animationName)
+    {
+        base.PlayAnimationByName(animationName);
+
+        animator.Play(animationName, 1, 0);
+    }
+
+    private void UpdateAnimationSpeed()
+    {
+        float animSpeed = rigidbody.velocity.magnitude * animationSpeedMps;
+        animator.SetFloat("MoveSpeedMultiplier", animSpeed);
+    }
+
     private bool CanPlayAttackAnimation()
     {
         attackTimer += Time.deltaTime;
         return attackTimer > attackDelayTime;
     }
 
-    public override bool CanAttack() => true;
-
     protected override void Attack()
     {
         base.Attack();
         tongue.Init(null);
-        attackTimer = 0;
     }
 
     private class State_Idle : EnemyState_Idle
@@ -71,7 +85,22 @@ public class Enemy_Chameleon : DamagableEnemy
         public override void Attack(Enemy entity)
         {
             base.Attack(entity);
-            owner.ChangeState(EnemyState.Idle);
+        }
+
+        public override void Execute(Enemy entity)
+        {
+            // base.Execute(entity)     // prevent to check animation in layer 0.
+
+            if (owner.CanAttack())
+                Attack(owner);
+            if (owner.IsAnimationFinished("Attack", 1))
+                OnFinishAttackAnimation(owner);
+        }
+
+        public override void OnFinishAttackAnimation(Enemy entity)
+        {
+            base.OnFinishAttackAnimation(entity);
+            owner.attackTimer = 0;
         }
     }
 
@@ -81,11 +110,18 @@ public class Enemy_Chameleon : DamagableEnemy
         public State_Move(Enemy entity) : base(entity)
             => owner = (Enemy_Chameleon)entity;
 
+        // public override void Enter(Enemy entity)
+        // {
+        //     base.Enter(entity);
+        //     owner.animator.Play("Move", 1);
+        // }
+
         public override void Execute(Enemy entity)
         {
             base.Execute(entity);
 
             owner.UpdateVelocity();
+            owner.UpdateAnimationSpeed();
         }
     }
 }

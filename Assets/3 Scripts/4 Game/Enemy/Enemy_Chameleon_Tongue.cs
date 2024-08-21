@@ -11,6 +11,8 @@ public class Enemy_Chameleon_Tongue : NonDamagableEnemy
     [Header("[Attack]")]
     [SerializeField]
     private int attackEnemyCount;
+    [SerializeField]
+    private BoxCollider targetBoxCollider;
 
     [Header("[Move]")]
     [SerializeField]
@@ -36,6 +38,8 @@ public class Enemy_Chameleon_Tongue : NonDamagableEnemy
         moveTimer = 0;
         targets = new List<Transform>();
         hasHit = false;
+
+        gameObject.SetActive(true);
 
         base.Init(detectedObject);
     }
@@ -74,27 +78,11 @@ public class Enemy_Chameleon_Tongue : NonDamagableEnemy
             if (index < enemies.Count)
                 targets.Add(enemies[index].transform);
         }
-
-        targets.Insert(0, transform);
-        targets.Add(GGData.PlayerTransform);
     }
 
     bool EnemyIsInFrontOfPlayer(Transform enemy)
     {
-        // 몬스터와 플레이어 사이의 방향 벡터 (Z, X 축만 고려)
-        Vector3 directionToMonster = new Vector3(enemy.position.x - IncaData.UserCarPosition.x, 0, enemy.position.z - IncaData.UserCarPosition.z);
-
-        // 방향 벡터를 정규화 (길이를 1로 만듦)
-        directionToMonster.Normalize();
-
-        // 플레이어의 forward 벡터 (Z, X 축만 고려)
-        Vector3 forward = new Vector3(IncaData.UserCarForward.x, 0, IncaData.UserCarForward.z);
-
-        // forward 벡터와 몬스터 방향 벡터의 내적 계산
-        float dotProduct = Vector3.Dot(forward, directionToMonster);
-
-        // 내적 값이 양수면 몬스터가 앞에 있음
-        return dotProduct > 0;
+        return targetBoxCollider.bounds.Contains(enemy.transform.position);
     }
 
     private void UpdateStickOut()
@@ -121,22 +109,29 @@ public class Enemy_Chameleon_Tongue : NonDamagableEnemy
         moveTimer -= Time.deltaTime;
         float progress = moveCurve.Evaluate(moveTimer / moveTime);
 
+        if (progress <= 0)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+
         UpdateLineRenderer(progress);
     }
 
     private void UpdateLineRenderer(float progress)
     {
-        lineRenderer.pathData.positions.Clear();
-
         targets.RemoveAll(item => item == null || !EnemyIsInFrontOfPlayer(item));
+
+        List<Transform> validTargets = new List<Transform>(targets);
+        validTargets.Insert(0, transform);
+        validTargets.Add(GGData.PlayerTransform);
 
         // Calculate total distance.
         float totalDist = 0;
         Vector3 prevPoint = transform.position;
 
-        Vector3[] enemyPositions = targets.Select(i =>
+        Vector3[] enemyPositions = validTargets.Select(i =>
         {
-            print(i.name);
             totalDist += Vector3.Distance(prevPoint, i.position);
             prevPoint = i.position;
             return i.position;
@@ -173,6 +168,7 @@ public class Enemy_Chameleon_Tongue : NonDamagableEnemy
         transform.InverseTransformPoints(result);
 
         // Update the LineRenderer's points.
+        lineRenderer.pathData.positions.Clear();
         lineRenderer.pathData.positions = new List<Vector3>(result);
         lineRenderer.UpdateMesh();
     }

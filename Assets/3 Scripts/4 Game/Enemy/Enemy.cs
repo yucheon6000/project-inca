@@ -336,20 +336,19 @@ public abstract class Enemy : Character
     private IEnumerator PlayDefaultAnimationRoutine()
     {
         yield return null;
-        print("defaultAnimationId: " + defaultAnimationId);
         PlayAnimationByValue(defaultAnimationId);
     }
 
-    protected void PlayAnimationByName(string animationName)
+    protected virtual void PlayAnimationByName(string animationName)
     {
         if (animator == null) return;
 
         animator.Play(animationName, 0, 0);
     }
 
-    protected bool IsAnimationFinished(string animationName)
+    protected bool IsAnimationFinished(string animationName, int layerIndex = 0)
     {
-        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(layerIndex);
 
         if (stateInfo.IsName(animationName))
             // 애니메이션 진행도가 1이면 애니메이션이 끝난 것
@@ -487,8 +486,6 @@ public abstract class Enemy : Character
         {
             entity.PlayAnimationByName("Take Damage");
             entity.PlayAudioClip(AudioType.TakeDamage0);
-
-            print("AA");
         }
 
         public virtual void Execute(Enemy entity)
