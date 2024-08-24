@@ -75,7 +75,7 @@ public abstract class Enemy : Character
     protected new Rigidbody rigidbody;
     protected ScaleEffector scaleEffector;
     protected EmissionEffector emissionEffector;
-    private LookAtPlayer lookAtPlayer;
+    protected LookAtPlayer lookAtPlayer;
 
     protected override void Awake()
     {
@@ -197,6 +197,11 @@ public abstract class Enemy : Character
     {
         if (lookAtPlayer == null) return;
         lookAtPlayer.Look(value);
+    }
+
+    protected void LookAtPlayerImmediate()
+    {
+        lookAtPlayer.LookImmediate();
     }
 
     public virtual bool CanAttack()

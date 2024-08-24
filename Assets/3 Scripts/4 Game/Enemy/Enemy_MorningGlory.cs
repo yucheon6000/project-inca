@@ -59,17 +59,43 @@ public class Enemy_MorningGlory : DamagableEnemy
         } while (boxIdx == previousBoxIndex);
 
         LocalSpaceBox box = spawnSpaceBoxes[boxIdx];
-        transform.localPosition = box.GetLocalPointInBox();
-
         previousBoxIndex = boxIdx;
+
         InitMoveDelayTimeAndTimer();
 
-        SpawnSpeaker();
+        scaleEffector.PlayToZero(0.5f, transform.localScale, AnimationCurve.EaseInOut(0, 0, 1, 1), () =>
+        {
+            transform.localPosition = box.GetLocalPointInBox();
+            LookAtPlayerImmediate();
+            RemoveNearSpeakers();
+
+            scaleEffector.PlayFromZeroToOriginalScale(0.5f, AnimationCurve.EaseInOut(0, 0, 1, 1), () =>
+            {
+                InitMoveDelayTimeAndTimer();
+
+                SpawnSpeaker();
+            });
+        });
+    }
+
+    private void RemoveNearSpeakers()
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, 1f);
+        foreach (var col in colliders)
+            if (col.TryGetComponent<Enemy_MorningGlory_Speaker>(out Enemy_MorningGlory_Speaker spaeker))
+                spaeker.ForceKill();
     }
 
     private void SpawnSpeaker()
     {
-        Instantiate(speakerPrefab, speakerSpawnTransform.position, quaternion.identity);
+        int cnt = Random.Range(3, 6);
+
+        for (int i = 0; i < cnt; ++i)
+        {
+            GameObject clone = Instantiate(speakerPrefab, transform.position + Random.insideUnitSphere * Random.Range(0.8f, 1f), quaternion.identity);
+            clone.GetComponent<Enemy_MorningGlory_Speaker>().Init();
+            clone.transform.SetParent(IncaData.UserCarTransform);
+        }
     }
 
     protected override void InitStateMachine()

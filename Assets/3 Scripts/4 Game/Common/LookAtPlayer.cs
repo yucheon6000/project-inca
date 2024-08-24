@@ -13,7 +13,17 @@ public class LookAtPlayer : MonoBehaviour
 
     public void Look(bool value) => look = value;
 
+    public void LookImmediate()
+    {
+        Look();
+    }
+
     private void FixedUpdate()
+    {
+        Look();
+    }
+
+    private void Look()
     {
         if (look == false) return;
 
