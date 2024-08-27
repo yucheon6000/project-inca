@@ -73,7 +73,13 @@ MonoBehaviour:
   animator: {fileID: 0}
   audioSource: {fileID: 7156284062364166034}
   audioStorage:
-    audios: []
+    audios:
+    - type: 0
+      clip: {fileID: 8300000, guid: 4b14ba7538e6c0944bb5bcede28dd880, type: 3}
+    - type: 5
+      clip: {fileID: 8300000, guid: 39bfc6a4c4805ad448338b74696d448f, type: 3}
+    - type: 9
+      clip: {fileID: 8300000, guid: 78239a27b0a7b0841a4d654fa73ead26, type: 3}
   currentState: 0
   canAttack: 0
   canTakeDamage: 1
@@ -272,6 +278,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 9031311703557706136}
     m_Modifications:
+    - target: {fileID: 100010, guid: 70b2001f2fac3bd45a18981429f7f2ed, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 4696811776763616772, guid: 4d81e9d5a312f4c31a644e687471abfc,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -349,10 +359,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8302442947319051341, guid: 4d81e9d5a312f4c31a644e687471abfc,
         type: 3}
-      propertyPath: m_Layer
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 100010, guid: 70b2001f2fac3bd45a18981429f7f2ed, type: 3}
       propertyPath: m_Layer
       value: 15
       objectReference: {fileID: 0}

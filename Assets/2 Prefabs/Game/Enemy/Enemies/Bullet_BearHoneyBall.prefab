@@ -72,7 +72,11 @@ MonoBehaviour:
   animator: {fileID: 0}
   audioSource: {fileID: 0}
   audioStorage:
-    audios: []
+    audios:
+    - type: 1
+      clip: {fileID: 8300000, guid: 4a54ea6115fbb25418e2c36cf77231c0, type: 3}
+    - type: 2
+      clip: {fileID: 8300000, guid: 89cc8242276b8834e931f07a9c618c1d, type: 3}
   currentState: 0
   canAttack: 0
   canTakeDamage: 1
