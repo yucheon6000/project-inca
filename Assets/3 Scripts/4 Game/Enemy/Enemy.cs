@@ -381,6 +381,15 @@ public abstract class Enemy : Character
         stateMachine.ChangeState(states[newState]);
     }
 
+    /*  <Preset>
+     *                                                                                    ______
+     *  Enemy.StartStateMachine()  --(Start State)-->  Spawn       --(Default State)-->  |      |
+     *                                                 Attack      --(Default State)-->  | Idle |
+     *  Enemy.TakeDamage()         ----------------->  TakeDamage  --(Default State)-->  |      |
+     *  Enemy.OnDeath()            ----------------->  Die                                ------
+     *
+     */
+
     public interface IEnemyState : IState<Enemy> { }
 
     public class EnemyState_Spawn : IEnemyState
@@ -403,7 +412,7 @@ public abstract class Enemy : Character
         public virtual void Exit(Enemy entity) { }
 
         /// <summary>
-        /// Change state to Idle.
+        /// Change state to Default State.
         /// </summary>
         public virtual void OnAppear(Enemy entity)
         {
