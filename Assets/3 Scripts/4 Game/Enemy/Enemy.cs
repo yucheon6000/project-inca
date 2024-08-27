@@ -446,6 +446,7 @@ public abstract class Enemy : Character
         public virtual void Enter(Enemy entity)
         {
             entity.PlayAnimationByName("Move");
+            entity.PlayAudioClip(AudioType.Move);
         }
         public virtual void Execute(Enemy entity) { }
         public virtual void Exit(Enemy entity) { }
