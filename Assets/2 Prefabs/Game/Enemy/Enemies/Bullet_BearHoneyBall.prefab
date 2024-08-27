@@ -67,29 +67,40 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initOnAwake: 0
+  initOnStart: 0
+  initOnEable: 0
   animator: {fileID: 0}
   audioSource: {fileID: 0}
   audioStorage:
-    audios: []
+    audios:
+    - type: 1
+      clip: {fileID: 8300000, guid: 4a54ea6115fbb25418e2c36cf77231c0, type: 3}
+    - type: 2
+      clip: {fileID: 8300000, guid: 89cc8242276b8834e931f07a9c618c1d, type: 3}
+  currentState: 0
+  canAttack: 0
+  canTakeDamage: 1
   spawnEffectPrefab: {fileID: 0}
   dieEffectPrefab: {fileID: 0}
+  emissionEffectIntensity: 10
   useAppearEffect: 0
-  appearTransform: {fileID: 0}
+  appearTime: 0
   appearScaleCurve:
     serializedVersion: 2
     m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  appearTime: 0
+  useAppearEmissionEffect: 0
   useDisappearEffect: 0
+  disappearTime: 0
   disappearScaleCurve:
     serializedVersion: 2
     m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  disappearTime: 0
+  useDisappearEmissionEffect: 0
   bounceCount: 3
   bounceProgressSpeed: 0.6
   hitPower: 50

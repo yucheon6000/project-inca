@@ -67,12 +67,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initOnAwake: 0
+  initOnStart: 0
+  initOnEable: 0
   animator: {fileID: 7489703080148098984}
   audioSource: {fileID: 0}
   audioStorage:
-    audios: []
+    audios:
+    - type: 0
+      clip: {fileID: 0}
+  currentState: 0
+  canAttack: 0
+  canTakeDamage: 1
   spawnEffectPrefab: {fileID: 0}
   dieEffectPrefab: {fileID: 0}
+  emissionEffectIntensity: 10
+  useAppearEffect: 0
+  appearTime: 0
+  appearScaleCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  useAppearEmissionEffect: 0
+  useDisappearEffect: 0
+  disappearTime: 0
+  disappearScaleCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  useDisappearEmissionEffect: 0
   moveSpeed: 5
   moveDistance: 50
   minScale: 0.5
@@ -373,6 +399,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30509fe82c787f345b39d68c665eda18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lookAtPlayerTargetPoint: 1
+  lookAtPlayerHead: 0
 --- !u!4 &7489703080157950032 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1319869897745657598, guid: e69dd2af53627174a95874b916927ee9,

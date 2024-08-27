@@ -48,12 +48,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initOnAwake: 0
+  initOnStart: 0
+  initOnEable: 0
   animator: {fileID: 0}
   audioSource: {fileID: 0}
   audioStorage:
-    audios: []
+    audios:
+    - type: 1
+      clip: {fileID: 8300000, guid: 640f423c75366e64ab0ff0108302cb5e, type: 3}
+  currentState: 0
+  canAttack: 0
+  canTakeDamage: 1
   spawnEffectPrefab: {fileID: 0}
   dieEffectPrefab: {fileID: 0}
+  emissionEffectIntensity: 10
+  useAppearEffect: 0
+  appearTime: 0
+  appearScaleCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  useAppearEmissionEffect: 0
+  useDisappearEffect: 0
+  disappearTime: 0
+  disappearScaleCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  useDisappearEmissionEffect: 0
   moveSpeed: 60
 --- !u!114 &3152484525863422479
 MonoBehaviour:
