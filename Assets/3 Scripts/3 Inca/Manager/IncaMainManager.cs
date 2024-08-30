@@ -40,7 +40,8 @@ namespace Inca
                 Instance = this;
         }
 
-        private void Start() => InitAllManagers();
+        private void Start()
+            => InitAllManagers();
 
         public void InitAllManagers()
         {
@@ -60,5 +61,7 @@ namespace Inca
     {
         public T userCar;
         public T userHead;
+        public T userHandRight;
+        public T userHandLeft;
     }
 }

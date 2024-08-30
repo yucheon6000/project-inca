@@ -21,11 +21,9 @@ namespace Inca
         private Car userCar;
         public int UserCarLaneIndex
             => userCar.CurrentLanePoint == null ? 1 : userCar.CurrentLanePoint.LaneIndex;
-        [SerializeField]
         private CarStateDrive userCarStateDrive;
         public float UserCarSpeed => userCarStateDrive.CurrentMoveSpeed;
         public Vector3 UserCarVelocity => userCarStateDrive.CurrentVelocity;
-
 
         [Header("Detected World")]
         [SerializeField]
@@ -69,6 +67,8 @@ namespace Inca
 
         public override void Init()
         {
+            userCarStateDrive = userCar.GetComponent<CarStateDrive>();
+
             // Set sigleton
             if (Instance == null)
                 Instance = this;
@@ -109,13 +109,13 @@ namespace Inca
                 foreach (DetectedObject detObj in detObjs)
                 {
                     if (detObj == null) continue;
-                    if (canDetectEnvironmentObject(detObj.EnvironmentObject) == false)
+                    if (CheckIfValidEnvironmentObject(detObj.EnvironmentObject) == false)
                         ExitEnvironmentObject(detObj.EnvironmentObject);
                 }
             }
         }
 
-        private bool canDetectEnvironmentObject(EnvironmentObject environmentObject)
+        private bool CheckIfValidEnvironmentObject(EnvironmentObject environmentObject)
         {
             return environmentObject != null && environmentObject.gameObject.activeSelf && environmentObject.gameObject.activeInHierarchy;
         }
@@ -175,7 +175,7 @@ namespace Inca
             MemoryPool.Instance(MemoryPoolType.DetectedObject).DeactivatePoolItem(detObj.gameObject);
         }
 
-        /*********** Lidar Events ***********/
+        /*------------ Lidar Events ------------*/
         private void OnTriggerEnter(Collider other)
         {
             if (other.TryGetComponent<EnvironmentObject>(out EnvironmentObject obj))

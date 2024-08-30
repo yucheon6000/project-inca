@@ -134,14 +134,13 @@ namespace Inca
 
         private void OnDrawGizmos()
         {
-            // if (!isVisible) return;
-            if (environmentObject == null) return;
-
             DrawGizmos(Color.red);
         }
 
         private void DrawGizmos(Color color)
         {
+            if (environmentObject == null) return;
+
             Gizmos.color = color;
 
             Vector3 c = originalTransform.TransformPoint(environmentObject.ColliderCenter);

@@ -16,6 +16,10 @@ public class DetectedUser : MonoBehaviour
         detectedUserObjects.userCar.IsVisible(true);
         detectedUserObjects.userHead.Initialize(userEnvObjs.userHead);
         detectedUserObjects.userHead.IsVisible(true);
+        detectedUserObjects.userHandRight.Initialize(userEnvObjs.userHandRight);
+        detectedUserObjects.userHandRight.IsVisible(true);
+        detectedUserObjects.userHandLeft.Initialize(userEnvObjs.userHandLeft);
+        detectedUserObjects.userHandLeft.IsVisible(true);
 
         IncaDetectManager.Instance.SetDetectedUserObjects(detectedUserObjects);
     }
