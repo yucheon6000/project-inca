@@ -51,6 +51,8 @@ namespace Inca
 
         private void Update()
         {
+            // if (Input.GetKeyDown(KeyCode.R))
+            //     XRInputSubsystem.TryRecenter()
             if (Input.GetKeyDown(KeyCode.Escape))
                 Application.Quit();
         }

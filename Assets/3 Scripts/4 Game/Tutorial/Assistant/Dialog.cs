@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using HTC.UnityPlugin.Vive;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -49,14 +48,14 @@ public class Dialog : MonoBehaviour
 
     private void Awake()
     {
-        ViveInput.AddListenerEx(HandRole.RightHand, ControllerButton.FullTrigger, ButtonEventType.Down, () =>
-        {
-            if (isPrintingMessage)
-                SkipPrintMessage();
+        // ViveInput.AddListenerEx(HandRole.RightHand, ControllerButton.FullTrigger, ButtonEventType.Down, () =>
+        // {
+        //     if (isPrintingMessage)
+        //         SkipPrintMessage();
 
-            else if (isWaitingForPressNextButton)
-                PressNextButton();
-        });
+        //     else if (isWaitingForPressNextButton)
+        //         PressNextButton();
+        // });
     }
 
     private void Update()
