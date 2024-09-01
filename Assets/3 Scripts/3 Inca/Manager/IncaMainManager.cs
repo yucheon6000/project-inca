@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Environment;
 using Inca;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 namespace Inca
@@ -32,10 +33,21 @@ namespace Inca
         public UserObjects<EnvironmentObject> EnvironmentalUserObjects
             => incaMode == IncaMode.VR ? userObjectsForVRMode : userObjectsForMonitorAndMouseMode;
 
+        [Space]
+        [SerializeField]
+        private UnityEvent onAwakeInVRMode = new UnityEvent();
+        [SerializeField]
+        private UnityEvent onAwakeInMonitorAndMouseMode = new UnityEvent();
+
         private void Awake() => Init();
 
         public override void Init()
         {
+            if (IsVRMode())
+                onAwakeInVRMode.Invoke();
+            else if (IsMonitorAndMouseMode())
+                onAwakeInMonitorAndMouseMode.Invoke();
+
             if (Instance == null)
                 Instance = this;
         }
@@ -56,6 +68,9 @@ namespace Inca
             if (Input.GetKeyDown(KeyCode.Escape))
                 Application.Quit();
         }
+
+        public bool IsVRMode() => incaMode == IncaMode.VR;
+        public bool IsMonitorAndMouseMode() => incaMode == IncaMode.MonitorAndMouse;
     }
 
     [Serializable]
@@ -63,7 +78,7 @@ namespace Inca
     {
         public T userCar;
         public T userHead;
-        public T userHandRight;
-        public T userHandLeft;
+        public T userRightHand;
+        public T userLeftHand;
     }
 }

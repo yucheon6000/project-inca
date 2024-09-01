@@ -10,7 +10,7 @@ namespace Inca
     public enum DetectedObjectType
     {
         None = -1,
-        UserHead = 0, UserHandRight, UserHandLeft,
+        UserHead = 0, UserRightHand, UserLeftHand,
         Car = 100,
         Building = 200,
         Pedestrian = 300
