@@ -23,8 +23,9 @@ namespace Inca
         // Hover
         public Vector3 HitPoint { get; private set; }
         public IInteractable CurrentTarget { get; private set; }
-        public UnityEvent<IInteractable> OnHoverEnter { get; private set; }
-        public UnityEvent<IInteractable> OnHoverExit { get; private set; }
+        public GameObject CurrentTargetGameObject { get; private set; }
+        public UnityEvent<IInteractable, GameObject> OnHoverEnter { get; private set; }
+        public UnityEvent<IInteractable, GameObject> OnHoverExit { get; private set; }
 
         [Header("[Click]")]
         [SerializeField]
@@ -34,10 +35,11 @@ namespace Inca
 
         public override void Init()
         {
-            OnHoverEnter = new UnityEvent<IInteractable>();
-            OnHoverExit = new UnityEvent<IInteractable>();
+            OnHoverEnter = new UnityEvent<IInteractable, GameObject>();
+            OnHoverExit = new UnityEvent<IInteractable, GameObject>();
 
             CurrentTarget = null;
+            CurrentTargetGameObject = null;
 
             if (Instance == null)
                 Instance = this;
@@ -67,12 +69,14 @@ namespace Inca
             if (!hit)
             {
                 IInteractable temp = CurrentTarget;
+                GameObject tempGobj = CurrentTargetGameObject;
                 CurrentTarget = null;
+                CurrentTargetGameObject = null;
 
                 if (temp == null) return;
 
                 temp.OnHoverExit();
-                OnHoverExit.Invoke(temp);
+                OnHoverExit.Invoke(temp, tempGobj);
                 return;
             }
 
@@ -83,12 +87,14 @@ namespace Inca
             if (hasInteractable == false || newTarget.IsInteractable() == false)
             {
                 IInteractable temp = CurrentTarget;
+                GameObject tempGobj = CurrentTargetGameObject;
                 CurrentTarget = null;
+                CurrentTargetGameObject = null;
 
                 if (temp != null)
                 {
                     temp.OnHoverExit();
-                    OnHoverExit.Invoke(temp);
+                    OnHoverExit.Invoke(temp, tempGobj);
                 }
 
                 return;
@@ -98,15 +104,17 @@ namespace Inca
 
             IInteractable prevTarget = CurrentTarget;
             CurrentTarget = newTarget;
+            GameObject prevTargetGobj = CurrentTargetGameObject;
+            CurrentTargetGameObject = hitInfo.collider.gameObject;
 
             if (prevTarget != null)
             {
                 prevTarget.OnHoverExit();
-                OnHoverExit.Invoke(prevTarget);
+                OnHoverExit.Invoke(prevTarget, prevTargetGobj);
             }
 
             CurrentTarget.OnHoverEnter();
-            OnHoverEnter.Invoke(CurrentTarget);
+            OnHoverEnter.Invoke(CurrentTarget, CurrentTargetGameObject);
         }
 
         private void UpdateInput()

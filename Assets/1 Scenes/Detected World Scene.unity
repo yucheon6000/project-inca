@@ -7451,6 +7451,55 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1992301127}
   m_CullTransparentMesh: 1
+--- !u!1 &2010869230
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2010869231}
+  - component: {fileID: 2010869232}
+  m_Layer: 0
+  m_Name: Weapon Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2010869231
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2010869230}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3184120075082505510}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2010869232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2010869230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa5d7f3aabb24ef4c9daaf7c561e207d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponPrefab: {fileID: 811222784772650253, guid: 04a7ce81da350e6458b515df377eeb15,
+    type: 3}
+  weaponInformation:
+  - {fileID: 11400000, guid: 1bc074d541daf4bc08a6e15b3f66dee8, type: 2}
+  - {fileID: 11400000, guid: 82c7dd012035342029113c51fcfcee3b, type: 2}
 --- !u!1 &2017366449
 GameObject:
   m_ObjectHideFlags: 0
@@ -8382,7 +8431,11 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 6783396875500975994, guid: e4b355a3a23ec4c3093da14410409724,
         type: 3}
-      insertIndex: 7
+      insertIndex: 2
+      addedObject: {fileID: 2010869231}
+    - targetCorrespondingSourceObject: {fileID: 6783396875500975994, guid: e4b355a3a23ec4c3093da14410409724,
+        type: 3}
+      insertIndex: 8
       addedObject: {fileID: 1843955495}
     - targetCorrespondingSourceObject: {fileID: 6783396875500975994, guid: e4b355a3a23ec4c3093da14410409724,
         type: 3}

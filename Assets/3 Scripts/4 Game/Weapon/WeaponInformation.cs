@@ -11,6 +11,16 @@ public class WeaponInformation : ScriptableObject
     private Sprite aimSprite;
     public Sprite AimSprite => aimSprite;
 
+    [Header("Ammo")]
+    [SerializeField]
+    private int maxAmmo;
+    public int MaxAmmo => maxAmmo;
+
+    [Header("Reload")]
+    [SerializeField]
+    private float reloadDelay;
+    public float ReloadDelay => reloadDelay;
+
     [Header("Delay")]
     [SerializeField]
     private float shootDelay;

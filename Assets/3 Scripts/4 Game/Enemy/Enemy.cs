@@ -363,6 +363,7 @@ public abstract class Enemy : Character
         return false;
     }
 
+    // 지울 것
     public virtual void OnHoverStart() { }
     public virtual void OnHoverEnd() { }
 

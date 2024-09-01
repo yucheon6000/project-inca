@@ -30,5 +30,4 @@ public class Enemy_Sample : DamagableEnemy
         }
     }
 
-    public override bool IsInteractableType(InteractableType type) => type == InteractableType.Hitable;
 }

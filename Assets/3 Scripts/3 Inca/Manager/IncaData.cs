@@ -22,6 +22,10 @@ namespace Inca
             => IncaDetectManager.Instance.DetectedUserObjects.userHead.transform;
         public static Vector3 UserHeadPosition => UserHeadTrasnform.position;
 
+        public static Transform UserRightHandTrasnform
+            => IncaDetectManager.Instance.DetectedUserObjects.userRightHand.transform;
+        public static Vector3 UserRightHandPosition => UserRightHandTrasnform.position;
+
 
         // User Thing..
     }
@@ -37,6 +41,7 @@ namespace Inca
     public static class IncaInput
     {
         public static IInteractable Target => IncaInputManager.Instance.CurrentTarget;
+        public static GameObject TargetGameObject => IncaInputManager.Instance.CurrentTargetGameObject;
         public static Vector3 HitPoint => IncaInputManager.Instance.HitPoint;
 
         public static bool GetButtonDown(IncaButtonCode buttonCode)
