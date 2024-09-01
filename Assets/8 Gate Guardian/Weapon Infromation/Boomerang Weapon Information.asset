@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3acfb3abbaef048d8bcf0299cce78b77, type: 3}
-  m_Name: Bullet Weapon Information
+  m_Name: Boomerang Weapon Information
   m_EditorClassIdentifier: 
   aimSprite: {fileID: 21300000, guid: 68c5a1c997d0e407cbc3ae2ef723c10f, type: 3}
   maxAmmo: 30
   reloadDelay: 0
   shootDelay: 0.2
-  useHitscan: 1
+  useHitscan: 0
   weaponInfoForTargeting:
     power: 2
     projectilePrefab: {fileID: 2619143380485242310, guid: d014618a0626844308afd64162175d0a,
@@ -25,7 +25,7 @@ MonoBehaviour:
       type: 3}
   weaponInfoForNonTargeting:
     power: 0
-    projectilePrefab: {fileID: 2619143380485242310, guid: d014618a0626844308afd64162175d0a,
+    projectilePrefab: {fileID: 6746491219506805132, guid: 531841e50adeea4449b1d36a39b3e121,
       type: 3}
     hitEffectPrefab: {fileID: 7129666036411333016, guid: dfa8afd36666744e4b18fb996e4f8320,
       type: 3}

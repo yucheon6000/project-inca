@@ -28,6 +28,9 @@ public class WeaponInformation : ScriptableObject
 
     [Header("Hitscan (Targeting)")]
     [SerializeField]
+    private bool useHitscan = false;
+    public bool UseHitscan => useHitscan;
+    [SerializeField]
     private WeaponInformationDetail weaponInfoForTargeting;
     public WeaponInformationDetail WeaponInfoForTargeting => weaponInfoForTargeting;
 

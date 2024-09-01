@@ -60,7 +60,7 @@ public class Weapon : MonoBehaviour
 
     protected void Shoot()
     {
-        if (IncaInput.TargetGameObject != null && IncaInput.TargetGameObject.TryGetComponent<DamagableEnemy>(out DamagableEnemy enemy))
+        if (IncaInput.TargetGameObject != null && IncaInput.TargetGameObject.TryGetComponent<DamagableEnemy>(out DamagableEnemy enemy) && information.UseHitscan)
         {
             enemy.TakeDamage(information.WeaponInfoForTargeting.Power);
             GameObject clone = Instantiate(information.WeaponInfoForTargeting.HitEffectPrefab, IncaInput.HitPoint, Quaternion.identity);
