@@ -3,7 +3,8 @@ using UnityEngine.Events;
 
 public class CharacterStatus : MonoBehaviour
 {
-    [Header("Hp")]
+    [Header("[[Character Status]]")]
+    [Header("[Hp]")]
     [SerializeField]
     private float maxHp;
     public float MaxHp => maxHp;
@@ -14,7 +15,7 @@ public class CharacterStatus : MonoBehaviour
     private float currentHp;
     public float CurrentHp => currentHp;
 
-    [Header("Attack Power")]
+    [Header("[Attack]")]
     [SerializeField]
     private float maxAttack;
     [SerializeField]

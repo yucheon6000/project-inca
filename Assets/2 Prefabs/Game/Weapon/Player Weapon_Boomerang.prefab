@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2367389177224028844}
   - component: {fileID: 8303593616789294902}
-  - component: {fileID: 8216107084480188748}
+  - component: {fileID: 3412290126071888687}
   m_Layer: 0
-  m_Name: Weapon
+  m_Name: Player Weapon_Boomerang
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -60,7 +60,7 @@ MonoBehaviour:
   maxMoveSpeedMultiplier: 5
   defaultMoveSpeedMultiplier: 1
   currentMoveSpeedMultiplier: 0
---- !u!114 &8216107084480188748
+--- !u!114 &3412290126071888687
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -69,8 +69,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 811222784772650253}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee3be64b2da6d7844b34ed5beb7b9fce, type: 3}
+  m_Script: {fileID: 11500000, guid: 066aaf246583299488a25c6e00394249, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  information: {fileID: 0}
+  projectiles:
+  - {fileID: 7139665761023874841, guid: 531841e50adeea4449b1d36a39b3e121, type: 3}
   currentAmmoInMagazine: 0
+  timer: 0

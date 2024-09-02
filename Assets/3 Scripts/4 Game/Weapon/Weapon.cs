@@ -3,26 +3,37 @@ using System.Collections.Generic;
 using Inca;
 using UnityEngine;
 
+[RequireComponent(typeof(WeaponStatus))]
 public class Weapon : MonoBehaviour
 {
+    private Character Owner { get; set; }
+    public WeaponStatus Status { get; private set; }
+
+    [Header("[Projectiles]")]
+    [SerializeField]
+    protected List<Projectile> projectiles;
+
     [Header("[@Debug]")]
     [SerializeField]
-    private WeaponInformation information;
-
-    [Space]
-    [SerializeField]
     private int currentAmmoInMagazine;
+    [SerializeField]
     private float timer = 0;
 
     public bool IsReloading { get; private set; } = false;
     public bool HasAmmo => currentAmmoInMagazine > 0;
-    public bool ShouldReload => !HasAmmo;
-    private bool CanShoot() => HasAmmo && timer > information.ShootDelay;
+    public bool ShouldReload => !IsReloading && !HasAmmo;
+    protected virtual bool CanShoot() => !IsReloading && HasAmmo && timer > Status.CurrentShootDelay;
 
-    public void Init(WeaponInformation information)
+    private void Awake()
     {
-        this.information = information;
-        currentAmmoInMagazine = information.MaxAmmo;
+        Status = GetComponent<WeaponStatus>();
+    }
+
+    public void Init(Character owner)
+    {
+        Owner = owner;
+        Status.Init();
+        currentAmmoInMagazine = Status.CurrentAmmoPerMagazine;
     }
 
     private void Update()
@@ -38,17 +49,17 @@ public class Weapon : MonoBehaviour
         if (ShouldReload /* && Shaking controller? */)
             Reload();
 
-        if (CanShoot() && IncaInput.GetButton(IncaButtonCode.RightTrigger))
+        if (CanShoot())
             Shoot();
     }
 
     private void UpdateReload()
     {
-        if (timer < information.ReloadDelay) return;
+        if (timer < Status.CurrentReloadDelay) return;
 
         // If finish reload.
-        currentAmmoInMagazine = information.MaxAmmo;
-        timer = information.ShootDelay;
+        currentAmmoInMagazine = Status.CurrentAmmoPerMagazine;
+        timer = Status.CurrentShootDelay;
         IsReloading = false;
     }
 
@@ -58,21 +69,8 @@ public class Weapon : MonoBehaviour
         IsReloading = true;
     }
 
-    protected void Shoot()
+    protected virtual void Shoot()
     {
-        if (IncaInput.TargetGameObject != null && IncaInput.TargetGameObject.TryGetComponent<DamagableEnemy>(out DamagableEnemy enemy) && information.UseHitscan)
-        {
-            enemy.TakeDamage(information.WeaponInfoForTargeting.Power);
-            GameObject clone = Instantiate(information.WeaponInfoForTargeting.HitEffectPrefab, IncaInput.HitPoint, Quaternion.identity);
-        }
-        else
-        {
-            Instantiate(information.WeaponInfoForNonTargeting.ProjectilePrefab,
-                        IncaData.UserRightHandPosition,
-                        Quaternion.LookRotation(IncaData.UserRightHandTrasnform.forward),
-                        IncaData.UserCarTransform);
-        }
-
         timer = 0;
     }
 }

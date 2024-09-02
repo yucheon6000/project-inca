@@ -254,11 +254,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2907896182015141326}
+  - component: {fileID: 6048056830483566949}
   - component: {fileID: 7139665761023874841}
   - component: {fileID: 7177694496436885237}
   - component: {fileID: 4916615051835679958}
   m_Layer: 15
-  m_Name: Boomerang Projectile
+  m_Name: Player Projectile_Boomerang
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -280,6 +281,24 @@ Transform:
   - {fileID: 2561407518559126946}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6048056830483566949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6746491219506805132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75bc910587989f64b99c15da5d5eef2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxAttack: 5
+  defaultAttack: 5
+  currentAttack: 0
+  maxMoveSpeed: 50
+  defaultMoveSpeed: 30
+  currentMoveSpeed: 0
 --- !u!114 &7139665761023874841
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -292,8 +311,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40628b8d3f8134242b988a4e712eff65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 30
-  defaultAttackDistance: 10
+  useDirectAttack: 0
+  directAttackEffect: {fileID: 7129666036411333016, guid: dfa8afd36666744e4b18fb996e4f8320,
+    type: 3}
+  attackEffect: {fileID: 7129666036411333016, guid: dfa8afd36666744e4b18fb996e4f8320,
+    type: 3}
+  defaultAttackDistance: 30
 --- !u!135 &7177694496436885237
 SphereCollider:
   m_ObjectHideFlags: 0

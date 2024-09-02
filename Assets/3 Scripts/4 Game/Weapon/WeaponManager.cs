@@ -5,32 +5,27 @@ using UnityEngine;
 
 public class WeaponManager : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject weaponPrefab;
-    [SerializeField]
-    private List<WeaponInformation> weaponInformation;
-    private List<Weapon> weapons = new List<Weapon>();
+    private Weapon[] weapons;
     private int currentWeaponIndex = 0;
     private Weapon currentWeapon = null;
 
-    private void Awake()
+    private void Start()
     {
         InitWeapons();
-
-        currentWeapon = weapons[currentWeaponIndex];
-        currentWeapon.gameObject.SetActive(true);
     }
 
     private void InitWeapons()
     {
-        foreach (WeaponInformation info in weaponInformation)
+        weapons = GetComponentsInChildren<Weapon>();
+
+        foreach (Weapon weapon in weapons)
         {
-            GameObject clone = Instantiate(weaponPrefab, this.transform);
-            Weapon weapon = clone.GetComponent<Weapon>();
-            weapon.Init(info);
-            weapons.Add(weapon);
-            clone.SetActive(false);
+            weapon.Init(Player.Instance);
+            weapon.gameObject.SetActive(false);
         }
+
+        currentWeapon = weapons[currentWeaponIndex];
+        currentWeapon.gameObject.SetActive(true);
     }
 
     private void Update()
@@ -45,7 +40,7 @@ public class WeaponManager : MonoBehaviour
         currentWeapon.gameObject.SetActive(false);
 
         currentWeaponIndex++;
-        if (currentWeaponIndex >= weapons.Count)
+        if (currentWeaponIndex >= weapons.Length)
             currentWeaponIndex = 0;
 
         currentWeapon = weapons[currentWeaponIndex];

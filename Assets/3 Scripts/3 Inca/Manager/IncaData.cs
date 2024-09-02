@@ -44,6 +44,8 @@ namespace Inca
         public static GameObject TargetGameObject => IncaInputManager.Instance.CurrentTargetGameObject;
         public static Vector3 HitPoint => IncaInputManager.Instance.HitPoint;
 
+        private static float GetRightTrigger => Mathf.Max(OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger), OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger));
+
         public static bool GetButtonDown(IncaButtonCode buttonCode)
         {
             if (IncaMainManager.Instance == null) return false;
@@ -57,8 +59,7 @@ namespace Inca
                     case IncaButtonCode.B:
                         return OVRInput.GetDown(OVRInput.Button.Two);
                     case IncaButtonCode.RightTrigger:
-                        return OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger) > 0.5f
-                                && IncaInputManager.PrevRightTrigger < 0.5f;
+                        return GetRightTrigger > 0.5f && IncaInputManager.PrevRightTrigger < 0.5f;
                 }
             }
 
@@ -91,8 +92,7 @@ namespace Inca
                     case IncaButtonCode.B:
                         return OVRInput.Get(OVRInput.Button.Two);
                     case IncaButtonCode.RightTrigger:
-                        return OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger) > 0.5f
-                                && IncaInputManager.PrevRightTrigger > 0.5f;
+                        return GetRightTrigger > 0.5f && IncaInputManager.PrevRightTrigger > 0.5f;
                 }
             }
 
@@ -125,8 +125,7 @@ namespace Inca
                     case IncaButtonCode.B:
                         return OVRInput.GetUp(OVRInput.Button.Two);
                     case IncaButtonCode.RightTrigger:
-                        return OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger) < 0.5f
-                                && IncaInputManager.PrevRightTrigger > 0.5f;
+                        return GetRightTrigger < 0.5f && IncaInputManager.PrevRightTrigger > 0.5f;
                 }
             }
 

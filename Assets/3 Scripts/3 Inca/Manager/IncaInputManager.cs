@@ -59,7 +59,7 @@ namespace Inca
 
         private void LateUpdate()
         {
-            PrevRightTrigger = OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger);
+            PrevRightTrigger = Mathf.Max(OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger), OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger));
         }
 
         private void UpdateTarget()

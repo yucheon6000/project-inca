@@ -225,7 +225,10 @@ public abstract class Enemy : Character
         float curHp = base.TakeDamage(attackAmount);
 
         if (IsAlive)
+        {
+            emissionEffector.Play(0.4f, 10f, 0f, Color.red);
             ChangeState(EnemyState.TakeDamage, true);
+        }
 
         return curHp;
     }
