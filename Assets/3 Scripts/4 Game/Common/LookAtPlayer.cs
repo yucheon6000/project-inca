@@ -28,8 +28,8 @@ public class LookAtPlayer : MonoBehaviour
         if (look == false) return;
 
         if (lookAtPlayerTargetPoint)
-            transform.LookAt(GGData.PlayerPosition, Vector3.up);
+            transform.LookAt(GGData.PlayerPosition);
         else if (lookAtPlayerHead)
-            transform.LookAt(IncaData.UserHeadPosition, Vector3.up);
+            transform.LookAt(IncaData.UserHeadPosition);
     }
 }

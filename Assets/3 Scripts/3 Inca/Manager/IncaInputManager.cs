@@ -19,6 +19,8 @@ namespace Inca
         [SerializeField]
         private float defaultCursorDistance;
         private Transform rightHand;
+        [SerializeField]
+        private SpriteRenderer cursor;
 
         // Hover
         public Vector3 HitPoint { get; private set; }
@@ -52,6 +54,7 @@ namespace Inca
 
             UpdateTarget();
             UpdateInput();
+            UpdateCursor();
         }
 
         private void LateUpdate()
@@ -123,6 +126,14 @@ namespace Inca
 
             if (IncaInput.GetButtonDown(IncaButtonCode.RightTrigger))
                 CurrentTarget?.OnClick();
+        }
+
+        private void UpdateCursor()
+        {
+            float dist = CurrentTarget != null ? Vector3.Distance(rightHand.position, HitPoint) : defaultCursorDistance;
+            cursor.transform.position = rightHand.transform.position + rightHand.transform.forward * dist;
+
+            cursor.color = CurrentTarget != null ? Color.red : Color.blue;
         }
 
         private void OnDrawGizmos()
