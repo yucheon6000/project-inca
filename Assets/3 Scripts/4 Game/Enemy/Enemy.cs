@@ -226,7 +226,8 @@ public abstract class Enemy : Character
 
         if (IsAlive)
         {
-            emissionEffector.Play(0.4f, 10f, 0f, Color.red);
+            if (emissionEffector)
+                emissionEffector.Play(0.4f, 10f, 0f, Color.red);
             ChangeState(EnemyState.TakeDamage, true);
         }
 
