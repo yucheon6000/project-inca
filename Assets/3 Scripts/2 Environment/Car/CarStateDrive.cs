@@ -88,6 +88,8 @@ public class CarStateDrive : StateMonoBehaviour<Car>
         UpdateMoveSpeed();
 
         UpdateMoveAndRotate(car);
+
+        UpdateNextLanePoint(car);
     }
 
     private void UpdateStarting(Car car)
@@ -136,7 +138,6 @@ public class CarStateDrive : StateMonoBehaviour<Car>
         Car closestCar = null;
         foreach (RaycastHit hit in hits)
         {
-
             // If it is not a car, continue.
             if (hit.collider.gameObject.TryGetComponent<Car>(out Car otherCar))
 
@@ -163,12 +164,27 @@ public class CarStateDrive : StateMonoBehaviour<Car>
 
     private void UpdateMoveAndRotate(Car car)
     {
-        if (car.NextLanePoint == null || car.CurrentLanePoint == null) return;
+        if (CheckInvalidLanePointAndDestoryCar(car)) return;
 
         moveDirection = (car.NextLanePoint.Position - transform.position).normalized;
 
-        Vector3 pos = Vector3.MoveTowards(transform.position, car.NextLanePoint.Position, currentMoveSpeed * Time.fixedDeltaTime);
+        float distCarToNextLanePoint = Vector3.Distance(transform.position, car.NextLanePoint.Position);
+        float moveAmount = currentMoveSpeed * Time.fixedDeltaTime;
+
+        Vector3 pos;
+
+        if (distCarToNextLanePoint > moveAmount)
+            pos = Vector3.MoveTowards(transform.position, car.NextLanePoint.Position, moveAmount);
+        else
+        {
+            SetNextLanePoint(car);
+            if (CheckInvalidLanePointAndDestoryCar(car)) return;
+
+            pos = Vector3.MoveTowards(car.CurrentLanePoint.Position, car.NextLanePoint.Position, moveAmount - distCarToNextLanePoint);
+        }
         // Vector3 pos = transform.position + (car.NextLanePoint.Position - transform.position).normalized * currentMoveSpeed * Time.fixedDeltaTime;
+
+
         Quaternion rot = Quaternion.Slerp(
               transform.rotation, Quaternion.LookRotation(car.NextLanePoint.Position - car.CurrentLanePoint.Position), Time.fixedDeltaTime * rotateSpeed
         );
@@ -178,5 +194,64 @@ public class CarStateDrive : StateMonoBehaviour<Car>
         //IncaDetectManager.Instance.UpdateDetectedMyCar();
     }
 
+    /* Update Next Lane Point */
+    private float distanceToNextLanePoint = float.MaxValue;
+    bool checkIsInLine = false;
+    public void UpdateNextLanePoint(Car car)
+    {
+        if (CheckInvalidLanePointAndDestoryCar(car)) return;
+
+        checkIsInLine = CheckPointIsBetweenTwoPoints(transform.position, car.CurrentLanePoint.Position, car.NextLanePoint.Position);
+
+        if (!checkIsInLine)
+        {
+            SetNextLanePoint(car);
+            return;
+        }
+    }
+
+    private bool CheckPointIsBetweenTwoPoints(Vector3 currentPoint, Vector3 startPoint, Vector3 endPoint)
+    {
+        return Vector3.Distance(currentPoint, endPoint) > 0.001f;
+
+        /*
+        Vector2 V2StartPoint = new Vector2(startPoint.x, startPoint.z);
+        Vector2 V2EndPoint = new Vector2(endPoint.x, endPoint.z);
+        Vector2 V2CurrentPoint = new Vector2(currentPoint.x, currentPoint.z);
+
+        float distA = Vector2.Distance(V2StartPoint, V2EndPoint);
+        float distB = Vector2.Distance(V2CurrentPoint, V2EndPoint);
+        float distC = Vector2.Distance(V2CurrentPoint, V2StartPoint);
+
+        return Math.Pow(distA, 2) + Math.Pow(distB, 2) >= Math.Pow(distC, 2) && Math.Pow(distA, 2) + Math.Pow(distC, 2) >= Math.Pow(distB, 2);
+        */
+    }
+
+    private void SetNextLanePoint(Car car)
+    {
+        car.PreviousLanePoint?.DeregisterUser(this.gameObject);
+        car.CurrentLanePoint?.DeregisterUser(this.gameObject);
+        car.NextLanePoint?.DeregisterUser(this.gameObject);
+
+        car.PreviousLanePoint = car.CurrentLanePoint;
+        car.CurrentLanePoint = car.NextLanePoint;
+
+        car.NextLanePoint = car.CurrentLanePoint.GetNextLanePoint(car.TargetLaneIndex);
+
+        if (CheckInvalidLanePointAndDestoryCar(car)) return;
+
+        car.NextLanePoint.RegisterUser(this.gameObject);
+        distanceToNextLanePoint = float.MaxValue;
+    }
+
     public override void Exit(Car car) { }
+
+    private bool CheckInvalidLanePointAndDestoryCar(Car car)
+    {
+        bool r = car.CurrentLanePoint == null || car.NextLanePoint == null;
+        if (r)
+            Destroy(car.gameObject);
+
+        return r;
+    }
 }

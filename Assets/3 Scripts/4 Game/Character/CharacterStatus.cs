@@ -3,7 +3,8 @@ using UnityEngine.Events;
 
 public class CharacterStatus : MonoBehaviour
 {
-    [Header("Hp")]
+    [Header("[[Character Status]]")]
+    [Header("[Hp]")]
     [SerializeField]
     private float maxHp;
     public float MaxHp => maxHp;
@@ -14,7 +15,7 @@ public class CharacterStatus : MonoBehaviour
     private float currentHp;
     public float CurrentHp => currentHp;
 
-    [Header("Attack Power")]
+    [Header("[Attack]")]
     [SerializeField]
     private float maxAttack;
     [SerializeField]
@@ -57,7 +58,7 @@ public class CharacterStatus : MonoBehaviour
         currentHp = Mathf.Min(currentHp + amout, maxHp);
 
         // When the character dies, call the character's method
-        if (currentHp <= 0)
+        if (prevHp > 0 && currentHp <= 0)
         {
             currentHp = 0;
             OnDeath.Invoke();

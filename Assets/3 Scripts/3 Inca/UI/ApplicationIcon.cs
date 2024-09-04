@@ -4,7 +4,7 @@ using Inca;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ApplicationIcon : DamagableEnemy
+public class ApplicationIcon : MonoBehaviour, IInteractable
 {
     [SerializeField]
     private UnityEvent onClick = new UnityEvent();
@@ -28,20 +28,11 @@ public class ApplicationIcon : DamagableEnemy
 
     private SpriteRenderer spriteRenderer;
 
-    protected override void Awake()
+    protected void Awake()
     {
-        base.Awake();
         originScale = transform.localScale.x;
 
         spriteRenderer = GetComponent<SpriteRenderer>();
-
-        Init();
-    }
-
-    public override void Init(DetectedObject detectedObject = null)
-    {
-        base.Init(detectedObject);
-        CanSelect(canSelect);
     }
 
     private void Update()
@@ -70,31 +61,24 @@ public class ApplicationIcon : DamagableEnemy
         else spriteRenderer.color = new Color(45f / 255, 45f / 255, 45f / 255, c.a);
     }
 
-    public override float TakeDamage(float attckAmount)
+    public void OnClick()
     {
-        if (!canSelect) return 0;
-
         onClick.Invoke();
-        return base.TakeDamage(attckAmount);
     }
 
-    public override void OnHoverStart()
+    public void OnHoverEnter()
     {
         hover = true;
         animTimer = 0;
         startScale = transform.localScale.x;
     }
 
-    public override void OnHoverEnd()
+    public void OnHoverExit()
     {
         hover = false;
         animTimer = 0;
         startScale = transform.localScale.x;
     }
 
-    public override bool IsInteractableType(InteractableType type)
-    {
-
-        return canSelect && type == InteractableType.Hitable;
-    }
+    public bool IsInteractable() => canSelect;
 }

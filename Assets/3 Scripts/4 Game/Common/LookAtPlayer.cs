@@ -6,13 +6,30 @@ using UnityEngine;
 public class LookAtPlayer : MonoBehaviour
 {
     private bool look = true;
+    [SerializeField]
+    private bool lookAtPlayerTargetPoint = true;
+    [SerializeField]
+    private bool lookAtPlayerHead = false;
 
     public void Look(bool value) => look = value;
 
+    public void LookImmediate()
+    {
+        Look();
+    }
+
     private void FixedUpdate()
+    {
+        Look();
+    }
+
+    private void Look()
     {
         if (look == false) return;
 
-        transform.LookAt(GGData.PlayerPosition, Vector3.up);
+        if (lookAtPlayerTargetPoint)
+            transform.LookAt(GGData.PlayerPosition);
+        else if (lookAtPlayerHead)
+            transform.LookAt(IncaData.UserHeadPosition);
     }
 }

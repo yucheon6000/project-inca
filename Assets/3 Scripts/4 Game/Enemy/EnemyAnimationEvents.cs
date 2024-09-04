@@ -9,6 +9,11 @@ public class EnemyAnimationEvents : CharacterAnimationEvents
         ((Enemy)target).Init(null);
     }
 
+    public void CanAttack()
+    {
+        ((Enemy)target).CanAttack(true);
+    }
+
     public void FinishCurrentAnimation()
     {
         // ((Enemy)target).FinishCurrentAnimation();

@@ -1,19 +1,12 @@
 using System.Collections;
 using Inca;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class Enemy_Bird : DamagableEnemy
 {
-    [SerializeField]
-    private float attackTime;
-    private float attackTimer;
-
-    [SerializeField]
-    private GameObject bulletPrefab;
-    [SerializeField]
-    private Transform bulletSpawnTransform;
-
+    [Header("[Move]")]
     [SerializeField]
     private Vector3 originLocalPosition;
     [SerializeField]
@@ -21,67 +14,7 @@ public class Enemy_Bird : DamagableEnemy
     [SerializeField]
     private float maxLocalX;
 
-    [Space]
-    [SerializeField]
-    private UnityEvent onInit = new UnityEvent();
-    [SerializeField]
-    private UnityEvent onDeath = new UnityEvent();
-
     private float maxY = 0;
-
-    Rigidbody rigidbody;
-
-    protected override void Awake()
-    {
-        base.Awake();
-        rigidbody = GetComponent<Rigidbody>();
-    }
-
-    public override void Init(DetectedObject detectedObject = null)
-    {
-        Vector3 startPos = originLocalPosition;
-        startPos.x = Random.Range(minLocalX, minLocalX + ((maxLocalX - minLocalX) / 2));
-        transform.localPosition = startPos;
-
-        base.Init(detectedObject);
-
-        rigidbody.isKinematic = true;
-        rigidbody.useGravity = false;
-
-        attackTimer = 0;
-        maxY = transform.localPosition.y;
-        StartCoroutine(UpdateMove());
-        onInit.Invoke();
-    }
-
-    private void FixedUpdate()
-    {
-        if (IsDead) return;
-
-        attackTimer += Time.deltaTime;
-        if (attackTimer > attackTime)
-            PlayAttackAnimation();
-    }
-
-    private void PlayAttackAnimation()
-    {
-        PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_ATTACK);
-    }
-
-    public override void Attack()
-    {
-        base.Attack();
-
-        GameObject clone = Instantiate(bulletPrefab, bulletSpawnTransform.transform.position, Quaternion.LookRotation(GGData.PlayerPosition));
-
-        Bullet bullet = clone.GetComponent<Bullet>();
-        bullet.Init();
-        bullet.SetAttack(status.CurrentAttack);
-
-        if (parent) clone.transform.SetParent(GGData.PlayerTransform);
-
-        attackTimer = 0;
-    }
 
     private int currentMoveDirection = 1;
     [SerializeField]
@@ -101,11 +34,44 @@ public class Enemy_Bird : DamagableEnemy
     [SerializeField]
     private float nextMoveDelayTime = 3f;
 
+    [Header("[Attack]")]
+    [SerializeField]
+    private float attackTime;
+    private float attackTimer;
 
-    public bool parent = true;
+    [SerializeField]
+    private GameObject bulletPrefab;
+    [SerializeField]
+    private Transform bulletSpawnTransform;
+
+    public override void Init(DetectedObject detectedObject = null)
+    {
+        Vector3 startPos = originLocalPosition;
+        startPos.x = Random.Range(minLocalX, minLocalX + ((maxLocalX - minLocalX) / 2));
+        transform.localPosition = startPos;
+        maxY = transform.localPosition.y;
+
+        attackTimer = 0;
+
+        EnableRigidbody(false);
+
+        base.Init(detectedObject);
+    }
+
+    protected override void InitStateMachine()
+    {
+        base.InitStateMachine();
+        states[EnemyState.Idle] = new State_Idle(this);
+        states[EnemyState.TakeDamage] = new State_TakeDamage(this);
+        states[EnemyState.Die] = new State_Die(this);
+        states[EnemyState.Global] = new State_Global(this);
+    }
+
+    /*-------------------- Move --------------------*/
+    // This is called by the global state.
     private IEnumerator UpdateMove()
     {
-        PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_MOVE);
+        ChangeState(EnemyState.Move);
 
         float moveTimer = 0;
 
@@ -142,27 +108,95 @@ public class Enemy_Bird : DamagableEnemy
 
         currentMoveDirection *= -1;
 
-        PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_IDLE);
+        ChangeState(EnemyState.Idle);
 
         yield return new WaitForSeconds(nextMoveDelayTime);
 
         StartCoroutine(UpdateMove());
     }
 
-    protected override void OnDeath()
+
+    /*------------------- Attack -------------------*/
+    private bool CanPlayAttackAnimation()
     {
-        onDeath.Invoke();
-
-        rigidbody.isKinematic = false;
-        rigidbody.useGravity = true;
-
-        StopAllCoroutines();
-
-        base.OnDeath();
+        attackTimer += Time.deltaTime;
+        return attackTimer > attackTime;
     }
 
-    protected override void OnDisappear()
+    protected override void Attack()
     {
-        DeactivateGameObject();
+        base.Attack();
+
+        GameObject clone = Instantiate(bulletPrefab, bulletSpawnTransform.transform.position, Quaternion.LookRotation(GGData.PlayerPosition));
+
+        Bullet bullet = clone.GetComponent<Bullet>();
+        bullet.Init();
+        bullet.SetAttack(status.CurrentAttack);
+
+        clone.transform.SetParent(IncaData.UserCarTransform);
+
+        attackTimer = 0;
+    }
+
+    /*--------------------- FSM ---------------------*/
+    public class State_Idle : EnemyState_Idle
+    {
+        Enemy_Bird owner;
+
+        public State_Idle(Enemy entity) : base(entity)
+            => owner = (Enemy_Bird)entity;
+
+        public override void Execute(Enemy entity)
+        {
+            base.Execute(entity);
+
+            if (owner.CanPlayAttackAnimation())
+                owner.ChangeState(EnemyState.Attack);
+        }
+    }
+
+    public class State_TakeDamage : EnemyState_TakeDamage
+    {
+        Enemy_Bird owner;
+
+        public State_TakeDamage(Enemy entity) : base(entity)
+            => owner = (Enemy_Bird)entity;
+
+        public override void OnFinishTakeDamageAnimation(Enemy entity)
+        {
+            // base.OnFinishTakeDamageAnimation(entity);
+            owner.ChangeState(EnemyState.Move);
+        }
+    }
+
+    public class State_Die : EnemyState_Die
+    {
+        Enemy_Bird owner;
+
+        public State_Die(Enemy entity) : base(entity)
+            => owner = (Enemy_Bird)entity;
+
+        public override void Enter(Enemy entity)
+        {
+            base.Enter(entity);
+            owner.StopAllCoroutines();
+            owner.EnableRigidbody(true);
+            owner.LookAtPlayer(false);
+        }
+    }
+
+    public class State_Global : EnemyState_Global
+    {
+        Enemy_Bird owner;
+
+        public State_Global(Enemy entity) : base(entity)
+            => owner = (Enemy_Bird)entity;
+
+        public override void Enter(Enemy entity)
+        {
+            base.Enter(entity);
+            owner.StartCoroutine(owner.UpdateMove());
+            owner.LookAtPlayer(true);
+        }
     }
 }

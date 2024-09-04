@@ -17,6 +17,18 @@ public class AbilityManager : MonoBehaviour
             Instance = this;
     }
 
+    private void Start()
+    {
+        foreach (AbilityCard card in abilityCards)
+            card.SetActivate(false);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.A))
+            ShowAbilityCards();
+    }
+
     [ContextMenu("Show Ability Cards")]
     public void ShowAbilityCards()
     {

@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using HTC.UnityPlugin.Vive;
 using UnityEngine;
 
 public class ViveControllerBasedGameController : GameController
@@ -22,10 +21,10 @@ public class ViveControllerBasedGameController : GameController
 
     private void Awake()
     {
-        ViveInput.AddListenerEx(HandRole.RightHand, ControllerButton.FullTrigger, ButtonEventType.Down, () =>
-        {
-            TriggerShoot(1);
-        });
+        // ViveInput.AddListenerEx(HandRole.RightHand, ControllerButton.FullTrigger, ButtonEventType.Down, () =>
+        // {
+        //     TriggerShoot(1);
+        // });
     }
 
     private void LateUpdate()
@@ -83,7 +82,7 @@ public class ViveControllerBasedGameController : GameController
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.green;
-        Gizmos.DrawLine(controllerTransform.position, controllerTransform.position + (controllerTransform.forward * 100));
+        // Gizmos.color = Color.green;
+        // Gizmos.DrawLine(controllerTransform.position, controllerTransform.position + (controllerTransform.forward * 100));
     }
 }

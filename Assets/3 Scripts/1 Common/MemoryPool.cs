@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,7 +9,7 @@ public enum MemoryPoolType
 {
     Enviroments, RoadBlocks,
     DetectedObject,
-    Enemy,
+    Enemy, Weapon,
     Inca, Inca_Navigation
 }
 public class MemoryPool : MonoBehaviour
@@ -52,6 +53,11 @@ public class MemoryPool : MonoBehaviour
             AddMemeoryPoolBase(prefab.prefab, prefab.increaesCount, transform);
 
         instances.Add(memoryPoolType, this);
+    }
+
+    public GameObject[] GetAllActivatedItems()
+    {
+        return cloneToPrefab.Keys.ToArray();
     }
 
     private void AddMemeoryPoolBase(GameObject prefab, int increaesCount, Transform transform)

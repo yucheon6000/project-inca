@@ -2,27 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LinearProjectile : Projectile
+public class LinearProjectile : PlayerProjectile
 {
-    protected override void Attack(Character target)
+    public override void Init(Weapon owner, Vector3 moveDirection, Character target = null)
     {
-        throw new System.NotImplementedException();
+        base.Init(owner, moveDirection, target);
+        rigidbody.velocity = transform.forward * Status.CurrentMoveSpeed;
     }
 
-    protected override bool ThisIsMyEnemy(Character character)
+    protected override void AfterAttack(Collider collider)
     {
-        throw new System.NotImplementedException();
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        base.AfterAttack(collider);
+        Destroy(this.gameObject);
     }
 }
