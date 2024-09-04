@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Environment;
+using Oculus.Interaction;
 
 namespace Inca
 {
@@ -21,8 +22,130 @@ namespace Inca
             => IncaDetectManager.Instance.DetectedUserObjects.userHead.transform;
         public static Vector3 UserHeadPosition => UserHeadTrasnform.position;
 
+        public static Transform UserRightHandTrasnform
+            => IncaDetectManager.Instance.DetectedUserObjects.userRightHand.transform;
+        public static Vector3 UserRightHandPosition => UserRightHandTrasnform.position;
+
 
         // User Thing..
+    }
+
+    public enum IncaButtonCode
+    {
+        A,
+        B, // X, Y,
+        RightTrigger,
+        // LeftTrigger,
+    }
+
+    public static class IncaInput
+    {
+        public static IInteractable Target => IncaInputManager.Instance.CurrentTarget;
+        public static GameObject TargetGameObject => IncaInputManager.Instance.CurrentTargetGameObject;
+        public static Vector3 HitPoint => IncaInputManager.Instance.HitPoint;
+
+        private static float GetRightTrigger => Mathf.Max(OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger), OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger));
+
+        public static bool GetButtonDown(IncaButtonCode buttonCode)
+        {
+            if (IncaMainManager.Instance == null) return false;
+
+            if (IncaMainManager.Instance.GetIncaMode() == IncaMode.VR)
+            {
+                switch (buttonCode)
+                {
+                    case IncaButtonCode.A:
+                        return OVRInput.GetDown(OVRInput.Button.One);
+                    case IncaButtonCode.B:
+                        return OVRInput.GetDown(OVRInput.Button.Two);
+                    case IncaButtonCode.RightTrigger:
+                        return GetRightTrigger > 0.5f && IncaInputManager.PrevRightTrigger < 0.5f;
+                }
+            }
+
+            else
+            {
+                switch (buttonCode)
+                {
+                    case IncaButtonCode.A:
+                        return Input.GetMouseButtonDown(1);
+                    case IncaButtonCode.B:
+                        return Input.GetMouseButtonDown(2);
+                    case IncaButtonCode.RightTrigger:
+                        return Input.GetMouseButtonDown(0);
+                }
+            }
+
+            return false;
+        }
+
+        public static bool GetButton(IncaButtonCode buttonCode)
+        {
+            if (IncaMainManager.Instance == null) return false;
+
+            if (IncaMainManager.Instance.GetIncaMode() == IncaMode.VR)
+            {
+                switch (buttonCode)
+                {
+                    case IncaButtonCode.A:
+                        return OVRInput.Get(OVRInput.Button.One);
+                    case IncaButtonCode.B:
+                        return OVRInput.Get(OVRInput.Button.Two);
+                    case IncaButtonCode.RightTrigger:
+                        return GetRightTrigger > 0.5f && IncaInputManager.PrevRightTrigger > 0.5f;
+                }
+            }
+
+            else
+            {
+                switch (buttonCode)
+                {
+                    case IncaButtonCode.A:
+                        return Input.GetMouseButton(1);
+                    case IncaButtonCode.B:
+                        return Input.GetMouseButton(2);
+                    case IncaButtonCode.RightTrigger:
+                        return Input.GetMouseButton(0);
+                }
+            }
+
+            return false;
+        }
+
+        public static bool GetButtonUp(IncaButtonCode buttonCode)
+        {
+            if (IncaMainManager.Instance == null) return false;
+
+            if (IncaMainManager.Instance.GetIncaMode() == IncaMode.VR)
+            {
+                switch (buttonCode)
+                {
+                    case IncaButtonCode.A:
+                        return OVRInput.GetUp(OVRInput.Button.One);
+                    case IncaButtonCode.B:
+                        return OVRInput.GetUp(OVRInput.Button.Two);
+                    case IncaButtonCode.RightTrigger:
+                        return GetRightTrigger < 0.5f && IncaInputManager.PrevRightTrigger > 0.5f;
+                }
+            }
+
+            else
+            {
+                switch (buttonCode)
+                {
+                    case IncaButtonCode.A:
+                        return Input.GetMouseButtonUp(1);
+                    case IncaButtonCode.B:
+                        return Input.GetMouseButtonUp(2);
+                    case IncaButtonCode.RightTrigger:
+                        return Input.GetMouseButtonUp(0);
+                }
+            }
+
+            return false;
+        }
+
+
     }
 }
 

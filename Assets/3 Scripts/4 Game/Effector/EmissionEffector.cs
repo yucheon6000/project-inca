@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using EPOOutline;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -10,9 +12,12 @@ public class EmissionEffector : Effector
     [SerializeField]
     private Color emissionColor;
 
+    private Outlinable outlinable;
+
     private void Awake()
     {
         SaveMaterials();
+        outlinable = GetComponent<Outlinable>();
     }
 
     private void SaveMaterials()
@@ -65,6 +70,17 @@ public class EmissionEffector : Effector
 
             foreach (var mat in originalEmissions.Keys)
                 mat.SetColor("_EmissionColor", color);
+
+            // Fill color.
+            Color fillColor = color;
+            fillColor.a = Mathf.Lerp(
+                Mathf.Clamp(startIntensity, 0, 1),
+                Mathf.Clamp(endIntensity, 0, 1),
+                easeOutCurve.Evaluate(progress)
+            );
+
+            if (outlinable != null)
+                outlinable.FrontParameters.FillPass.SetColor("_PublicColor", fillColor);
 
             yield return null;
         }

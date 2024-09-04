@@ -26,15 +26,35 @@ public class Enemy_MorningGlory : DamagableEnemy
     private Transform speakerSpawnTransform;
     [SerializeField]
     private GameObject speakerPrefab;
-    private float spawnRange;
+    [SerializeField]
+    private float minRadius = 1;
+    [SerializeField]
+    private float maxRadius = 1.5f;
+    private List<Enemy_MorningGlory_Speaker> speakers;
+
+    [Header("[Take Damage]")]
+    [SerializeField]
+    private float takeDamageTime = 0.5f;
 
     public override void Init(DetectedObject detectedObject = null)
     {
         previousBoxIndex = -1;
+        speakers = new List<Enemy_MorningGlory_Speaker>();
 
-        Move();
+        transform.localPosition = GetRandomPosition();
+
+        LookAtPlayer(true);
 
         base.Init(detectedObject);
+    }
+
+    protected override void InitStateMachine()
+    {
+        base.InitStateMachine();
+        states[EnemyState.Idle] = new State_Idle(this);
+        states[EnemyState.Move] = new State_Move(this);
+        states[EnemyState.TakeDamage] = new State_TakeDamage(this);
+        states[EnemyState.Die] = new State_Die(this);
     }
 
     private void InitMoveDelayTimeAndTimer()
@@ -49,7 +69,7 @@ public class Enemy_MorningGlory : DamagableEnemy
         return moveTimer >= moveDelayTime;
     }
 
-    private void Move()
+    private Vector3 GetRandomPosition()
     {
         int boxIdx = -1;
         do
@@ -61,21 +81,7 @@ public class Enemy_MorningGlory : DamagableEnemy
         LocalSpaceBox box = spawnSpaceBoxes[boxIdx];
         previousBoxIndex = boxIdx;
 
-        InitMoveDelayTimeAndTimer();
-
-        scaleEffector.PlayToZero(0.5f, transform.localScale, AnimationCurve.EaseInOut(0, 0, 1, 1), () =>
-        {
-            transform.localPosition = box.GetLocalPointInBox();
-            LookAtPlayerImmediate();
-            RemoveNearSpeakers();
-
-            scaleEffector.PlayFromZeroToOriginalScale(0.5f, AnimationCurve.EaseInOut(0, 0, 1, 1), () =>
-            {
-                InitMoveDelayTimeAndTimer();
-
-                SpawnSpeaker();
-            });
-        });
+        return box.GetLocalPointInBox();
     }
 
     private void RemoveNearSpeakers()
@@ -86,22 +92,51 @@ public class Enemy_MorningGlory : DamagableEnemy
                 spaeker.ForceKill();
     }
 
+    private Vector3 GetRandomSpeakerPoint()
+    {
+        // Get a random radius between minimum and maximum.
+        float radius = Random.Range(minRadius, maxRadius);
+
+        // Get a random angle between 0 and 360.
+        float angle = Random.Range(0f, Mathf.PI * 2);
+
+        // Set local point.
+        float x = Mathf.Cos(angle) * radius;
+        float y = Mathf.Sin(angle) * radius;
+        Vector3 localPoint = new Vector3(x, y, 0f);
+
+        // Convert this local point to a world point.
+        Vector3 worldPoint = transform.TransformPoint(localPoint);
+
+        return worldPoint;
+    }
+
     private void SpawnSpeaker()
     {
         int cnt = Random.Range(3, 6);
 
         for (int i = 0; i < cnt; ++i)
         {
-            GameObject clone = Instantiate(speakerPrefab, transform.position + Random.insideUnitSphere * Random.Range(0.8f, 1f), quaternion.identity);
+            Vector3 pos = GetRandomSpeakerPoint();
+
+            GameObject clone = MemoryPool.Instance(MemoryPoolType.Enemy)
+                                .ActivatePoolItem(speakerPrefab, pos, quaternion.identity);
             clone.GetComponent<Enemy_MorningGlory_Speaker>().Init();
             clone.transform.SetParent(IncaData.UserCarTransform);
+
+            var speaker = clone.GetComponent<Enemy_MorningGlory_Speaker>();
+
+            speakers.Add(speaker);
         }
     }
 
-    protected override void InitStateMachine()
+    private void SortSpeakersByDistance()
     {
-        base.InitStateMachine();
-        states[EnemyState.Idle] = new State_Idle(this);
+        speakers.Sort(
+                (a, b) =>
+                    Vector3.Distance(transform.position, a.transform.position)
+                    .CompareTo(Vector3.Distance(transform.position, b.transform.position))
+            );
     }
 
     private void OnDrawGizmosSelected()
@@ -109,7 +144,6 @@ public class Enemy_MorningGlory : DamagableEnemy
         Gizmos.color = Color.green;
         spawnSpaceBoxes.ForEach(box => box.DrawGizmos());
     }
-
     private class State_Idle : EnemyState_Idle
     {
         private Enemy_MorningGlory owner;
@@ -121,8 +155,110 @@ public class Enemy_MorningGlory : DamagableEnemy
             base.Execute(entity);
 
             if (owner.CanMove())
-                owner.Move();
+                owner.ChangeState(EnemyState.Move);
+        }
+    }
 
+    private class State_Move : EnemyState_Move
+    {
+        private Enemy_MorningGlory owner;
+        public State_Move(Enemy entity) : base(entity)
+            => owner = (Enemy_MorningGlory)entity;
+
+        public override void Enter(Enemy entity)
+        {
+            base.Enter(entity);
+
+            owner.InitMoveDelayTimeAndTimer();
+
+            owner.scaleEffector.PlayToZero(0.5f, owner.transform.localScale, AnimationCurve.EaseInOut(0, 0, 1, 1), () =>
+            {
+                owner.transform.localPosition = owner.GetRandomPosition();
+                owner.LookAtPlayerImmediate();
+                owner.RemoveNearSpeakers();
+                owner.PlayAnimationByName("Move");
+
+                owner.scaleEffector.PlayFromZeroToOriginalScale(0.5f, AnimationCurve.EaseInOut(0, 0, 1, 1), () =>
+                {
+                    owner.InitMoveDelayTimeAndTimer();
+                    owner.SpawnSpeaker();
+                    owner.ChangeState(EnemyState.Idle);
+                });
+            });
+        }
+    }
+
+    private class State_TakeDamage : EnemyState_TakeDamage
+    {
+        private Enemy_MorningGlory owner;
+        public State_TakeDamage(Enemy entity) : base(entity)
+            => owner = (Enemy_MorningGlory)entity;
+
+        // private float timer = 0;
+
+        public override void Enter(Enemy entity)
+        {
+            // base.Enter(entity);
+            owner.PlayAudioClip(AudioType.TakeDamage0);
+
+            // Play effect of the morning glory enemy.
+            owner.emissionEffector.Play(0.4f, 10f, 0f, Color.red);
+
+            // Play effect of speakers.
+            owner.SortSpeakersByDistance();
+            PlaySpeakersEffect();
+
+            owner.ChangeState(owner.DefaultState);
+        }
+
+        private void PlaySpeakersEffect()
+        {
+            AnimationCurve easeOutCurve = new AnimationCurve(
+                new Keyframe(0, 0, 0, 1),  // 시작점 (시간 0, 값 0, 입구 기울기 0, 출구 기울기 1)
+                new Keyframe(1, 1, 1, 0)   // 끝점 (시간 1, 값 1, 입구 기울기 1, 출구 기울기 0)
+            );
+
+            foreach (var speaker in owner.speakers)
+            {
+                if (speaker.gameObject.activeSelf == false) continue;
+
+                float dist = Vector3.Distance(owner.transform.position, speaker.transform.position);
+                float v = easeOutCurve.Evaluate(dist / 5f);
+                float time = Mathf.LerpUnclamped(0, 1f, v);
+                speaker.PlayTakeDamageEffect(time);
+            }
+        }
+    }
+
+    private class State_Die : EnemyState_Die
+    {
+        private Enemy_MorningGlory owner;
+        public State_Die(Enemy entity) : base(entity)
+            => owner = (Enemy_MorningGlory)entity;
+
+        public override void Enter(Enemy entity)
+        {
+            base.Enter(entity);
+            owner.SortSpeakersByDistance();
+            ForceKillAllSpeakers();
+        }
+
+        private void ForceKillAllSpeakers()
+        {
+            AnimationCurve easeOutCurve = new AnimationCurve(
+                new Keyframe(0, 0, 0, 1),  // 시작점 (시간 0, 값 0, 입구 기울기 0, 출구 기울기 1)
+                new Keyframe(1, 1, 1, 0)   // 끝점 (시간 1, 값 1, 입구 기울기 1, 출구 기울기 0)
+            );
+
+            foreach (var speaker in owner.speakers)
+            {
+                if (speaker.gameObject.activeSelf == false) continue;
+
+                float dist = Vector3.Distance(owner.transform.position, speaker.transform.position);
+                float v = easeOutCurve.Evaluate(dist / 5f);
+                float time = Mathf.LerpUnclamped(0, 1f, v);
+                speaker.ForceKill(time);
+            }
         }
     }
 }

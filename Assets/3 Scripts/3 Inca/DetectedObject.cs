@@ -10,7 +10,7 @@ namespace Inca
     public enum DetectedObjectType
     {
         None = -1,
-        UserHead = 0, UserHandRight, UserHandLeft,
+        UserHead = 0, UserRightHand, UserLeftHand,
         Car = 100,
         Building = 200,
         Pedestrian = 300
@@ -134,14 +134,13 @@ namespace Inca
 
         private void OnDrawGizmos()
         {
-            // if (!isVisible) return;
-            if (environmentObject == null) return;
-
             DrawGizmos(Color.red);
         }
 
         private void DrawGizmos(Color color)
         {
+            if (environmentObject == null) return;
+
             Gizmos.color = color;
 
             Vector3 c = originalTransform.TransformPoint(environmentObject.ColliderCenter);

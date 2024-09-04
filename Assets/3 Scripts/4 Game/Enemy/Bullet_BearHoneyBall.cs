@@ -32,18 +32,8 @@ public class Bullet_BearHoneyBall : DamagableEnemy
     [SerializeField]
     private Transform modelTransform;
 
-    private Rigidbody rigidbody;
-
-    protected override void Awake()
-    {
-        base.Awake();
-        rigidbody = GetComponent<Rigidbody>();
-    }
-
     public override void Init(DetectedObject detectedObject = null)
     {
-        base.Init(detectedObject);
-
         currentBounceCount = 0;
 
         gameObject.transform.SetParent(IncaData.UserCarTransform);
@@ -69,11 +59,25 @@ public class Bullet_BearHoneyBall : DamagableEnemy
 
         bounceProgress = 0.5f;
 
-        rigidbody.isKinematic = true;
-        rigidbody.useGravity = false;
+        EnableRigidbody(false);
+
+        base.Init(detectedObject);
     }
 
-    private void FixedUpdate()
+    protected override void InitStateMachine()
+    {
+        SetStartState(EnemyState.Move);
+
+        base.InitStateMachine();
+
+        states[EnemyState.Move] = new State_Move(this);
+        states[EnemyState.Die] = new State_Die(this);
+    }
+
+    private bool HasBounceFinished()
+        => currentBounceCount >= bounceCount;
+
+    private void Move()
     {
         if (currentBounceCount >= bounceCount) return;
 
@@ -85,12 +89,6 @@ public class Bullet_BearHoneyBall : DamagableEnemy
             currentBounceCount++;
             bounceStartZ = bounceEndZ;
             bounceEndZ = initialPosition + transform.forward * gapDist * (currentBounceCount + 1);
-
-            if (currentBounceCount == bounceCount)
-            {
-                Player.Instance.TakeDamage(status.CurrentAttack);
-                DeactivateGameObject();
-            }
         }
 
         float s = Mathf.Sin(bounceProgress * 180 * Mathf.Deg2Rad);
@@ -102,26 +100,55 @@ public class Bullet_BearHoneyBall : DamagableEnemy
         transform.localPosition = newPos;
     }
 
-    protected override void OnDeath()
+    private class State_Move : EnemyState_Move
     {
-        base.OnDeath();
+        private Bullet_BearHoneyBall owner;
+        public State_Move(Enemy entity) : base(entity)
+            => owner = (Bullet_BearHoneyBall)entity;
 
-        currentBounceCount = int.MaxValue;
+        public override void Execute(Enemy entity)
+        {
+            base.Execute(entity);
 
-        transform.SetParent(null);
+            owner.Move();
 
-        rigidbody.useGravity = true;
-        rigidbody.isKinematic = false;
+            if (owner.HasBounceFinished())
+            {
+                Player.Instance.TakeDamage(owner.status.CurrentAttack);
+                owner.DeactivateGameObject();
+            }
+        }
+    }
 
-        Vector3 dir = transform.position - GGData.PlayerPosition;
-        dir = dir.normalized * 4 + Random.onUnitSphere * 2;
-        dir.Normalize();
-        dir.y = Mathf.Abs(dir.y);
+    private class State_Die : EnemyState_Die
+    {
+        private Bullet_BearHoneyBall owner;
+        public State_Die(Enemy entity) : base(entity)
+            => owner = (Bullet_BearHoneyBall)entity;
 
-        rigidbody.AddForce(dir * hitPower, ForceMode.Impulse);
+        public override void Enter(Enemy entity)
+        {
+            owner.transform.SetParent(null);
 
-        modelTransform.rotation.SetLookRotation(dir);
+            // Stop bouncing this ball.
+            owner.currentBounceCount = int.MaxValue;
 
-        Invoke(nameof(DeactivateGameObject), 3f);
+            // Deflect this ball in the direction of the gunshot.
+            owner.EnableRigidbody(true);
+
+            Vector3 dir = owner.transform.position - GGData.PlayerPosition;
+            dir = dir.normalized * 4 + Random.onUnitSphere * 2;
+            dir.Normalize();
+            dir.y = Mathf.Abs(dir.y);
+
+            owner.rigidbody.AddForce(dir * owner.hitPower, ForceMode.Impulse);
+
+            owner.modelTransform.rotation.SetLookRotation(dir);
+
+            // Deactivate this gameobject after 3 sec.
+            owner.Invoke(nameof(DeactivateGameObject), 3f);
+
+            base.Enter(entity);
+        }
     }
 }
