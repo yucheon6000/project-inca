@@ -7,6 +7,13 @@ public class Player : Character
 
     public new PlayerStatus Status => (PlayerStatus)status;
 
+    [Header("[[Player]]")]
+    [Header("[Score]")]
+    [SerializeField]
+    private int score = 0;
+    [SerializeField]
+    private int deathPenaltyScore = -1000;
+
     [SerializeField]
     private AudioClip hitAudioClip;
 
@@ -18,16 +25,23 @@ public class Player : Character
             Instance = this;
     }
 
-    public override float TakeDamage(float attckAmount)
+    public override float TakeDamage(float attackAmount)
     {
         if (audioSource != null)
             audioSource.PlayOneShot(hitAudioClip);
 
-        return base.TakeDamage(attckAmount);
+        return base.TakeDamage(attackAmount);
+    }
+
+    public void IncreaseScore(int amount)
+    {
+        score += amount;
+        score = Mathf.Max(0, score);
     }
 
     protected override void OnDeath()
     {
-        // throw new System.NotImplementedException();
+        IncreaseScore(deathPenaltyScore);
+        Status.IncreaseHp(Status.DefaultHp);
     }
 }

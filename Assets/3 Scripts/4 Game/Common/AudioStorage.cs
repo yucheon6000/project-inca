@@ -22,6 +22,8 @@ public class AudioStorage
 public enum AudioType
 {
     Spawn,
+    Idle,
+    Move,
     Attack0, Attack1, Attack2, Attack3,
     TakeDamage0, TakeDamage1, TakeDamage2, TakeDamage3,
     Die,

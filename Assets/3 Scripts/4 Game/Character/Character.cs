@@ -18,33 +18,52 @@ public abstract class Character : MonoBehaviour
     public UnityEvent<float, float> OnChangeCurrentAttack => status.OnChangeCurrentAttack;
     public UnityEvent OnDeathEvent => status.OnDeath;
 
+    [Header("[Init]")]
     [SerializeField]
     protected bool initOnAwake = false;
+    [SerializeField]
+    protected bool initOnStart = false;
+    [SerializeField]
+    protected bool initOnEable = false;
 
-    [Header("Components")]
+    [Header("[Animation]")]
     [SerializeField]
     protected Animator animator;
+
+    [Header("[Audio]")]
     [SerializeField]
     protected AudioSource audioSource;
-
-    [Header("Audio Clips")]
     [SerializeField]
     private AudioStorage audioStorage;
 
     protected virtual void Awake()
     {
-        status = GetComponent<CharacterStatus>();
+        GetStatusComponent();
 
-        if (initOnAwake)
-            Init();
+        if (initOnAwake) Init();
+    }
+
+    protected void GetStatusComponent()
+    {
+        if (status == null)
+            status = GetComponent<CharacterStatus>();
+    }
+
+    protected virtual void Start()
+    {
+        if (initOnStart) Init();
     }
 
     public virtual void Init()
     {
+        GetStatusComponent();
+
         status.Init();
 
         OnDeathEvent.AddListener(OnDeath);
     }
+
+    protected virtual void Attack() { }
 
     public virtual float TakeDamage(float damageAmount)
     {
@@ -52,6 +71,8 @@ public abstract class Character : MonoBehaviour
     }
 
     protected abstract void OnDeath();
+
+    protected virtual void PlayAnimationByValue(int animationValue) { }
 
     protected virtual void PlayAudioClip(AudioType audioType)
     {
@@ -63,7 +84,9 @@ public abstract class Character : MonoBehaviour
         audioSource.PlayOneShot(clip);
     }
 
-    protected virtual void PlayAnimationByValue(int animationValue) { }
-
-    public virtual void Attack() { }
+    protected virtual void OnEnable()
+    {
+        if (initOnEable)
+            Init();
+    }
 }

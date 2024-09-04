@@ -4,34 +4,23 @@ using Inca;
 
 public class Enemy_HermitCrab : DamagableEnemy
 {
-    public enum State { Idle = 0, Move, Fall, Fly }
-    [SerializeField]
-    private State currentState = State.Idle;
-    private Dictionary<State, IState<Enemy_HermitCrab>> states;
-    private StateMachine<Enemy_HermitCrab> stateMachine;
-
-    private Vector3 originPos;
-
     // Move
-    [Space]
+    [Header("[Move]")]
     [SerializeField]
-    private float followDistance;
+    private float moveTriggerDistance;
     [SerializeField]
-    private float followTime;
-    private bool arrivedTargetLane = false;
+    private float moveSpeed;
     [SerializeField]
     private List<Transform> transformByLaneIndex;
+    private bool arrivedTargetLane = false;
 
-    // Fall (Attack)
-    [Space]
+    // Attack
+    [Header("[Attack (Hide)]")]
     [SerializeField]
-    private float attackDistance;
-    [SerializeField]
-    private float fallSpeed;
-    private bool isFall = false;        // is falling or finished falling
+    private float attackTriggerDistance;
 
     // Fly
-    [Space]
+    [Header("[Fly]")]
     [SerializeField]
     private Transform explosionTf;
     [SerializeField]
@@ -41,78 +30,42 @@ public class Enemy_HermitCrab : DamagableEnemy
     [SerializeField]
     private float exMo = 1;
 
-    [SerializeField]
-    private LookAtPlayer lookAtPlayer;
-    private Rigidbody rigidbody;
-
-    protected override void Awake()
-    {
-        base.Awake();
-        rigidbody = GetComponent<Rigidbody>();
-
-        states = new Dictionary<State, IState<Enemy_HermitCrab>>
-        {
-            { State.Idle, new IdleState() },
-            { State.Move, new MoveState() },
-            { State.Fall, new FallState() },
-            { State.Fly, new FlyState() }
-        };
-    }
-
     public override void Init(DetectedObject detectedObject = null)
     {
-        base.Init(detectedObject);
-
-        currentState = State.Idle;
-
-        Vector3 rot = transform.rotation.eulerAngles;
-        transform.rotation = Quaternion.Euler(rot.x, rot.y, 0);
-
-        originPos = transform.position;
-        isFall = false;
         arrivedTargetLane = false;
 
-        rigidbody.isKinematic = true;
-        rigidbody.useGravity = false;
-        rigidbody.velocity = Vector3.zero;
+        EnableRigidbody(false);
+        LookAtPlayer(true);
 
-        lookAtPlayer.Look(true);
-
-        stateMachine = new StateMachine<Enemy_HermitCrab>();
-        stateMachine.Setup(this, states[State.Idle]);
+        base.Init(detectedObject);
     }
 
-    private void FixedUpdate()
+    protected override void InitStateMachine()
     {
-        if (IsDead) return;
+        base.InitStateMachine();
+        states[EnemyState.Idle] = new State_Idle(this);
+        states[EnemyState.Move] = new State_Move(this);
+        states[EnemyState.Attack] = new State_Attack(this);
+        states.Add(EnemyState.Fly, new State_Fly(this));
+    }
 
-        stateMachine?.Execute();
+    private Vector3 GetMoveTargetPoint()
+        => transformByLaneIndex[IncaData.UserCarLaneIndex].position;
+
+    private Vector3 MoveToTargetPoint(Vector3 targetPoint)
+    {
+        transform.position = Vector3.MoveTowards(transform.position, targetPoint, moveSpeed * Time.fixedDeltaTime);
+
+        return transform.position;
     }
 
     protected override void OnDeath()
     {
-        lookAtPlayer.Look(false);
-
-        if (isFall)
-            ChangeState(State.Fly);
+        // This enemy has attacked.
+        if (DistanceToUserCar < attackTriggerDistance)
+            ChangeState(EnemyState.Fly);
         else
-        {
-            Disappear();
-            PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_DIE);
-        }
-    }
-
-    protected override void OnDisappear()
-    {
-        SpawnEffect(dieEffectPrefab);
-        DeactivateGameObject();
-    }
-
-    public void ChangeState(State newState)
-    {
-        if (currentState == newState) return;
-        currentState = newState;
-        stateMachine.ChangeState(states[newState]);
+            ChangeState(EnemyState.Die);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -121,7 +74,7 @@ public class Enemy_HermitCrab : DamagableEnemy
 
         if (other.TryGetComponent<DetectedUser>(out DetectedUser car))
         {
-            ChangeState(State.Fly);
+            ChangeState(EnemyState.Fly);
             Player.Instance.TakeDamage(2);
         }
     }
@@ -129,135 +82,98 @@ public class Enemy_HermitCrab : DamagableEnemy
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, followDistance);
+        Gizmos.DrawWireSphere(transform.position, moveTriggerDistance);
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackDistance);
+        Gizmos.DrawWireSphere(transform.position, attackTriggerDistance);
     }
 
-    private void OnDisable()
+    private class State_Idle : EnemyState_Idle
     {
-        stateMachine = null;
-    }
+        private Enemy_HermitCrab owner;
 
-    private class IdleState : IState<Enemy_HermitCrab>
-    {
-        public void Enter(Enemy_HermitCrab entity)
+        public State_Idle(Enemy entity) : base(entity)
+            => owner = (Enemy_HermitCrab)entity;
+
+        public override void Execute(Enemy entity)
         {
-            entity.SetDefaultAnimation(Constants.Animation.ENEMY_ANIMATION_IDLE);
-        }
+            base.Execute(entity);
 
-        public void Execute(Enemy_HermitCrab entity)
-        {
-            // If entity finished everything.
-            if (entity.isFall) return;
-
-            float carDist = Vector3.Distance(entity.transform.position, IncaData.UserCarTransform.position);
-
-            if (!entity.arrivedTargetLane && carDist <= entity.followDistance)
-                entity.ChangeState(State.Move);
-            else if (entity.arrivedTargetLane && carDist <= entity.attackDistance)
-                entity.ChangeState(State.Fall);
-        }
-
-        public void Exit(Enemy_HermitCrab entity) { }
-    }
-
-    private class MoveState : IState<Enemy_HermitCrab>
-    {
-        float followTimer = 0;
-        float progress = 0;
-
-        Vector3 targetPos;
-
-        public void Enter(Enemy_HermitCrab entity)
-        {
-            followTimer = 0;
-            progress = 0;
-
-            print("Enter Move");
-            print(IncaData.UserCarLaneIndex);
-
-            targetPos = entity.transformByLaneIndex[IncaData.UserCarLaneIndex].position;
-
-            entity.lookAtPlayer.Look(true);
-            entity.SetDefaultAnimation(Constants.Animation.ENEMY_ANIMATION_MOVE);
-        }
-
-        public void Execute(Enemy_HermitCrab entity)
-        {
-            followTimer += Time.fixedDeltaTime;
-            progress = followTimer / entity.followTime;
-
-            entity.transform.position = Vector3.Lerp(entity.originPos, targetPos, progress);
-
-            if (progress >= 1)
-                entity.ChangeState(State.Idle);
-        }
-
-
-        public void Exit(Enemy_HermitCrab entity)
-        {
-            entity.arrivedTargetLane = true;
-            entity.lookAtPlayer.Look(false);
+            if (!owner.arrivedTargetLane && owner.DistanceToUserCar <= owner.moveTriggerDistance)
+                owner.ChangeState(EnemyState.Move);
+            else if (owner.arrivedTargetLane && owner.DistanceToUserCar <= owner.attackTriggerDistance)
+                owner.ChangeState(EnemyState.Attack);
         }
     }
 
-    private class FallState : IState<Enemy_HermitCrab>
+    private class State_Move : EnemyState_Move
     {
-        float fallDegree = 0;
+        private Enemy_HermitCrab owner;
 
-        public void Enter(Enemy_HermitCrab entity)
+        Vector3 targetPoint;
+
+        public State_Move(Enemy entity) : base(entity)
+            => owner = (Enemy_HermitCrab)entity;
+
+        public override void Enter(Enemy entity)
         {
-            fallDegree = 0;
-            entity.isFall = true;
-            entity.lookAtPlayer.Look(false);
+            base.Enter(entity);
+            owner.LookAtPlayer(true);
 
-            entity.SetDefaultAnimation(Constants.Animation.ENEMY_ANIMATION_ATTACK);
+            targetPoint = owner.GetMoveTargetPoint();
         }
 
-        public void Execute(Enemy_HermitCrab entity)
+        public override void Execute(Enemy entity)
         {
-            float amount = entity.fallSpeed * Time.fixedDeltaTime;
-
-            entity.transform.Rotate(0, 0, amount);
-
-            fallDegree += amount;
-
-            if (fallDegree > 90f)
-                entity.ChangeState(State.Idle);
+            if (Vector3.Distance(entity.transform.position, targetPoint) <= 0.001f)
+            {
+                owner.ChangeState(EnemyState.Idle);
+                owner.arrivedTargetLane = true;
+            }
+            else
+                owner.MoveToTargetPoint(targetPoint);
         }
 
-
-        public void Exit(Enemy_HermitCrab entity) { }
+        public override void Exit(Enemy entity)
+        {
+            owner.LookAtPlayer(false);
+        }
     }
 
-    private class FlyState : IState<Enemy_HermitCrab>
+    private class State_Attack : EnemyState_Attack
     {
-        float flyTimer = 0;
+        private Enemy_HermitCrab owner;
 
-        public void Enter(Enemy_HermitCrab entity)
+        public State_Attack(Enemy entity) : base(entity)
+            => owner = (Enemy_HermitCrab)entity;
+
+        public override void OnFinishAttackAnimation(Enemy entity)
         {
-            flyTimer = 0;
+            // base.OnFinishAttackAnimation(entity);    // Prevent the state from changing to idle.
+        }
+    }
+    private class State_Fly : IEnemyState
+    {
+        private Enemy_HermitCrab owner;
 
-            Vector3 rot = entity.transform.localEulerAngles;
-            // entity.transform.localEulerAngles = new Vector3(rot.x, rot.y, 90);
+        public State_Fly(Enemy entity)
+            => owner = (Enemy_HermitCrab)entity;
 
-            entity.GetComponent<Rigidbody>().isKinematic = false;
-            entity.GetComponent<Rigidbody>().useGravity = true;
-            entity.GetComponent<Rigidbody>().AddExplosionForce(entity.exFor, entity.explosionTf.position, entity.exRa, 1f);
+        public void Enter(Enemy entity)
+        {
+            owner.LookAtPlayer(false);
 
-            entity.ForceKill();
+            owner.EnableRigidbody(true);
+            owner.rigidbody.AddExplosionForce(owner.exFor, owner.explosionTf.position, owner.exRa, 1f);
 
-            entity.PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_IDLE);
+            owner.ForceKill();
+
+            owner.PlayAnimationByName("Attack");
+
+            owner.PlayDisappearEffect(owner.DeactivateGameObject);
         }
 
-        public void Execute(Enemy_HermitCrab entity)
-        {
-            flyTimer += Time.fixedDeltaTime;
-            if (flyTimer > 3f)
-                entity.DeactivateGameObject();
-        }
+        public void Execute(Enemy entity) { }
 
-        public void Exit(Enemy_HermitCrab entity) { }
+        public void Exit(Enemy entity) { }
     }
 }

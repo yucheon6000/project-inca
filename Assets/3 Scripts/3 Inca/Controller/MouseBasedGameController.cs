@@ -2,7 +2,6 @@ using Inca;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
-using Viveport;
 using System.Collections.Generic;
 
 public class MouseBasedGameController : GameController
@@ -69,6 +68,7 @@ public class MouseBasedGameController : GameController
             if (weaponIndex == weaponInformations.Count) weaponIndex = 0;
 
             currentWeapon = weaponInformations[weaponIndex];
+            image.sprite = currentWeapon.AimSprite;
         }
     }
 

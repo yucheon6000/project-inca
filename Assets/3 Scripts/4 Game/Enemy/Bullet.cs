@@ -28,7 +28,6 @@ public class Bullet : NonDamagableEnemy
 
     protected virtual void FixedUpdate()
     {
-
         // Vector3 steerForce = desiredVelocity - IncaData.PlayerVelocity;
 
         dir = (GGData.PlayerPosition - transform.position);

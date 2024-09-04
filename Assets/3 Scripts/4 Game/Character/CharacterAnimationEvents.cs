@@ -11,9 +11,4 @@ public class CharacterAnimationEvents : MonoBehaviour
     {
         target.Init();
     }
-
-    public void Attack()
-    {
-        target.Attack();
-    }
 }

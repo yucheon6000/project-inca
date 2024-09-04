@@ -5,64 +5,73 @@ using UnityEngine;
 
 public class Enemy_Bear : DamagableEnemy
 {
+    [Header("[[Bear]]")]
+    [Header("[Attack]")]
     [SerializeField]
     private GameObject bulletPrefab;
     [SerializeField]
-    private float shootDelay;
-    private float shootTimer;
+    private float attackDelayTime;
+    private float attackTimer;
 
+    [Header("[Honeycomb]")]
     [SerializeField]
     private Enemy hoenycomb;
 
-    private void OnEnable()
+    protected override void InitStateMachine()
     {
-        Init();
+        SetStartState(EnemyState.Idle);
+
+        base.InitStateMachine();
+
+        states[EnemyState.Idle] = new State_Idle(this);
+        states[EnemyState.TakeDamage] = new State_TakeDamage(this);
     }
 
-    public override void Init(DetectedObject detectedObject = null)
+    private bool CanPlayAttackAnimation()
     {
-        base.Init(detectedObject);
-        SetDefaultAnimation(Constants.Animation.ENEMY_ANIMATION_IDLE);
+        attackTimer += Time.deltaTime;
+        return attackTimer >= attackDelayTime;
     }
 
-    private void Update()
-    {
-        if (IsDead) return;
-
-        shootTimer += Time.deltaTime;
-
-        // 공격 애니메이션 공격하는 시점말고, 공격 애니메이션 끝나는 시점에서 이 분기에서 참이 되어서
-        // 공격 안하는 경우 있음 (shootDelay를 좀 길게 주면 해결 됨)
-        if (shootTimer >= shootDelay)
-            PlayAttackAnimation();
-    }
-
-    private void PlayAttackAnimation()
-    {
-        // This attack animation calls 'this.Attack();'
-        PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_ATTACK);
-    }
-
-    public override void Attack()
+    protected override void Attack()
     {
         GameObject bullet = MemoryPool.Instance(MemoryPoolType.Enemy).ActivatePoolItem(bulletPrefab, transform.position);
         bullet.transform.position = transform.position;
         bullet.GetComponent<Enemy>().Init();
-        shootTimer = 0;
-    }
-
-    public override float TakeDamage(float attckAmount)
-    {
-        hoenycomb.TakeDamage(attckAmount);
-        shootTimer = Mathf.Min(shootTimer, shootDelay - 1f);
-
-        return base.TakeDamage(attckAmount);
+        attackTimer = 0;
     }
 
     protected override void OnDeath()
     {
         transform.SetParent(null);
         base.OnDeath();
-        // gameObject.SetActive(false);
+    }
+
+    private class State_Idle : EnemyState_Idle
+    {
+        private Enemy_Bear owner;
+        public State_Idle(Enemy entity) : base(entity)
+            => owner = (Enemy_Bear)entity;
+
+        public override void Execute(Enemy entity)
+        {
+            base.Execute(entity);
+
+            if (owner.CanPlayAttackAnimation())
+                owner.ChangeState(EnemyState.Attack);
+        }
+    }
+
+    private class State_TakeDamage : EnemyState_TakeDamage
+    {
+        private Enemy_Bear owner;
+        public State_TakeDamage(Enemy entity) : base(entity)
+            => owner = (Enemy_Bear)entity;
+
+        public override void Enter(Enemy entity)
+        {
+            base.Enter(entity);
+            owner.hoenycomb.TakeDamage(1);
+        }
     }
 }

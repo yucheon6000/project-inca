@@ -1,0 +1,76 @@
+using System.Collections;
+using System.Collections.Generic;
+using Inca;
+using UnityEngine;
+
+[RequireComponent(typeof(WeaponStatus))]
+public class Weapon : MonoBehaviour
+{
+    private Character Owner { get; set; }
+    public WeaponStatus Status { get; private set; }
+
+    [Header("[Projectiles]")]
+    [SerializeField]
+    protected List<Projectile> projectiles;
+
+    [Header("[@Debug]")]
+    [SerializeField]
+    private int currentAmmoInMagazine;
+    [SerializeField]
+    private float timer = 0;
+
+    public bool IsReloading { get; private set; } = false;
+    public bool HasAmmo => currentAmmoInMagazine > 0;
+    public bool ShouldReload => !IsReloading && !HasAmmo;
+    protected virtual bool CanShoot() => !IsReloading && HasAmmo && timer > Status.CurrentShootDelay;
+
+    private void Awake()
+    {
+        Status = GetComponent<WeaponStatus>();
+    }
+
+    public void Init(Character owner)
+    {
+        Owner = owner;
+        Status.Init();
+        currentAmmoInMagazine = Status.CurrentAmmoPerMagazine;
+    }
+
+    private void Update()
+    {
+        timer += Time.deltaTime;
+
+        if (IsReloading)
+        {
+            UpdateReload();
+            return;
+        }
+
+        if (ShouldReload /* && Shaking controller? */)
+            Reload();
+
+        if (CanShoot())
+            Shoot();
+    }
+
+    private void UpdateReload()
+    {
+        if (timer < Status.CurrentReloadDelay) return;
+
+        // If finish reload.
+        currentAmmoInMagazine = Status.CurrentAmmoPerMagazine;
+        timer = Status.CurrentShootDelay;
+        IsReloading = false;
+    }
+
+    private void Reload()
+    {
+        timer = 0;
+        IsReloading = true;
+    }
+
+    protected virtual void Shoot()
+    {
+        timer = 0;
+    }
+}

@@ -6,6 +6,7 @@ public class StateMachine<T> where T : class
 {
     private T ownerEntity;
     private IState<T> currentState;
+    public IState<T> CurrentState => currentState;
     private IState<T> previousState;
     private IState<T> globalState;
 
@@ -41,7 +42,12 @@ public class StateMachine<T> where T : class
 
     public void SetGlobalState(IState<T> newState)
     {
+        if (newState == null) return;
+        if (globalState != null)
+            globalState?.Exit(ownerEntity);
+
         globalState = newState;
+        globalState.Enter(ownerEntity);
     }
 
     public void RevertToPreviousState()

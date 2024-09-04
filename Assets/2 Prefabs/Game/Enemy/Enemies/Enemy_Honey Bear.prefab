@@ -150,6 +150,7 @@ GameObject:
   - component: {fileID: 5892039008773089235}
   - component: {fileID: 1056682426703571769}
   - component: {fileID: 8715246292758946337}
+  - component: {fileID: 921831548941021813}
   m_Layer: 15
   m_Name: Enemy_Honeycomb_Hinge_Left
   m_TagString: Untagged
@@ -203,29 +204,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initOnAwake: 0
+  initOnStart: 0
+  initOnEable: 0
   animator: {fileID: 0}
-  audioSource: {fileID: 0}
+  audioSource: {fileID: 921831548941021813}
   audioStorage:
     audios: []
+  currentState: 0
+  canAttack: 0
+  canTakeDamage: 1
   spawnEffectPrefab: {fileID: 0}
   dieEffectPrefab: {fileID: 0}
+  emissionEffectIntensity: 10
   useAppearEffect: 0
-  appearTransform: {fileID: 0}
+  appearTime: 0
   appearScaleCurve:
     serializedVersion: 2
     m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  appearTime: 0
+  useAppearEmissionEffect: 0
   useDisappearEffect: 0
+  disappearTime: 0
   disappearScaleCurve:
     serializedVersion: 2
     m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  disappearTime: 0
+  useDisappearEmissionEffect: 0
   bear: {fileID: 7016119287053729942}
   hingeJoint: {fileID: 5100001857611219879}
 --- !u!33 &4608884960487324263
@@ -469,6 +477,103 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!82 &921831548941021813
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1924020850590560779}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 243366450046692526, guid: ec12f7772c03e4c4c9e4c2f1643595ad,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &2692680209399570982
 GameObject:
   m_ObjectHideFlags: 0
@@ -964,6 +1069,7 @@ GameObject:
   - component: {fileID: 485917449994158109}
   - component: {fileID: 7380300258239852455}
   - component: {fileID: 598019904016199379}
+  - component: {fileID: 3248278500224097259}
   m_Layer: 15
   m_Name: Enemy_Honeycomb_Hinge_Right
   m_TagString: Untagged
@@ -1017,29 +1123,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initOnAwake: 0
+  initOnStart: 0
+  initOnEable: 0
   animator: {fileID: 0}
-  audioSource: {fileID: 0}
+  audioSource: {fileID: 3248278500224097259}
   audioStorage:
     audios: []
+  currentState: 0
+  canAttack: 0
+  canTakeDamage: 1
   spawnEffectPrefab: {fileID: 0}
   dieEffectPrefab: {fileID: 0}
+  emissionEffectIntensity: 10
   useAppearEffect: 0
-  appearTransform: {fileID: 0}
+  appearTime: 0
   appearScaleCurve:
     serializedVersion: 2
     m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  appearTime: 0
+  useAppearEmissionEffect: 0
   useDisappearEffect: 0
+  disappearTime: 0
   disappearScaleCurve:
     serializedVersion: 2
     m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  disappearTime: 0
+  useDisappearEmissionEffect: 0
   bear: {fileID: 7016119287053729942}
   hingeJoint: {fileID: 8628328996022593099}
 --- !u!33 &5319486981992476316
@@ -1179,6 +1292,103 @@ HingeJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!82 &3248278500224097259
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7190878145650421867}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 243366450046692526, guid: ec12f7772c03e4c4c9e4c2f1643595ad,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &7270748258497070902
 GameObject:
   m_ObjectHideFlags: 0
@@ -1286,6 +1496,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30509fe82c787f345b39d68c665eda18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lookAtPlayerTargetPoint: 1
+  lookAtPlayerHead: 0
 --- !u!1 &7341743845846798206
 GameObject:
   m_ObjectHideFlags: 0
@@ -1298,6 +1510,7 @@ GameObject:
   - component: {fileID: 2268367624260678872}
   - component: {fileID: 4109012908020576874}
   - component: {fileID: 7016119287053729942}
+  - component: {fileID: 5174985166462528128}
   m_Layer: 15
   m_Name: Enemy_Bear
   m_TagString: Untagged
@@ -1373,14 +1586,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initOnAwake: 1
+  initOnStart: 0
+  initOnEable: 0
   animator: {fileID: 400044552609571457}
-  audioSource: {fileID: 0}
+  audioSource: {fileID: 5174985166462528128}
   audioStorage:
     audios: []
+  currentState: 0
+  canAttack: 0
+  canTakeDamage: 1
   spawnEffectPrefab: {fileID: 0}
   dieEffectPrefab: {fileID: 0}
+  emissionEffectIntensity: 10
   useAppearEffect: 0
-  appearTransform: {fileID: 0}
+  appearTime: 0.5
   appearScaleCurve:
     serializedVersion: 2
     m_Curve:
@@ -1405,19 +1624,117 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  appearTime: 0.5
+  useAppearEmissionEffect: 0
   useDisappearEffect: 0
+  disappearTime: 0
   disappearScaleCurve:
     serializedVersion: 2
     m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  disappearTime: 0
+  useDisappearEmissionEffect: 0
   bulletPrefab: {fileID: 4077361907589407433, guid: 28cc2578015ae4c5db63ad33bf403086,
     type: 3}
-  shootDelay: 3
+  attackDelayTime: 4
   hoenycomb: {fileID: 7125829767098403661}
+--- !u!82 &5174985166462528128
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7341743845846798206}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 243366450046692526, guid: ec12f7772c03e4c4c9e4c2f1643595ad,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &8363710426213428857
 GameObject:
   m_ObjectHideFlags: 0
@@ -1488,29 +1805,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initOnAwake: 1
+  initOnStart: 0
+  initOnEable: 0
   animator: {fileID: 3143345380747222465}
   audioSource: {fileID: 0}
   audioStorage:
     audios: []
+  currentState: 0
+  canAttack: 0
+  canTakeDamage: 1
   spawnEffectPrefab: {fileID: 0}
   dieEffectPrefab: {fileID: 0}
+  emissionEffectIntensity: 10
   useAppearEffect: 0
-  appearTransform: {fileID: 0}
+  appearTime: 0
   appearScaleCurve:
     serializedVersion: 2
     m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  appearTime: 0
+  useAppearEmissionEffect: 0
   useDisappearEffect: 0
+  disappearTime: 0
   disappearScaleCurve:
     serializedVersion: 2
     m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  disappearTime: 0
+  useDisappearEmissionEffect: 0
   beePrefab: {fileID: 5330859677341913465, guid: 119b749e8c17342419320fb97a2a8a84,
     type: 3}
   shootDelay: 1

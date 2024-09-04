@@ -1,5 +1,4 @@
-using System;
-using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +8,17 @@ public class PlayerHpUI : MonoBehaviour
     private CharacterStatus playerStatus;
 
     [SerializeField]
-    private List<Image> images;
+    private Image barImage;
+    [SerializeField]
+    private Transform needleTransform;
+    [SerializeField]
+    private float animationTime;
+    [SerializeField]
+    private AnimationCurve animationCurve;
+
+    private float hpPercent = 0;
+    private float needleTargetAngleZ
+        => Mathf.Lerp(180f, 0f, hpPercent);
 
     private void Start()
     {
@@ -20,22 +29,33 @@ public class PlayerHpUI : MonoBehaviour
 
     public void OnChangeHp(float currentHp, float prevHp)
     {
-        UpdateUI(currentHp);
+        hpPercent = currentHp / playerStatus.MaxHp;
+        StopAllCoroutines();
+        StartCoroutine(UpdateHpUiRoutine());
     }
 
-    private void UpdateUI(float hp)
+    private IEnumerator UpdateHpUiRoutine()
     {
-        // int lastIndex = hp - 1;
+        float timer = 0;
+        float progress = 0;
 
-        // for (int i = 0; i < images.Count; ++i)
-        // {
-        //     Image img = images[i];
+        float originalPercent = barImage.fillAmount;
+        float originalRotZ = needleTransform.eulerAngles.z;
 
-        //     if (i > lastIndex)
-        //         img.color = new Color(0, 0, 0, 0);
-        //     else
-        //         img.color = new Color(1, 1, 1, 1);
+        while (progress <= 1)
+        {
+            timer += Time.deltaTime;
+            progress = timer / animationTime;
 
-        // }
+            float ani = animationCurve.Evaluate(progress);
+
+            barImage.fillAmount = Mathf.Lerp(originalPercent, hpPercent, ani);
+
+            float z = Mathf.Lerp(originalRotZ, needleTargetAngleZ, ani);
+
+            needleTransform.rotation = Quaternion.Euler(0, 0, z);
+
+            yield return null;
+        }
     }
 }

@@ -1,19 +1,75 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
+[RequireComponent(typeof(ProjectileStatus))]
 public abstract class Projectile : MonoBehaviour
 {
-    protected abstract bool ThisIsMyEnemy(Character character);
+    protected Weapon Owner { get; private set; }
+    public ProjectileStatus Status { get; private set; }
 
-    protected abstract void Attack(Character target);
+    protected Character Target { get; private set; }
+    protected Vector3 MoveDirection { get; private set; }
+    protected float MoveSpeed => Status.CurrentMoveSpeed;
 
-    private void OnTriggerEnter(Collider other)
+    [Header("[Direct Attack (Hitscan)]")]
+    [SerializeField]
+    private bool useDirectAttack;
+    public bool UseDirectAttack() => useDirectAttack;
+    [SerializeField]
+    private GameObject directAttackEffect;
+
+    [Header("[Effect]")]
+    [SerializeField]
+    private GameObject attackEffect;
+
+    protected new Rigidbody rigidbody;
+
+    protected virtual void Awake()
     {
-        if (other.TryGetComponent<Character>(out Character character) == false) return;
+        Status = GetComponent<ProjectileStatus>();
+        rigidbody = GetComponent<Rigidbody>();
+    }
 
-        if (ThisIsMyEnemy(character) == false) return;
+    public virtual void Init(Weapon owner, Vector3 moveDirection, Character target = null)
+    {
+        Owner = owner;
+        Target = target;
+        MoveDirection = moveDirection;
+
+        Status.Init(owner.Status);
+    }
+
+    public virtual void DirectAttack(Weapon owner, Character target, Vector3 hitPoint)
+    {
+        if (useDirectAttack == false) return;
+
+        Status.Init(owner.Status);
+
+        target.TakeDamage(Status.CurrentAttack);
+        Instantiate(directAttackEffect, hitPoint, Quaternion.identity);
+    }
+
+    protected abstract bool CheckIfMyEnemy(Character other);
+
+    protected virtual void Attack(Character other)
+    {
+        other.TakeDamage(Status.CurrentAttack);
+    }
+
+    protected virtual void AfterAttack(Collider collider)
+    {
+        Instantiate(attackEffect, collider.ClosestPointOnBounds(transform.position), Quaternion.identity);
+    }
+
+    protected virtual void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent(out Character character) == false) return;
+
+        if (CheckIfMyEnemy(character) == false) return;
 
         Attack(character);
+        AfterAttack(other);
     }
 }

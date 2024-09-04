@@ -77,7 +77,7 @@ public abstract class GameController : MonoBehaviour
         }
 
         // If enemy is hitable
-        if (enemy.IsInteractableType(InteractableType.Hitable))
+        if (false)//enemy.IsInteractableType(InteractableType.Hitable))
         {
             if (hasTarget == false)
             {

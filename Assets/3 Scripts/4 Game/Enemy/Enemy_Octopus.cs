@@ -41,7 +41,7 @@ public class Enemy_Octopus : DamagableEnemy
         PlayAnimationByValue(Constants.Animation.ENEMY_ANIMATION_ATTACK);
     }
 
-    public override void Attack()
+    protected override void Attack()
     {
         base.Attack();
 
