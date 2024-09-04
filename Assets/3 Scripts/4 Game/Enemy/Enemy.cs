@@ -75,7 +75,7 @@ public abstract class Enemy : Character
     protected new Rigidbody rigidbody;
     protected ScaleEffector scaleEffector;
     protected EmissionEffector emissionEffector;
-    private LookAtPlayer lookAtPlayer;
+    protected LookAtPlayer lookAtPlayer;
 
     protected override void Awake()
     {
@@ -199,6 +199,11 @@ public abstract class Enemy : Character
         lookAtPlayer.Look(value);
     }
 
+    protected void LookAtPlayerImmediate()
+    {
+        lookAtPlayer.LookImmediate();
+    }
+
     public virtual bool CanAttack()
         => canAttack;
 
@@ -220,7 +225,11 @@ public abstract class Enemy : Character
         float curHp = base.TakeDamage(attackAmount);
 
         if (IsAlive)
+        {
+            if (emissionEffector)
+                emissionEffector.Play(0.4f, 10f, 0f, Color.red);
             ChangeState(EnemyState.TakeDamage, true);
+        }
 
         return curHp;
     }
@@ -358,6 +367,7 @@ public abstract class Enemy : Character
         return false;
     }
 
+    // 지울 것
     public virtual void OnHoverStart() { }
     public virtual void OnHoverEnd() { }
 
@@ -375,6 +385,15 @@ public abstract class Enemy : Character
         currentState = newState;
         stateMachine.ChangeState(states[newState]);
     }
+
+    /*  <Preset>
+     *                                                                                    ______
+     *  Enemy.StartStateMachine()  --(Start State)-->  Spawn       --(Default State)-->  |      |
+     *                                                 Attack      --(Default State)-->  | Idle |
+     *  Enemy.TakeDamage()         ----------------->  TakeDamage  --(Default State)-->  |      |
+     *  Enemy.OnDeath()            ----------------->  Die                                ------
+     *
+     */
 
     public interface IEnemyState : IState<Enemy> { }
 
@@ -398,7 +417,7 @@ public abstract class Enemy : Character
         public virtual void Exit(Enemy entity) { }
 
         /// <summary>
-        /// Change state to Idle.
+        /// Change state to Default State.
         /// </summary>
         public virtual void OnAppear(Enemy entity)
         {
@@ -432,6 +451,7 @@ public abstract class Enemy : Character
         public virtual void Enter(Enemy entity)
         {
             entity.PlayAnimationByName("Move");
+            entity.PlayAudioClip(AudioType.Move);
         }
         public virtual void Execute(Enemy entity) { }
         public virtual void Exit(Enemy entity) { }

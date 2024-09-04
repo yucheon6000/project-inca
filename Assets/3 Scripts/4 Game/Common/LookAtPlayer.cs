@@ -13,13 +13,23 @@ public class LookAtPlayer : MonoBehaviour
 
     public void Look(bool value) => look = value;
 
+    public void LookImmediate()
+    {
+        Look();
+    }
+
     private void FixedUpdate()
+    {
+        Look();
+    }
+
+    private void Look()
     {
         if (look == false) return;
 
         if (lookAtPlayerTargetPoint)
-            transform.LookAt(GGData.PlayerPosition, Vector3.up);
+            transform.LookAt(GGData.PlayerPosition);
         else if (lookAtPlayerHead)
-            transform.LookAt(IncaData.UserHeadPosition, Vector3.up);
+            transform.LookAt(IncaData.UserHeadPosition);
     }
 }

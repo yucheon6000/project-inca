@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using Valve.VR.InteractionSystem;
 
 public enum RoadBlockDirection { North = 0, South = 180, East = 90, West = 270 }
 public class RoadBlock : MonoBehaviour
@@ -45,11 +44,12 @@ public class RoadBlock : MonoBehaviour
             carPositions = new List<Vector3>();
             carRotations = new List<Quaternion>();
 
-            GetComponentsInChildren<Car>().ForEach(car =>
+            Car[] cars = GetComponentsInChildren<Car>();
+            foreach (Car car in cars)
             {
                 carPositions.Add(car.transform.localPosition);
                 carRotations.Add(car.transform.localRotation);
-            });
+            }
         }
         else
         {

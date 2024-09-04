@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 299204173992711121}
   - component: {fileID: 7775751145822729777}
   - component: {fileID: 2924803582752802823}
+  - component: {fileID: 7156284062364166034}
   m_Layer: 15
   m_Name: Enemy_Honey Bear_Bee
   m_TagString: Untagged
@@ -68,10 +69,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initOnAwake: 0
   initOnStart: 0
+  initOnEable: 0
   animator: {fileID: 0}
-  audioSource: {fileID: 0}
+  audioSource: {fileID: 7156284062364166034}
   audioStorage:
-    audios: []
+    audios:
+    - type: 0
+      clip: {fileID: 8300000, guid: 4b14ba7538e6c0944bb5bcede28dd880, type: 3}
+    - type: 5
+      clip: {fileID: 8300000, guid: 39bfc6a4c4805ad448338b74696d448f, type: 3}
+    - type: 9
+      clip: {fileID: 8300000, guid: 78239a27b0a7b0841a4d654fa73ead26, type: 3}
   currentState: 0
   canAttack: 0
   canTakeDamage: 1
@@ -165,6 +173,103 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.34
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!82 &7156284062364166034
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5330859677341913465}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 243366450046692526, guid: ec12f7772c03e4c4c9e4c2f1643595ad,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &3849388984681457325
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -173,6 +278,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 9031311703557706136}
     m_Modifications:
+    - target: {fileID: 100010, guid: 70b2001f2fac3bd45a18981429f7f2ed, type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 4696811776763616772, guid: 4d81e9d5a312f4c31a644e687471abfc,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -250,10 +359,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8302442947319051341, guid: 4d81e9d5a312f4c31a644e687471abfc,
         type: 3}
-      propertyPath: m_Layer
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 100010, guid: 70b2001f2fac3bd45a18981429f7f2ed, type: 3}
       propertyPath: m_Layer
       value: 15
       objectReference: {fileID: 0}

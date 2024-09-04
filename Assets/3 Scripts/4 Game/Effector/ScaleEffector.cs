@@ -22,10 +22,10 @@ public class ScaleEffector : Effector
         SaveOriginalScale();
     }
 
-    protected void SaveOriginalScale()
+    public void SaveOriginalScale(bool force = false)
     {
         // Save original scale.
-        if (!hasOriginalScaleVariable)
+        if (!hasOriginalScaleVariable || force)
         {
             originalScale = TargetTransform.localScale;
             hasOriginalScaleVariable = true;
