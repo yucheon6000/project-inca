@@ -26,6 +26,9 @@ public abstract class Projectile : MonoBehaviour
 
     protected new Rigidbody rigidbody;
 
+    public float Speed => rigidbody.velocity.magnitude;
+    public Vector3 Velocity => rigidbody.velocity;
+
     protected virtual void Awake()
     {
         Status = GetComponent<ProjectileStatus>();

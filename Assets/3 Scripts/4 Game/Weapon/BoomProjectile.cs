@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Inca;
 using UnityEngine;
 
 public class BoomProjectile : LinearProjectile
@@ -8,6 +9,12 @@ public class BoomProjectile : LinearProjectile
     private LayerMask targetLayerMask;
     [SerializeField]
     private GameObject boomEffect;
+
+    [Header("[Explosion]")]
+    [SerializeField]
+    private float explosionTime;
+    [SerializeField]
+    private AnimationCurve explosionAttackCurve;
 
     protected override void AfterAttack(Collider collider)
     {

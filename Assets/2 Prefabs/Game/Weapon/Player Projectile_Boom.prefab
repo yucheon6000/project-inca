@@ -238,10 +238,19 @@ MonoBehaviour:
   directAttackEffect: {fileID: 0}
   attackEffect: {fileID: 4704828273798450257, guid: a54fa295721614d4f87dde2fe5607ca1,
     type: 3}
+  trailPrefab: {fileID: 5669295254175843611, guid: a1207a302d1cf41f68edf5d24e6574df,
+    type: 3}
   targetLayerMask:
     serializedVersion: 2
     m_Bits: 32768
   boomEffect: {fileID: 1134263192847996918}
+  explosionTime: 0
+  explosionAttackCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!135 &7177694496436885237
 SphereCollider:
   m_ObjectHideFlags: 0

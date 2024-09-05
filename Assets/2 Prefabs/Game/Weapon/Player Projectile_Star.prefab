@@ -71,6 +71,8 @@ MonoBehaviour:
     type: 3}
   attackEffect: {fileID: 4704828273798450257, guid: a54fa295721614d4f87dde2fe5607ca1,
     type: 3}
+  trailPrefab: {fileID: 5669295254175843611, guid: a1207a302d1cf41f68edf5d24e6574df,
+    type: 3}
 --- !u!135 &7177694496436885237
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -131,6 +133,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Projectile 13 star
       objectReference: {fileID: 0}
+    - target: {fileID: 2347107316282744, guid: bc2714e5c329c764dbedba866cc02850, type: 3}
+      propertyPath: TrailModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4299372439586744, guid: bc2714e5c329c764dbedba866cc02850, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4325521886848326, guid: bc2714e5c329c764dbedba866cc02850, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -176,10 +186,42 @@ PrefabInstance:
       propertyPath: speed
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 198130962148191310, guid: bc2714e5c329c764dbedba866cc02850,
+        type: 3}
+      propertyPath: TrailModule.mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 198130962148191310, guid: bc2714e5c329c764dbedba866cc02850,
+        type: 3}
+      propertyPath: TrailModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198130962148191310, guid: bc2714e5c329c764dbedba866cc02850,
+        type: 3}
+      propertyPath: EmissionModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 199010317799991236, guid: bc2714e5c329c764dbedba866cc02850,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 199010317799991236, guid: bc2714e5c329c764dbedba866cc02850,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 4514162212035488431, guid: bc2714e5c329c764dbedba866cc02850,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114493246681080246, guid: bc2714e5c329c764dbedba866cc02850, type: 3}
     - {fileID: 54306541025699842, guid: bc2714e5c329c764dbedba866cc02850, type: 3}
     - {fileID: 135603251481575800, guid: bc2714e5c329c764dbedba866cc02850, type: 3}
+    - {fileID: 198130962148191310, guid: bc2714e5c329c764dbedba866cc02850, type: 3}
+    - {fileID: 199010317799991236, guid: bc2714e5c329c764dbedba866cc02850, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
