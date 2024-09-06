@@ -63,7 +63,8 @@ public abstract class Projectile : MonoBehaviour
 
     protected virtual void AfterAttack(Collider collider)
     {
-        Instantiate(attackEffect, collider.ClosestPointOnBounds(transform.position), Quaternion.identity);
+        Vector3 effectSpawnPoint = collider != null ? collider.ClosestPointOnBounds(transform.position) : transform.position;
+        Instantiate(attackEffect, effectSpawnPoint, Quaternion.identity);
     }
 
     protected virtual void OnTriggerEnter(Collider other)

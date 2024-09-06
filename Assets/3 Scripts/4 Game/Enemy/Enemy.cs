@@ -210,13 +210,15 @@ public abstract class Enemy : Character
     public void CanAttack(bool value)
         => canAttack = value;
 
-    public bool CanTakeDamage()
+    public virtual bool CanTakeDamage()
         => canTakeDamage;
 
     public void CanTakeDamage(bool value) { }
 
     public override float TakeDamage(float attackAmount)
     {
+        if (CanTakeDamage() == false) return Status.CurrentHp;
+
         return TakeDamageWithChangingState(attackAmount);
     }
 

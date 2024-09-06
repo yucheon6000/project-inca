@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dac7564e755c4c9aab9a56ade36ec7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trailLength: 20
+  trailLength: 40
 --- !u!120 &445030220421235212
 LineRenderer:
   serializedVersion: 2
@@ -93,7 +93,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 30
+    widthMultiplier: 60
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -139,8 +139,8 @@ LineRenderer:
     colorGradient:
       serializedVersion: 2
       key0: {r: 1, g: 0.9039522, b: 0, a: 0.38039216}
-      key1: {r: 1, g: 0.52359486, b: 0, a: 1}
-      key2: {r: 0, g: 0, b: 0, a: 1}
+      key1: {r: 1, g: 0.52359486, b: 0, a: 0.7254902}
+      key2: {r: 0, g: 0, b: 0, a: 0.7921569}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
       key5: {r: 0, g: 0, b: 0, a: 0}

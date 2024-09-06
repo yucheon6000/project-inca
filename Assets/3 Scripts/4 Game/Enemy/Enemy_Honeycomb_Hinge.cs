@@ -12,10 +12,8 @@ public class Enemy_Honeycomb_Hinge : DamagableEnemy
 
     public override bool IsAlive => bear.IsDead && status.CurrentHp > 0;
 
-    private void OnEnable()
-    {
-        Init();
-    }
+    public override bool CanTakeDamage()
+        => IsAlive;
 
     protected override void OnDeath()
     {
