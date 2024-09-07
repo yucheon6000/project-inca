@@ -22,7 +22,9 @@ public class Weapon : MonoBehaviour
     public bool IsReloading { get; private set; } = false;
     public bool HasAmmo => currentAmmoInMagazine > 0;
     public bool ShouldReload => !IsReloading && !HasAmmo;
-    protected virtual bool CanShoot() => !IsReloading && HasAmmo && timer > Status.CurrentShootDelay;
+
+    protected bool IsReadyToShoot() => !IsReloading && HasAmmo && timer > Status.CurrentShootDelay;
+    protected virtual bool IsShootInputReceived() => false;
 
     private void Awake()
     {
@@ -49,7 +51,7 @@ public class Weapon : MonoBehaviour
         if (ShouldReload /* && Shaking controller? */)
             Reload();
 
-        if (CanShoot())
+        if (IsReadyToShoot() && IsShootInputReceived())
             Shoot();
     }
 

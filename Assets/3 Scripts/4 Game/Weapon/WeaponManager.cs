@@ -5,9 +5,17 @@ using UnityEngine;
 
 public class WeaponManager : MonoBehaviour
 {
-    private Weapon[] weapons;
-    private int currentWeaponIndex = 0;
-    private Weapon currentWeapon = null;
+    [Header("[Normal Weapon]")]
+    [SerializeField]
+    private Transform normalWeaponsTransform;
+    private Weapon[] normalWeapons;
+    private int currentNormalWeaponIndex = 0;
+    private Weapon currentNormalWeapon = null;
+
+    [Header("[Global Weapon]")]
+    [SerializeField]
+    private Transform globalWeaponsTransform;
+    private Weapon[] globalWeapons;
 
     private void Start()
     {
@@ -16,16 +24,22 @@ public class WeaponManager : MonoBehaviour
 
     private void InitWeapons()
     {
-        weapons = GetComponentsInChildren<Weapon>();
+        // Normal weapons
+        normalWeapons = normalWeaponsTransform.GetComponentsInChildren<Weapon>();
 
-        foreach (Weapon weapon in weapons)
+        foreach (Weapon weapon in normalWeapons)
         {
             weapon.Init(Player.Instance);
             weapon.gameObject.SetActive(false);
         }
 
-        currentWeapon = weapons[currentWeaponIndex];
-        currentWeapon.gameObject.SetActive(true);
+        currentNormalWeapon = normalWeapons[currentNormalWeaponIndex];
+        currentNormalWeapon.gameObject.SetActive(true);
+
+        // Global weapons
+        globalWeapons = globalWeaponsTransform.GetComponentsInChildren<Weapon>();
+        foreach (Weapon weapon in globalWeapons)
+            weapon.Init(Player.Instance);
     }
 
     private void Update()
@@ -37,13 +51,13 @@ public class WeaponManager : MonoBehaviour
     {
         if (IncaInput.GetButtonDown(IncaButtonCode.A) == false) return;
 
-        currentWeapon.gameObject.SetActive(false);
+        currentNormalWeapon.gameObject.SetActive(false);
 
-        currentWeaponIndex++;
-        if (currentWeaponIndex >= weapons.Length)
-            currentWeaponIndex = 0;
+        currentNormalWeaponIndex++;
+        if (currentNormalWeaponIndex >= normalWeapons.Length)
+            currentNormalWeaponIndex = 0;
 
-        currentWeapon = weapons[currentWeaponIndex];
-        currentWeapon.gameObject.SetActive(true);
+        currentNormalWeapon = normalWeapons[currentNormalWeaponIndex];
+        currentNormalWeapon.gameObject.SetActive(true);
     }
 }

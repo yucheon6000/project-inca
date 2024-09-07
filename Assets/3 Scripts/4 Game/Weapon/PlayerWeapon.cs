@@ -12,10 +12,8 @@ public class PlayerWeapon : Weapon
     [SerializeField]
     private Trail trailPrefab;
 
-    protected override bool CanShoot()
-    {
-        return base.CanShoot() && IncaInput.GetButton(IncaButtonCode.RightTrigger);
-    }
+    protected override bool IsShootInputReceived()
+        => IncaInput.GetButton(IncaButtonCode.RightTrigger);
 
     protected override void Shoot()
     {
@@ -44,7 +42,7 @@ public class PlayerWeapon : Weapon
                 SpawnProjectile(projectile, null);
     }
 
-    protected void SpawnProjectile(Projectile projectile, Character target)
+    protected virtual void SpawnProjectile(Projectile projectile, Character target)
     {
         // Create new projectile game object.
         Projectile clone = Instantiate(projectile, IncaData.UserRightHandPosition, Quaternion.LookRotation(IncaData.UserRightHandTrasnform.forward));
@@ -55,9 +53,5 @@ public class PlayerWeapon : Weapon
 
         // Initialize the projectile.
         clone.Init(this, IncaData.UserRightHandTrasnform.forward, target);
-
-        // //
-        // Trail tClone = Instantiate(trailPrefab, IncaData.UserRightHandPosition, Quaternion.identity, IncaData.UserCarTransform);
-        // tClone.Init(clone);
     }
 }
