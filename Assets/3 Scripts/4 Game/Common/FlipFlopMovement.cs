@@ -53,14 +53,14 @@ public class FlipFlopMovement : MonoBehaviour
     [SerializeField]
     private float curveValue;
 
-    private void FixedUpdate()
+    private void Update()
     {
         curveValue = velocityCurve.Evaluate(
             (rangeDistance - Vector3.Distance(MyPosition, targetPosition)) / rangeDistance
         );
 
         // Move this gameObject.
-        MyPosition += curveValue * currentVelocity * Time.fixedDeltaTime;
+        MyPosition += curveValue * currentVelocity * Time.deltaTime;
 
         // Check to see if it exceeds the range of movement.
         if (checkMaxPosition && CheckMaxPosition())

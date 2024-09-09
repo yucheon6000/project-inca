@@ -18,7 +18,7 @@ public class LookAtPlayer : MonoBehaviour
         Look();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         Look();
     }

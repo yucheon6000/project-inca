@@ -21,6 +21,9 @@ namespace Inca
         private Transform rightHand;
         [SerializeField]
         private SpriteRenderer cursor;
+        [SerializeField]
+        public float cursorSmoothSpeed = 0.1f;
+        Vector3 cursorVelocity = Vector3.zero;
 
         // Hover
         public Vector3 HitPoint { get; private set; }
@@ -130,8 +133,11 @@ namespace Inca
 
         private void UpdateCursor()
         {
+
             float dist = CurrentTarget != null ? Vector3.Distance(rightHand.position, HitPoint) : defaultCursorDistance;
-            cursor.transform.position = rightHand.transform.position + rightHand.transform.forward * dist;
+            Vector3 targetPos = rightHand.transform.position + rightHand.transform.forward * dist;
+
+            cursor.transform.position = Vector3.SmoothDamp(cursor.transform.position, targetPos, ref cursorVelocity, cursorSmoothSpeed);
 
             cursor.color = CurrentTarget != null ? Color.red : Color.blue;
         }

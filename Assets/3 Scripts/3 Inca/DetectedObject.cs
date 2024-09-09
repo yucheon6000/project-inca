@@ -63,7 +63,7 @@ namespace Inca
             init = true;
         }
 
-        private void FixedUpdate()
+        private void Update()
         {
             if (!init) return;
 

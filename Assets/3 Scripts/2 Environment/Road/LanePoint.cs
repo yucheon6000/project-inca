@@ -36,7 +36,7 @@ public class LanePoint : MonoBehaviour
 
     private float allStopTimer = 0;
 
-    private void FixedUpdate()
+    private void Update()
     {
         if (users.Count == 0)
         {
@@ -53,7 +53,7 @@ public class LanePoint : MonoBehaviour
             }
         }
 
-        allStopTimer += Time.fixedDeltaTime;
+        allStopTimer += Time.deltaTime;
 
         if (allStopTimer >= 1)
         {

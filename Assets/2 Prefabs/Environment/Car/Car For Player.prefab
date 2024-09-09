@@ -5914,6 +5914,7 @@ GameObject:
   - component: {fileID: 894425852802570265}
   - component: {fileID: 797819583035829383}
   - component: {fileID: 5267466791816052961}
+  - component: {fileID: 8759914784247693869}
   m_Layer: 0
   m_Name: Inca Operation System
   m_TagString: Untagged
@@ -5951,7 +5952,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   managers:
   - {fileID: 797819583035829383}
-  - {fileID: 0}
+  - {fileID: 8759914784247693869}
   - {fileID: 0}
   incaMode: 1
   userObjectsForVRMode:
@@ -6067,6 +6068,27 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 100
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8759914784247693869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1649001235630656092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce3fa5c0ccd8555499589e69646d22ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetLayerMask:
+    serializedVersion: 2
+    m_Bits: 32832
+  rayMaxDistance: 10000
+  defaultCursorDistance: 10
+  cursor: {fileID: 0}
+  cursorSpeed: 0.3
+  useDefaultClickEvent: 1
+  smoothSpeed: 0.1
 --- !u!1 &1653140262153281568
 GameObject:
   m_ObjectHideFlags: 0
@@ -32836,6 +32858,7 @@ GameObject:
   - component: {fileID: 7391479489021359131}
   - component: {fileID: 381449639485259111}
   - component: {fileID: 5280774493748579461}
+  - component: {fileID: 3452367941999095227}
   m_Layer: 0
   m_Name: Camera (User Head)
   m_TagString: MainCamera
@@ -33025,6 +33048,14 @@ MonoBehaviour:
   dilateQuality: 0
   blurIterations: 1
   blurType: 1
+--- !u!81 &3452367941999095227
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9115453565417160431}
+  m_Enabled: 1
 --- !u!1 &9120532985629755805
 GameObject:
   m_ObjectHideFlags: 0
@@ -33639,6 +33670,10 @@ PrefabInstance:
     - target: {fileID: 400004, guid: 126d619cf4daa52469682f85c1378b4a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2037080, guid: 126d619cf4daa52469682f85c1378b4a, type: 3}
+      propertyPath: field of view
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 2037080, guid: 126d619cf4daa52469682f85c1378b4a, type: 3}
       propertyPath: m_BackGroundColor.a

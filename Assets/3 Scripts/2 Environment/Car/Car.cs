@@ -136,7 +136,7 @@ public class Car : MonoBehaviour
         setup = true;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         if (!setup) return;
 

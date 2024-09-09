@@ -96,7 +96,7 @@ public class CarStateDrive : StateMonoBehaviour<Car>
     {
         if (!isStarting) return;
 
-        startDelayTimer += Time.fixedDeltaTime;
+        startDelayTimer += Time.deltaTime;
 
         currentMoveSpeed = Mathf.Lerp(0, originalMoveSpeed, stopDecelerationCurve.Evaluate(startDelayTimer / startDelayTime));
 
@@ -108,7 +108,7 @@ public class CarStateDrive : StateMonoBehaviour<Car>
     {
         if (!isStopping) return;
 
-        stopDelayTimer += Time.fixedDeltaTime;
+        stopDelayTimer += Time.deltaTime;
 
         currentMoveSpeed = Mathf.Lerp(originalMoveSpeed, 0, stopDecelerationCurve.Evaluate(stopDelayTimer / stopDelayTime));
 
@@ -121,9 +121,9 @@ public class CarStateDrive : StateMonoBehaviour<Car>
         if (targetMoveSpeed < 0) return;
 
         if (currentMoveSpeed > targetMoveSpeed)
-            currentMoveSpeed = Mathf.Lerp(currentMoveSpeed, targetMoveSpeed, decreaseTargetSpeed * Time.fixedDeltaTime);
+            currentMoveSpeed = Mathf.Lerp(currentMoveSpeed, targetMoveSpeed, decreaseTargetSpeed * Time.deltaTime);
         else
-            currentMoveSpeed = Mathf.Lerp(currentMoveSpeed, targetMoveSpeed, increaseTargetSpeed * Time.fixedDeltaTime);
+            currentMoveSpeed = Mathf.Lerp(currentMoveSpeed, targetMoveSpeed, increaseTargetSpeed * Time.deltaTime);
     }
 
     private void UpdateTargetSpeedFromSafetyDistance(Car car)
@@ -169,7 +169,7 @@ public class CarStateDrive : StateMonoBehaviour<Car>
         moveDirection = (car.NextLanePoint.Position - transform.position).normalized;
 
         float distCarToNextLanePoint = Vector3.Distance(transform.position, car.NextLanePoint.Position);
-        float moveAmount = currentMoveSpeed * Time.fixedDeltaTime;
+        float moveAmount = currentMoveSpeed * Time.deltaTime;
 
         Vector3 pos;
 
@@ -182,11 +182,11 @@ public class CarStateDrive : StateMonoBehaviour<Car>
 
             pos = Vector3.MoveTowards(car.CurrentLanePoint.Position, car.NextLanePoint.Position, moveAmount - distCarToNextLanePoint);
         }
-        // Vector3 pos = transform.position + (car.NextLanePoint.Position - transform.position).normalized * currentMoveSpeed * Time.fixedDeltaTime;
+        // Vector3 pos = transform.position + (car.NextLanePoint.Position - transform.position).normalized * currentMoveSpeed * Time.deltaTime;
 
 
         Quaternion rot = Quaternion.Slerp(
-              transform.rotation, Quaternion.LookRotation(car.NextLanePoint.Position - car.CurrentLanePoint.Position), Time.fixedDeltaTime * rotateSpeed
+              transform.rotation, Quaternion.LookRotation(car.NextLanePoint.Position - car.CurrentLanePoint.Position), Time.deltaTime * rotateSpeed
         );
 
         transform.SetPositionAndRotation(pos, rot);

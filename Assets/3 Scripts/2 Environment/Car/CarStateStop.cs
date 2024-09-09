@@ -21,7 +21,7 @@ public class CarStateStop : StateMonoBehaviour<Car>
             return;
         }
 
-        startDriveWaitTimer += Time.fixedDeltaTime;
+        startDriveWaitTimer += Time.deltaTime;
 
         if (startDriveWaitTimer >= startDriveWaitTime)
             car.ChangeState(CarStates.Drive);
