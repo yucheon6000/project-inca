@@ -13,6 +13,7 @@ public class RightHandControlByMouse : MonoBehaviour
     private Transform rightHand;
     [SerializeField]
     private float mousePosZ = 10f;
+    public void SetMousePosZ(float value) => mousePosZ = value;
     private Vector3 mousePosWorld;
     private Vector3 targetPos;
 

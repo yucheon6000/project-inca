@@ -16,8 +16,12 @@ namespace Inca
         private LayerMask targetLayerMask;
         [SerializeField]
         private float rayMaxDistance = 10000;
+
+        [Header("[Cursor]")]
         [SerializeField]
         private float defaultCursorDistance;
+        [SerializeField]
+        private float cursorOffset = 0.1f;      // Amount to position the cursor in front of the hit point
         private Transform rightHand;
         [SerializeField]
         private SpriteRenderer cursor;
@@ -25,10 +29,17 @@ namespace Inca
         public float cursorSmoothSpeed = 0.1f;
         Vector3 cursorVelocity = Vector3.zero;
 
+        [Space]
+        [SerializeField]
+        private Color defaultCursorColor;
+        [SerializeField]
+        private Color activeCursorColor;
+
         // Hover
         public Vector3 HitPoint { get; private set; }
         public IInteractable CurrentTarget { get; private set; }
         public GameObject CurrentTargetGameObject { get; private set; }
+        public bool HasCurrentTarget => CurrentTarget != null;
         public UnityEvent<IInteractable, GameObject> OnHoverEnter { get; private set; }
         public UnityEvent<IInteractable, GameObject> OnHoverExit { get; private set; }
 
@@ -38,8 +49,20 @@ namespace Inca
         public bool UseDefaultClickEvent(bool value) => useDefaultClickEvent = value;
         public static float PrevRightTrigger { get; private set; } = 0.0f;
 
+        [Header("[@For Mouse]")]
+        [SerializeField]
+        private RightHandControlByMouse rightHandControlByMouse;
+
+        private void Awake()
+        {
+            if (rightHandControlByMouse == null)
+                rightHandControlByMouse = FindObjectOfType<RightHandControlByMouse>();
+        }
+
         public override void Init()
         {
+            SetDefaultCursorDistance(defaultCursorDistance);
+
             OnHoverEnter = new UnityEvent<IInteractable, GameObject>();
             OnHoverExit = new UnityEvent<IInteractable, GameObject>();
 
@@ -56,8 +79,11 @@ namespace Inca
                 rightHand = IncaMainManager.Instance.EnvironmentalUserObjects.userRightHand.transform;
 
             UpdateTarget();
-            UpdateInput();
-            UpdateCursor();
+
+            UpdateClick();
+
+            UpdateCursorPosition();
+            UpdateCursorColor();
         }
 
         private void LateUpdate()
@@ -72,46 +98,49 @@ namespace Inca
             HitPoint = hitInfo.point;
 
             // When ray has no hits.
-            if (!hit)
+            if (hit == false)
             {
-                IInteractable temp = CurrentTarget;
-                GameObject tempGobj = CurrentTargetGameObject;
-                CurrentTarget = null;
-                CurrentTargetGameObject = null;
-
-                if (temp == null) return;
-
-                temp.OnHoverExit();
-                OnHoverExit.Invoke(temp, tempGobj);
+                ProcessHoverExit();
                 return;
             }
 
             // When ray has a hit.
             bool hasInteractable = hitInfo.collider.TryGetComponent<IInteractable>(out IInteractable newTarget);
 
-            // If It is not interactable.
+            // If it's not interactable.
             if (hasInteractable == false || newTarget.IsInteractable() == false)
             {
-                IInteractable temp = CurrentTarget;
-                GameObject tempGobj = CurrentTargetGameObject;
-                CurrentTarget = null;
-                CurrentTargetGameObject = null;
-
-                if (temp != null)
-                {
-                    temp.OnHoverExit();
-                    OnHoverExit.Invoke(temp, tempGobj);
-                }
-
+                ProcessHoverExit();
                 return;
             }
 
-            if (newTarget == CurrentTarget) return;
+            // If it's interactable and new.
+            if (newTarget != CurrentTarget)
+                ProcessHoverEnter(newTarget, hitInfo.collider.gameObject);
+        }
 
+        private void ProcessHoverExit()
+        {
             IInteractable prevTarget = CurrentTarget;
-            CurrentTarget = newTarget;
             GameObject prevTargetGobj = CurrentTargetGameObject;
-            CurrentTargetGameObject = hitInfo.collider.gameObject;
+
+            CurrentTarget = null;
+            CurrentTargetGameObject = null;
+
+            if (prevTarget == null) return;
+
+            prevTarget.OnHoverExit();
+            OnHoverExit.Invoke(prevTarget, prevTargetGobj);
+            return;
+        }
+
+        private void ProcessHoverEnter(IInteractable newTarget, GameObject newTargetGameObject)
+        {
+            IInteractable prevTarget = CurrentTarget;
+            GameObject prevTargetGobj = CurrentTargetGameObject;
+
+            CurrentTarget = newTarget;
+            CurrentTargetGameObject = newTargetGameObject;
 
             if (prevTarget != null)
             {
@@ -123,7 +152,7 @@ namespace Inca
             OnHoverEnter.Invoke(CurrentTarget, CurrentTargetGameObject);
         }
 
-        private void UpdateInput()
+        private void UpdateClick()
         {
             if (useDefaultClickEvent == false) return;
 
@@ -131,15 +160,21 @@ namespace Inca
                 CurrentTarget?.OnClick();
         }
 
-        private void UpdateCursor()
+        private void UpdateCursorPosition()
         {
 
-            float dist = CurrentTarget != null ? Vector3.Distance(rightHand.position, HitPoint) : defaultCursorDistance;
+            float dist = HasCurrentTarget
+                            ? Vector3.Distance(rightHand.position, HitPoint) - cursorOffset
+                            : defaultCursorDistance;
+
             Vector3 targetPos = rightHand.transform.position + rightHand.transform.forward * dist;
 
             cursor.transform.position = Vector3.SmoothDamp(cursor.transform.position, targetPos, ref cursorVelocity, cursorSmoothSpeed);
+        }
 
-            cursor.color = CurrentTarget != null ? Color.red : Color.blue;
+        private void UpdateCursorColor()
+        {
+            cursor.color = HasCurrentTarget ? activeCursorColor : defaultCursorColor;
         }
 
         private void OnDrawGizmos()
@@ -148,7 +183,7 @@ namespace Inca
 
             Gizmos.color = Color.yellow;
 
-            if (CurrentTarget != null)
+            if (HasCurrentTarget)
             {
                 Gizmos.DrawSphere(HitPoint, 0.3f);
                 Gizmos.DrawLine(rightHand.position, HitPoint);
@@ -160,5 +195,27 @@ namespace Inca
                 Gizmos.DrawLine(rightHand.position, pos);
             }
         }
+
+        /* Setters */
+        public void SetDefaultCursorDistance(float value)
+        {
+            defaultCursorDistance = value;
+            rightHandControlByMouse.SetMousePosZ(value);
+        }
+
+        public void SetCursorSprite(Sprite sprite)
+            => cursor.sprite = sprite;
+
+        public void SetCursorScale(float scale)
+            => SetCursorScale(Vector3.one * scale);
+
+        public void SetCursorScale(Vector3 scale)
+            => cursor.transform.localScale = scale;
+
+        public void SetDefaultCursorColor(Color color)
+            => defaultCursorColor = color;
+
+        public void SetActiveCursorColor(Color color)
+            => activeCursorColor = color;
     }
 }

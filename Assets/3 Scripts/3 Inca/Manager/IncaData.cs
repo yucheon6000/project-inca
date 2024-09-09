@@ -50,7 +50,7 @@ namespace Inca
         {
             if (IncaMainManager.Instance == null) return false;
 
-            if (IncaMainManager.Instance.GetIncaMode() == IncaMode.VR)
+            if (IncaMainManager.Instance.IsVRMode())
             {
                 switch (buttonCode)
                 {
@@ -83,7 +83,7 @@ namespace Inca
         {
             if (IncaMainManager.Instance == null) return false;
 
-            if (IncaMainManager.Instance.GetIncaMode() == IncaMode.VR)
+            if (IncaMainManager.Instance.IsVRMode())
             {
                 switch (buttonCode)
                 {
@@ -116,7 +116,7 @@ namespace Inca
         {
             if (IncaMainManager.Instance == null) return false;
 
-            if (IncaMainManager.Instance.GetIncaMode() == IncaMode.VR)
+            if (IncaMainManager.Instance.IsVRMode())
             {
                 switch (buttonCode)
                 {

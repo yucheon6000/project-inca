@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Inca;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -19,8 +20,15 @@ public class GameManager : MonoBehaviour
             Instance = this;
     }
 
+    private void Start()
+    {
+        StartGame();
+    }
+
     private void StartGame()
     {
+        IncaInputManager.Instance.SetDefaultCursorDistance(10f);
+
         enemySapwnRange.SetActive(true);
     }
 }

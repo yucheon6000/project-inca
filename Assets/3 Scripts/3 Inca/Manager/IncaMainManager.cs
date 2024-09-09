@@ -35,6 +35,8 @@ namespace Inca
 
         [Space]
         [SerializeField]
+        private UnityEvent onAwake = new UnityEvent();
+        [SerializeField]
         private UnityEvent onAwakeInVRMode = new UnityEvent();
         [SerializeField]
         private UnityEvent onAwakeInMonitorAndMouseMode = new UnityEvent();
@@ -43,6 +45,8 @@ namespace Inca
 
         public override void Init()
         {
+            onAwake.Invoke();
+
             if (IsVRMode())
                 onAwakeInVRMode.Invoke();
             else if (IsMonitorAndMouseMode())
