@@ -714,12 +714,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 235978980}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &242281207 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5946721061841662961, guid: a3c5e2806af374c9fa137d2d524a79b6,
-    type: 3}
-  m_PrefabInstance: {fileID: 1646533513}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &250112169
 GameObject:
   m_ObjectHideFlags: 0
@@ -1087,15 +1081,15 @@ MonoBehaviour:
     m_Bits: 32768
   hitPoint: {x: 0, y: 0, z: 0}
   target: {fileID: 0}
-  shootEffectSpawnTransform: {fileID: 1277756525}
+  shootEffectSpawnTransform: {fileID: 0}
   audioSource: {fileID: 427020298}
   shootAudioClip: {fileID: 8300000, guid: 935f87d8da8fb184fb167ece25420548, type: 3}
   weaponInformations: []
   currentWeapon: {fileID: 0}
-  controllerTransform: {fileID: 242281207}
+  controllerTransform: {fileID: 0}
   aaa: 100
   aaaa: 15
-  rayT: {fileID: 1100065470}
+  rayT: {fileID: 0}
 --- !u!114 &427020300
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1248,12 +1242,6 @@ MonoBehaviour:
   - {fileID: 1148664901}
   - {fileID: 0}
   - {fileID: 973338385}
---- !u!1 &507890570 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5893266241382020889, guid: a3c5e2806af374c9fa137d2d524a79b6,
-    type: 3}
-  m_PrefabInstance: {fileID: 1646533513}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &609439820
 GameObject:
   m_ObjectHideFlags: 0
@@ -2769,12 +2757,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetTrafficLight: {fileID: 163361808}
   targetPhaseIndex: 0
---- !u!4 &1100065470 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1737025890570983966, guid: a3c5e2806af374c9fa137d2d524a79b6,
-    type: 3}
-  m_PrefabInstance: {fileID: 1646533513}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1127995185
 GameObject:
   m_ObjectHideFlags: 0
@@ -3260,9 +3242,19 @@ MonoBehaviour:
   userObjectsForVRMode:
     userCar: {fileID: 0}
     userHead: {fileID: 0}
+    userRightHand: {fileID: 0}
+    userLeftHand: {fileID: 0}
   userObjectsForMonitorAndMouseMode:
     userCar: {fileID: 0}
     userHead: {fileID: 0}
+    userRightHand: {fileID: 0}
+    userLeftHand: {fileID: 0}
+  onAwakeInVRMode:
+    m_PersistentCalls:
+      m_Calls: []
+  onAwakeInMonitorAndMouseMode:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1165054294 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8487807543363601118, guid: 88c4939c2bf5f314c91fc91ba3bbc209,
@@ -3511,12 +3503,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &1277756525 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7380921012305235216, guid: a3c5e2806af374c9fa137d2d524a79b6,
-    type: 3}
-  m_PrefabInstance: {fileID: 1646533513}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1330732777
 GameObject:
   m_ObjectHideFlags: 0
@@ -3549,7 +3535,7 @@ Transform:
   m_LocalScale: {x: 0.02, y: 3.72, z: 0.02}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2122561589}
+  m_Father: {fileID: 1646533515}
   m_LocalEulerAnglesHint: {x: -32.5, y: 0, z: 0}
 --- !u!136 &1330732779
 CapsuleCollider:
@@ -3774,7 +3760,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 1
-      - m_Target: {fileID: 507890570}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
@@ -3837,7 +3823,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 1
-      - m_Target: {fileID: 507890570}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
@@ -4562,7 +4548,7 @@ PrefabInstance:
         type: 3}
       propertyPath: shootEffectSpawnTransform
       value: 
-      objectReference: {fileID: 1277756525}
+      objectReference: {fileID: 0}
     - target: {fileID: 5893266241377676457, guid: a3c5e2806af374c9fa137d2d524a79b6,
         type: 3}
       propertyPath: m_Enabled
@@ -4716,14 +4702,14 @@ PrefabInstance:
         type: 3}
       insertIndex: 2
       addedObject: {fileID: 2143198269}
+    - targetCorrespondingSourceObject: {fileID: 4105056245064183078, guid: a3c5e2806af374c9fa137d2d524a79b6,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1330732778}
     - targetCorrespondingSourceObject: {fileID: 8600780523798197677, guid: a3c5e2806af374c9fa137d2d524a79b6,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 649545118}
-    - targetCorrespondingSourceObject: {fileID: 5893266241382355439, guid: a3c5e2806af374c9fa137d2d524a79b6,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1330732778}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1649001235630656092, guid: a3c5e2806af374c9fa137d2d524a79b6,
         type: 3}
@@ -5966,7 +5952,7 @@ Transform:
   m_GameObject: {fileID: 2057021222}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.7627664, y: 41.58435, z: 187.60873}
+  m_LocalPosition: {x: 2.7627664, y: 41.3, z: 187.60873}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6083,12 +6069,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1538704703264304469, guid: 3d2539325f9f1e2449acea0ecfa0ced4,
     type: 3}
   m_PrefabInstance: {fileID: 2116296940}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &2122561589 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5893266241382355439, guid: a3c5e2806af374c9fa137d2d524a79b6,
-    type: 3}
-  m_PrefabInstance: {fileID: 1646533513}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &2143198269 stripped
 Transform:
