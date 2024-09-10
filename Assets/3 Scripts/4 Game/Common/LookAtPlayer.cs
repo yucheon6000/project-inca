@@ -10,6 +10,8 @@ public class LookAtPlayer : MonoBehaviour
     private bool lookAtPlayerTargetPoint = true;
     [SerializeField]
     private bool lookAtPlayerHead = false;
+    [SerializeField]
+    private bool lookAtUserCar = false;
 
     public void Look(bool value) => look = value;
 
@@ -31,5 +33,7 @@ public class LookAtPlayer : MonoBehaviour
             transform.LookAt(GGData.PlayerPosition);
         else if (lookAtPlayerHead)
             transform.LookAt(IncaData.UserHeadPosition);
+        else if (lookAtUserCar)
+            transform.LookAt(IncaData.UserCarPosition);
     }
 }

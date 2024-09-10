@@ -24,7 +24,6 @@ public class Enemy_Bear : DamagableEnemy
         base.InitStateMachine();
 
         states[EnemyState.Idle] = new State_Idle(this);
-        states[EnemyState.TakeDamage] = new State_TakeDamage(this);
     }
 
     private bool CanPlayAttackAnimation()
@@ -39,6 +38,12 @@ public class Enemy_Bear : DamagableEnemy
         bullet.transform.position = transform.position;
         bullet.GetComponent<Enemy>().Init();
         attackTimer = 0;
+    }
+
+    protected override void OnTakeDamage()
+    {
+        base.OnTakeDamage();
+        hoenycomb.TakeDamage(1);
     }
 
     protected override void OnDeath()
@@ -59,19 +64,6 @@ public class Enemy_Bear : DamagableEnemy
 
             if (owner.CanPlayAttackAnimation())
                 owner.ChangeState(EnemyState.Attack);
-        }
-    }
-
-    private class State_TakeDamage : EnemyState_TakeDamage
-    {
-        private Enemy_Bear owner;
-        public State_TakeDamage(Enemy entity) : base(entity)
-            => owner = (Enemy_Bear)entity;
-
-        public override void Enter(Enemy entity)
-        {
-            base.Enter(entity);
-            owner.hoenycomb.TakeDamage(1);
         }
     }
 }

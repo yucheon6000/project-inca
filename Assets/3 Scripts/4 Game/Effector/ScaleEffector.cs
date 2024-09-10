@@ -16,6 +16,12 @@ public class ScaleEffector : Effector
     protected Vector3 originalScale;
     protected bool hasOriginalScaleVariable = false;
     public Vector3 OriginalScale => originalScale;
+    public Vector3 CurrentScale => TargetTransform.localScale;
+
+    public static readonly AnimationCurve EaseOutCurve = new AnimationCurve(
+            new Keyframe(0, 0, 0, 1),  // 시작점 (시간 0, 값 0, 입구 기울기 0, 출구 기울기 1)
+            new Keyframe(1, 1, 1, 0)   // 끝점 (시간 1, 값 1, 입구 기울기 1, 출구 기울기 0)
+        );
 
     private void Awake()
     {
@@ -43,6 +49,9 @@ public class ScaleEffector : Effector
 
     public void PlayFromOriginalScale(float time, Vector3 endScale, AnimationCurve scaleCurve, UnityAction onFinishEffect = null)
         => Play(time, originalScale, endScale, scaleCurve, onFinishEffect);
+
+    public void PlayFromCurrentScale(float time, Vector3 endScale, AnimationCurve scaleCurve, UnityAction onFinishEffect = null)
+        => Play(time, TargetTransform.localScale, endScale, scaleCurve, onFinishEffect);
 
     public void PlayToOriginalScale(float time, Vector3 startScale, AnimationCurve scaleCurve, UnityAction onFinishEffect = null)
         => Play(time, startScale, originalScale, scaleCurve, onFinishEffect);

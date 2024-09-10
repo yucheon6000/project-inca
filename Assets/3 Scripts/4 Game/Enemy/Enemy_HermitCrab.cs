@@ -167,7 +167,7 @@ public class Enemy_HermitCrab : DamagableEnemy
 
             owner.ForceKill();
 
-            owner.PlayAnimationByName("Attack");
+            owner.PlayAnimationByName(EnemyAnimation.Attack0);
 
             owner.PlayDisappearEffect(owner.DeactivateGameObject);
         }

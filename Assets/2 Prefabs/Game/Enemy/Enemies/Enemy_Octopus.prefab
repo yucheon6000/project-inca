@@ -77,6 +77,7 @@ GameObject:
   - component: {fileID: 476986391927185630}
   - component: {fileID: -8284770630454357865}
   - component: {fileID: 7759579409928241432}
+  - component: {fileID: 7207640650549891247}
   m_Layer: 15
   m_Name: Enemy_Octopus
   m_TagString: Untagged
@@ -112,8 +113,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae662e9ba09c940798245bcffc268986, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 30
-  defaultHp: 30
+  maxHp: 100
+  defaultHp: 100
   currentHp: 0
   maxAttack: 0
   defaultAttack: 0
@@ -214,10 +215,14 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   useDisappearEmissionEffect: 0
+  AttackDelay: 5
+  miniOctopusPrefab: {fileID: 3658118672575639784, guid: 1f7bf019420544c72ad45951efd40dcd,
+    type: 3}
+  minMiniOctopusSpawnCount: 1
+  maxMiniOctopusSpawnCount: 4
+  miniOctopusAttackSpawnTransforms: {fileID: 8303794655575403262}
   bubbleBulletPrefab: {fileID: 4657252473636324481, guid: 0fe1def4a67264cafb70626f8eadd849,
     type: 3}
-  bubbleAttackDelay: 600
-  bubbleAttackInitialTimer: 595
   minBubbleAttackSpawnCount: 5
   maxBubbleAttackSpawnCount: 10
   bulletAttackSpawnTransforms:
@@ -370,6 +375,69 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &7207640650549891247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1658766927241364544}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fe91dc294731a9428c0941ea7579110, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  complexMaskingMode: 0
+  drawingMode: 1
+  outlineLayer: 0
+  outlineTargets:
+  - IsVisible: 0
+    CutoutMask: 8
+    edgeDilateAmount: 5
+    frontEdgeDilateAmount: 5
+    backEdgeDilateAmount: 5
+    renderer: {fileID: 5864552588543065529}
+    SubmeshIndex: 0
+    BoundsMode: 0
+    Bounds:
+      m_Center: {x: 0, y: 0, z: 0}
+      m_Extent: {x: 0.5, y: 0.5, z: 0.5}
+    CutoutThreshold: 0.5
+    CullMode: 2
+    cutoutTextureName: 
+    DilateRenderingMode: 0
+    cutoutTextureIndex: 0
+  renderStyle: 2
+  outlineParameters:
+    enabled: 1
+    color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+    dilateShift: 1
+    blurShift: 1
+    fillPass:
+      shader: {fileID: 0}
+      serializedProperties: []
+  backParameters:
+    enabled: 0
+    color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+    dilateShift: 1
+    blurShift: 1
+    fillPass:
+      shader: {fileID: 0}
+      serializedProperties: []
+  frontParameters:
+    enabled: 1
+    color: {r: 0, g: 0, b: 0, a: 0}
+    dilateShift: 0
+    blurShift: 1
+    fillPass:
+      shader: {fileID: 4800000, guid: 213090e563021044c92d1c27258b93f0, type: 3}
+      serializedProperties:
+      - PropertyName: _PublicColor
+        Property:
+          ColorValue: {r: 0, g: 0, b: 0, a: 0}
+          FloatValue: 0
+          VectorValue: {x: 0, y: 0, z: 0, w: 0}
+          PropertyType: 0
 --- !u!1 &7199812491917629678
 GameObject:
   m_ObjectHideFlags: 0
@@ -1799,6 +1867,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -0.2461314
       objectReference: {fileID: 0}
+    - target: {fileID: 5504391426108261444, guid: c1db25dc9b901d74aba11281144891ca,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5642531918007626997, guid: c1db25dc9b901d74aba11281144891ca,
         type: 3}
       propertyPath: m_Layer
@@ -2257,6 +2330,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 3785613610439749822}
+    - targetCorrespondingSourceObject: {fileID: 6958728379802704174, guid: c1db25dc9b901d74aba11281144891ca,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 634844023768488334}
   m_SourcePrefab: {fileID: 100100000, guid: c1db25dc9b901d74aba11281144891ca, type: 3}
 --- !u!4 &1594717711804884309 stripped
 Transform:
@@ -2273,6 +2350,30 @@ Transform:
 --- !u!4 &3521727161426110305 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -1540893355907414416, guid: c1db25dc9b901d74aba11281144891ca,
+    type: 3}
+  m_PrefabInstance: {fileID: 6503784562521596177}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4237969774171469887 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6958728379802704174, guid: c1db25dc9b901d74aba11281144891ca,
+    type: 3}
+  m_PrefabInstance: {fileID: 6503784562521596177}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &634844023768488334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4237969774171469887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 034bc47afcbf5e141a58d5c20b7808e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!137 &5864552588543065529 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 801928909039869096, guid: c1db25dc9b901d74aba11281144891ca,
     type: 3}
   m_PrefabInstance: {fileID: 6503784562521596177}
   m_PrefabAsset: {fileID: 0}
@@ -2330,6 +2431,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lookAtPlayerTargetPoint: 1
   lookAtPlayerHead: 0
+  lookAtUserCar: 0
 --- !u!4 &6757841338780714746 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c1db25dc9b901d74aba11281144891ca,

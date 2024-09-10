@@ -53,7 +53,6 @@ public class Enemy_MorningGlory : DamagableEnemy
         base.InitStateMachine();
         states[EnemyState.Idle] = new State_Idle(this);
         states[EnemyState.Move] = new State_Move(this);
-        states[EnemyState.TakeDamage] = new State_TakeDamage(this);
         states[EnemyState.Die] = new State_Die(this);
     }
 
@@ -130,13 +129,36 @@ public class Enemy_MorningGlory : DamagableEnemy
         }
     }
 
+    protected override void OnTakeDamage()
+    {
+        base.OnTakeDamage();
+        SortSpeakersByDistance();
+        PlaySpeakersTakeDamageEffect();
+    }
+
     private void SortSpeakersByDistance()
     {
-        speakers.Sort(
-                (a, b) =>
+        speakers.Sort((a, b) =>
                     Vector3.Distance(transform.position, a.transform.position)
-                    .CompareTo(Vector3.Distance(transform.position, b.transform.position))
-            );
+                    .CompareTo(Vector3.Distance(transform.position, b.transform.position)));
+    }
+
+    private void PlaySpeakersTakeDamageEffect()
+    {
+        AnimationCurve easeOutCurve = new AnimationCurve(
+            new Keyframe(0, 0, 0, 1),  // 시작점 (시간 0, 값 0, 입구 기울기 0, 출구 기울기 1)
+            new Keyframe(1, 1, 1, 0)   // 끝점 (시간 1, 값 1, 입구 기울기 1, 출구 기울기 0)
+        );
+
+        foreach (var speaker in speakers)
+        {
+            if (speaker.gameObject.activeSelf == false) continue;
+
+            float dist = Vector3.Distance(transform.position, speaker.transform.position);
+            float v = easeOutCurve.Evaluate(dist / 5f);
+            float time = Mathf.LerpUnclamped(0, 1f, v);
+            speaker.PlayTakeDamageEffect(time);
+        }
     }
 
     private void OnDrawGizmosSelected()
@@ -144,6 +166,7 @@ public class Enemy_MorningGlory : DamagableEnemy
         Gizmos.color = Color.green;
         spawnSpaceBoxes.ForEach(box => box.DrawGizmos());
     }
+
     private class State_Idle : EnemyState_Idle
     {
         private Enemy_MorningGlory owner;
@@ -176,7 +199,7 @@ public class Enemy_MorningGlory : DamagableEnemy
                 owner.transform.localPosition = owner.GetRandomPosition();
                 owner.LookAtPlayerImmediate();
                 owner.RemoveNearSpeakers();
-                owner.PlayAnimationByName("Move");
+                owner.PlayAnimationByName(EnemyAnimation.Move);
 
                 owner.scaleEffector.PlayFromZeroToOriginalScale(0.5f, AnimationCurve.EaseInOut(0, 0, 1, 1), () =>
                 {
@@ -185,48 +208,6 @@ public class Enemy_MorningGlory : DamagableEnemy
                     owner.ChangeState(EnemyState.Idle);
                 });
             });
-        }
-    }
-
-    private class State_TakeDamage : EnemyState_TakeDamage
-    {
-        private Enemy_MorningGlory owner;
-        public State_TakeDamage(Enemy entity) : base(entity)
-            => owner = (Enemy_MorningGlory)entity;
-
-        // private float timer = 0;
-
-        public override void Enter(Enemy entity)
-        {
-            // base.Enter(entity);
-            owner.PlayAudioClip(AudioType.TakeDamage0);
-
-            // Play effect of the morning glory enemy.
-            owner.emissionEffector.Play(0.4f, 10f, 0f, Color.red);
-
-            // Play effect of speakers.
-            owner.SortSpeakersByDistance();
-            PlaySpeakersEffect();
-
-            owner.ChangeState(owner.DefaultState);
-        }
-
-        private void PlaySpeakersEffect()
-        {
-            AnimationCurve easeOutCurve = new AnimationCurve(
-                new Keyframe(0, 0, 0, 1),  // 시작점 (시간 0, 값 0, 입구 기울기 0, 출구 기울기 1)
-                new Keyframe(1, 1, 1, 0)   // 끝점 (시간 1, 값 1, 입구 기울기 1, 출구 기울기 0)
-            );
-
-            foreach (var speaker in owner.speakers)
-            {
-                if (speaker.gameObject.activeSelf == false) continue;
-
-                float dist = Vector3.Distance(owner.transform.position, speaker.transform.position);
-                float v = easeOutCurve.Evaluate(dist / 5f);
-                float time = Mathf.LerpUnclamped(0, 1f, v);
-                speaker.PlayTakeDamageEffect(time);
-            }
         }
     }
 

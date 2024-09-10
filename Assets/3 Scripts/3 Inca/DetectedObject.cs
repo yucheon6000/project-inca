@@ -34,6 +34,11 @@ namespace Inca
         public Vector3 Scale
             => environmentObject.ColliderSize;
 
+        public Vector3 Velocity
+            => ObjectType == DetectedObjectType.Car
+                ? environmentObject.GetComponent<CarStateDrive>().CurrentVelocity
+                : Vector3.zero;
+
         private bool isVisible = false;     // = is being detected by Inca system, is in range of Inca system
 
         public UnityEvent OnHideDetectedObject { get; private set; } = new UnityEvent();

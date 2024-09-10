@@ -8,14 +8,7 @@ using UnityEngine.Events;
 
 public abstract class Enemy : Character
 {
-    public enum EnemyState
-    {
-        None, Spawn, Idle, Move, Attack, TakeDamage, Die,       // Default states
-        Fly, Fall,                                              // Specific states
-        Global
-    }
-
-    private DetectedObject detectedObject;
+    protected DetectedObject detectedObject;
 
     [SerializeField]
     private EnemyState currentState = EnemyState.None;
@@ -157,7 +150,7 @@ public abstract class Enemy : Character
             { EnemyState.Idle, new EnemyState_Idle(this) },
             { EnemyState.Move, new EnemyState_Move(this) },
             { EnemyState.Attack, new EnemyState_Attack(this) },
-            { EnemyState.TakeDamage, new EnemyState_TakeDamage(this) },
+            // { EnemyState.TakeDamage, new EnemyState_TakeDamage(this) },
             { EnemyState.Die, new EnemyState_Die(this) },
             { EnemyState.Global, new EnemyState_Global(this) }
         };
@@ -228,17 +221,20 @@ public abstract class Enemy : Character
 
         if (IsAlive)
         {
-            if (emissionEffector)
-                emissionEffector.Play(0.4f, 10f, 0f, Color.red);
-            ChangeState(EnemyState.TakeDamage, true);
+            OnTakeDamage();
+            // ChangeState(EnemyState.TakeDamage, true);
         }
 
         return curHp;
     }
 
-    protected float TakeDamageWithoutChangingState(float attackAmount)
+    protected virtual void OnTakeDamage()
     {
-        return base.TakeDamage(attackAmount);
+        if (emissionEffector)
+            emissionEffector.Play(0.4f, 10f, 0f, Color.red);
+
+        PlayAudioClip(AudioType.TakeDamage0);
+
     }
 
     public void ForceKill()
@@ -392,7 +388,7 @@ public abstract class Enemy : Character
      *                                                                                    ______
      *  Enemy.StartStateMachine()  --(Start State)-->  Spawn       --(Default State)-->  |      |
      *                                                 Attack      --(Default State)-->  | Idle |
-     *  Enemy.TakeDamage()         ----------------->  TakeDamage  --(Default State)-->  |      |
+     *  Enemy.TakeDamage()                                                               |      |
      *  Enemy.OnDeath()            ----------------->  Die                                ------
      *
      */
@@ -412,7 +408,7 @@ public abstract class Enemy : Character
             entity.SpawnSpawnEffect();
             entity.PlayAppearEffect(() => OnAppear(entity));
 
-            entity.PlayAnimationByName("Spawn");
+            entity.PlayAnimationByName(EnemyAnimation.Spawn);
             entity.PlayAudioClip(AudioType.Spawn);
         }
         public virtual void Execute(Enemy entity) { }
@@ -436,7 +432,7 @@ public abstract class Enemy : Character
         /// </summary>
         public virtual void Enter(Enemy entity)
         {
-            entity.PlayAnimationByName("Idle");
+            entity.PlayAnimationByName(EnemyAnimation.Idle);
         }
 
         public virtual void Execute(Enemy entity) { }
@@ -452,7 +448,7 @@ public abstract class Enemy : Character
         /// </summary>
         public virtual void Enter(Enemy entity)
         {
-            entity.PlayAnimationByName("Move");
+            entity.PlayAnimationByName(EnemyAnimation.Move);
             entity.PlayAudioClip(AudioType.Move);
         }
         public virtual void Execute(Enemy entity) { }
@@ -469,13 +465,13 @@ public abstract class Enemy : Character
         public virtual void Enter(Enemy entity)
         {
             entity.CanAttack(false);
-            entity.PlayAnimationByName("Attack");
+            entity.PlayAnimationByName(EnemyAnimation.Attack0);
         }
         public virtual void Execute(Enemy entity)
         {
             if (entity.CanAttack())
                 Attack(entity);
-            if (entity.IsAnimationFinished("Attack"))
+            if (entity.IsAnimationFinished(EnemyAnimation.Attack0))
                 OnFinishAttackAnimation(entity);
 
         }
@@ -497,6 +493,7 @@ public abstract class Enemy : Character
         }
     }
 
+    /*
     public class EnemyState_TakeDamage : IEnemyState
     {
         public EnemyState_TakeDamage(Enemy entity) { }
@@ -506,13 +503,13 @@ public abstract class Enemy : Character
         /// </summary>
         public virtual void Enter(Enemy entity)
         {
-            entity.PlayAnimationByName("Take Damage");
+            entity.PlayAnimationByName(EnemyAnimation.TakeDamage);
             entity.PlayAudioClip(AudioType.TakeDamage0);
         }
 
         public virtual void Execute(Enemy entity)
         {
-            if (entity.IsAnimationFinished("Take Damage"))
+            if (entity.IsAnimationFinished(EnemyAnimation.TakeDamage))
                 OnFinishTakeDamageAnimation(entity);
 
             if (entity.CanTakeDamage())
@@ -528,6 +525,7 @@ public abstract class Enemy : Character
             entity.ChangeState(entity.DefaultState);
         }
     }
+    */
 
     public class EnemyState_Die : IEnemyState
     {
@@ -543,7 +541,7 @@ public abstract class Enemy : Character
 
             entity.PlayDisappearEffect(() => OnDisappear(entity));
 
-            entity.PlayAnimationByName("Die");
+            entity.PlayAnimationByName(EnemyAnimation.Die);
             entity.PlayAudioClip(AudioType.Die);
         }
         public virtual void Execute(Enemy entity) { }
