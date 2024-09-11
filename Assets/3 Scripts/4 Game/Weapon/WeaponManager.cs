@@ -8,26 +8,29 @@ public class WeaponManager : MonoBehaviour
     [Header("[Normal Weapon]")]
     [SerializeField]
     private Transform normalWeaponsTransform;
-    private Weapon[] normalWeapons;
+    private PlayerWeapon[] normalWeapons;
     private int currentNormalWeaponIndex = 0;
-    private Weapon currentNormalWeapon = null;
+    private PlayerWeapon currentNormalWeapon = null;
 
     [Header("[Global Weapon]")]
     [SerializeField]
     private Transform globalWeaponsTransform;
-    private Weapon[] globalWeapons;
+    private PlayerWeapon[] globalWeapons;
 
     private void Start()
     {
         InitWeapons();
+
+        IncaInputManager.Instance.SetDefaultCursorColor(Color.green);
+        IncaInputManager.Instance.SetActiveCursorColor(Color.red);
     }
 
     private void InitWeapons()
     {
         // Normal weapons
-        normalWeapons = normalWeaponsTransform.GetComponentsInChildren<Weapon>();
+        normalWeapons = normalWeaponsTransform.GetComponentsInChildren<PlayerWeapon>();
 
-        foreach (Weapon weapon in normalWeapons)
+        foreach (var weapon in normalWeapons)
         {
             weapon.Init(Player.Instance);
             weapon.gameObject.SetActive(false);
@@ -35,10 +38,11 @@ public class WeaponManager : MonoBehaviour
 
         currentNormalWeapon = normalWeapons[currentNormalWeaponIndex];
         currentNormalWeapon.gameObject.SetActive(true);
+        currentNormalWeapon.SetAim();
 
         // Global weapons
-        globalWeapons = globalWeaponsTransform.GetComponentsInChildren<Weapon>();
-        foreach (Weapon weapon in globalWeapons)
+        globalWeapons = globalWeaponsTransform.GetComponentsInChildren<PlayerWeapon>();
+        foreach (var weapon in globalWeapons)
             weapon.Init(Player.Instance);
     }
 
@@ -59,5 +63,7 @@ public class WeaponManager : MonoBehaviour
 
         currentNormalWeapon = normalWeapons[currentNormalWeaponIndex];
         currentNormalWeapon.gameObject.SetActive(true);
+
+        currentNormalWeapon.SetAim();
     }
 }

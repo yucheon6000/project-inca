@@ -12,6 +12,9 @@ public class PlayerWeapon : Weapon
     [SerializeField]
     private Trail trailPrefab;
 
+    [SerializeField]
+    private Sprite aimSprite;
+
     protected override bool IsShootInputReceived()
         => IncaInput.GetButton(IncaButtonCode.RightTrigger);
 
@@ -53,5 +56,10 @@ public class PlayerWeapon : Weapon
 
         // Initialize the projectile.
         clone.Init(this, IncaData.UserRightHandTrasnform.forward, target);
+    }
+
+    public void SetAim()
+    {
+        IncaInputManager.Instance.SetCursorSprite(aimSprite);
     }
 }
