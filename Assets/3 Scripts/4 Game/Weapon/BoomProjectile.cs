@@ -7,6 +7,8 @@ public class BoomProjectile : LinearProjectile
 {
     [SerializeField]
     private LayerMask targetLayerMask;
+    [SerializeField]
+    private Transform modelTransform;
 
     [Header("[Explosion]")]
     [SerializeField]
@@ -24,6 +26,8 @@ public class BoomProjectile : LinearProjectile
 
     private void Update()
     {
+        modelTransform.rotation = Quaternion.LookRotation(rigidbody.velocity);
+
         if (transform.position.y < groundY)
         {
             AfterAttack(null);
@@ -36,7 +40,7 @@ public class BoomProjectile : LinearProjectile
         effectClone.GetComponent<Rigidbody>().velocity = this.Velocity * explosionEffectVelocityScale;
 
         Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius, targetLayerMask);
-        print(colliders.Length);
+
         foreach (var col in colliders)
         {
             if (col.TryGetComponent(out Enemy enemy) == false) continue;

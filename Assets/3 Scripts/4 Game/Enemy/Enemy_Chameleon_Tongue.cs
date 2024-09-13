@@ -27,6 +27,10 @@ public class Enemy_Chameleon_Tongue : NonDamagableEnemy
 
     private LineRenderer3D lineRenderer;
 
+    protected override void FixedUpdate() { }   // To prevent call StateMachine.Excute().
+    private void Update()
+        => stateMachine.Execute();
+
     protected override void GetMyComponents()
     {
         base.GetMyComponents();
@@ -59,6 +63,7 @@ public class Enemy_Chameleon_Tongue : NonDamagableEnemy
         enemies.RemoveAll(item => item == null || !EnemyIsInFrontOfPlayer(item.transform));
 
         int count = Mathf.Min(attackEnemyCount, enemies.Count);
+        if (count == 0) return;
 
         // Sort enemies by distance.
         enemies.Sort((a, b) =>

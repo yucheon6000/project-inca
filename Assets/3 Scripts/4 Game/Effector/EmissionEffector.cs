@@ -42,6 +42,8 @@ public class EmissionEffector : Effector
 
     public void Play(float time, float startIntensity, float endIntensity, Color emissionColor, UnityAction onFinishEffect = null)
     {
+        if (gameObject.activeSelf == false) return;
+
         coroutine = StartCoroutine(EmissionEffectRoutine(time, startIntensity, endIntensity, emissionColor, onFinishEffect));
     }
 

@@ -5,8 +5,14 @@ using UnityEngine;
 
 public class PlayerWeapon_EnergyBeam : PlayerWeapon
 {
+    public override void Init(Character owner)
+    {
+        base.Init(owner);
+        timer = Status.CurrentShootDelay;
+    }
+
     protected override bool IsShootInputReceived()
-        => Input.GetKeyDown(KeyCode.Z); // && IncaInput.GetButtonDown(IncaButtonCode.B);
+        => IncaInput.GetButtonDown(IncaButtonCode.B);
 
     protected override void SpawnProjectile(Projectile projectile, Character target)
     {

@@ -117,8 +117,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae662e9ba09c940798245bcffc268986, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 5
-  defaultHp: 5
+  maxHp: 20
+  defaultHp: 20
   currentHp: 0
   maxAttack: 5
   defaultAttack: 5
@@ -317,7 +317,7 @@ AudioSource:
   m_GameObject: {fileID: 1225610506173856677}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 243366450046692526, guid: ec12f7772c03e4c4c9e4c2f1643595ad,
+  OutputAudioMixerGroup: {fileID: 24300002, guid: a8ec3926f785c9d41b2fadafc5eae2e7,
     type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
@@ -1536,6 +1536,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lookAtPlayerTargetPoint: 1
   lookAtPlayerHead: 0
+  lookAtUserCar: 0
 --- !u!4 &7600273428235861298 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7817129395020021028, guid: dbcc8d6ff0d6aa1439146455fea9d413,

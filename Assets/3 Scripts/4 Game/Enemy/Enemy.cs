@@ -106,7 +106,6 @@ public abstract class Enemy : Character
     public virtual void Init(DetectedObject detectedObject = null)
     {
         RegisterInDetectedObject(detectedObject);
-
         base.Init();
 
         canAttack = false;
@@ -119,13 +118,12 @@ public abstract class Enemy : Character
 
     private void RegisterInDetectedObject(DetectedObject detectedObject)
     {
+        if (detectedObject == null) return;
+
         // If the detectedObject is hiden, call OnHideDetectedObject method.
         // Basically, OnHideDetectedObject call ForceKill method.
-        if (detectedObject != null)
-        {
-            this.detectedObject = detectedObject;
-            detectedObject.OnHideDetectedObject.AddListener(OnHideDetectedObject);
-        }
+        this.detectedObject = detectedObject;
+        detectedObject.OnHideDetectedObject.AddListener(OnHideDetectedObject);
     }
 
     private void ResetAnimator()

@@ -10,10 +10,19 @@ public class PlayerWeapon : Weapon
     protected bool setUserCarAsParent = true;
 
     [SerializeField]
-    private Trail trailPrefab;
+    private Sprite aimSprite;
 
     [SerializeField]
-    private Sprite aimSprite;
+    private float vibrationTime = 0.1f;
+
+    [SerializeField]
+    private AudioClip shootClip;
+    private AudioSource audioSource;
+
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
 
     protected override bool IsShootInputReceived()
         => IncaInput.GetButton(IncaButtonCode.RightTrigger);
@@ -29,7 +38,10 @@ public class PlayerWeapon : Weapon
             {
                 if (projectile.UseDirectAttack())
                 {
-                    Projectile clone = Instantiate(projectile, IncaData.UserRightHandPosition, Quaternion.LookRotation(IncaData.UserRightHandTrasnform.forward));
+                    Projectile clone = MemoryPool.Instance(MemoryPoolType.Weapon)
+                                            .ActivatePoolItem(projectile.gameObject, IncaData.UserRightHandPosition, Quaternion.LookRotation(IncaData.UserRightHandTrasnform.forward))
+                                            .GetComponent<Projectile>();
+
                     clone.DirectAttack(this, enemy, IncaInput.HitPoint);
                     Destroy(clone.gameObject);
                 }
@@ -43,12 +55,30 @@ public class PlayerWeapon : Weapon
         else
             foreach (Projectile projectile in projectiles)
                 SpawnProjectile(projectile, null);
+
+        AfterShoot();
+    }
+
+    protected virtual void AfterShoot()
+    {
+        audioSource.PlayOneShot(shootClip);
+        OVRInput.SetControllerVibration(1, 1, OVRInput.Controller.RHand);
+        StartCoroutine(StopVibrationAfterTime(vibrationTime));
+    }
+
+
+    IEnumerator StopVibrationAfterTime(float time)
+    {
+        yield return new WaitForSeconds(time);
+        OVRInput.SetControllerVibration(0, 0, OVRInput.Controller.RHand); // 진동 중지
     }
 
     protected virtual void SpawnProjectile(Projectile projectile, Character target)
     {
         // Create new projectile game object.
-        Projectile clone = Instantiate(projectile, IncaData.UserRightHandPosition, Quaternion.LookRotation(IncaData.UserRightHandTrasnform.forward));
+        Projectile clone = MemoryPool.Instance(MemoryPoolType.Weapon)
+                                            .ActivatePoolItem(projectile.gameObject, IncaData.UserRightHandPosition, Quaternion.LookRotation(IncaData.UserRightHandTrasnform.forward))
+                                            .GetComponent<Projectile>();
 
         // Set the user car transform as parent of the projectile.
         if (setUserCarAsParent)

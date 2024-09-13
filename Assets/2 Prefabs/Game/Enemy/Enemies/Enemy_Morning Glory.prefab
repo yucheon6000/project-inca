@@ -119,7 +119,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   useAppearEmissionEffect: 1
-  useDisappearEffect: 0
+  useDisappearEffect: 1
   disappearTime: 1
   disappearScaleCurve:
     serializedVersion: 2
@@ -128,14 +128,14 @@ MonoBehaviour:
       time: 0
       value: 0
       inSlope: 2
-      outSlope: 2
-      tangentMode: 0
+      outSlope: 0
+      tangentMode: 69
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 1
+      value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -231,6 +231,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lookAtPlayerTargetPoint: 0
   lookAtPlayerHead: 1
+  lookAtUserCar: 0
 --- !u!82 &5422046958900060906
 AudioSource:
   m_ObjectHideFlags: 0
@@ -240,7 +241,7 @@ AudioSource:
   m_GameObject: {fileID: 2493255512611248705}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 243366450046692526, guid: ec12f7772c03e4c4c9e4c2f1643595ad,
+  OutputAudioMixerGroup: {fileID: 4148573567598672970, guid: a8ec3926f785c9d41b2fadafc5eae2e7,
     type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
@@ -426,6 +427,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lookAtPlayerTargetPoint: 0
   lookAtPlayerHead: 1
+  lookAtUserCar: 0
 --- !u!1 &7612613848529146782
 GameObject:
   m_ObjectHideFlags: 0
