@@ -10,7 +10,7 @@ public abstract class Projectile : MonoBehaviour
     public ProjectileStatus Status { get; private set; }
 
     protected Character Target { get; private set; }
-    protected Vector3 MoveDirection { get; private set; }
+    public Vector3 MoveDirection { get; protected set; }
     protected float MoveSpeed => Status.CurrentMoveSpeed;
 
     [Header("[Direct Attack (Hitscan)]")]
@@ -63,13 +63,19 @@ public abstract class Projectile : MonoBehaviour
 
     protected virtual void AfterAttack(Collider collider)
     {
-        Vector3 effectSpawnPoint = collider != null ? collider.ClosestPointOnBounds(transform.position) : transform.position;
+        Vector3 effectSpawnPoint = GetEffectSpawnPoint(collider);
         SpawnAttackEffect(effectSpawnPoint);
+    }
+
+    protected Vector3 GetEffectSpawnPoint(Collider collider)
+    {
+        return collider != null ? collider.ClosestPointOnBounds(transform.position) : transform.position;
     }
 
     protected void SpawnAttackEffect(Vector3 spawnPoint)
     {
-        Instantiate(attackEffect, spawnPoint, Quaternion.identity);
+        if (attackEffect)
+            Instantiate(attackEffect, spawnPoint, Quaternion.identity);
     }
 
     protected virtual void OnTriggerEnter(Collider other)

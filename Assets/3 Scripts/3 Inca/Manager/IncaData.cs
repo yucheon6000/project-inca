@@ -42,6 +42,7 @@ namespace Inca
     {
         public static IInteractable Target => IncaInputManager.Instance.CurrentTarget;
         public static GameObject TargetGameObject => IncaInputManager.Instance.CurrentTargetGameObject;
+        public static bool HasTarget => Target != null;
         public static Vector3 HitPoint => IncaInputManager.Instance.HitPoint;
 
         private static float GetRightTrigger => Mathf.Max(OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger), OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger));

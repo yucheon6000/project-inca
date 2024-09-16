@@ -8,8 +8,9 @@ public class PlayerProjectile : Projectile
 
     protected override void Awake()
     {
-        base.Awake();
         scaleEffector = GetComponent<ScaleEffector>();
+
+        base.Awake();
     }
 
     public override void Init(Weapon owner, Vector3 moveDirection, Character target = null)

@@ -10,6 +10,9 @@ public class PlayerWeapon : Weapon
     protected bool setUserCarAsParent = true;
 
     [SerializeField]
+    protected float jitterRadius = 0;
+
+    [SerializeField]
     private Sprite aimSprite;
 
     [SerializeField]
@@ -32,19 +35,13 @@ public class PlayerWeapon : Weapon
         base.Shoot();
 
         // When the player is aiming at an enemy, it attacks the enemy directly without projectiles.
-        if (IncaInput.TargetGameObject != null && IncaInput.TargetGameObject.TryGetComponent(out DamagableEnemy enemy))
+        if (IncaInput.HasTarget && IncaInput.TargetGameObject.TryGetComponent(out DamagableEnemy enemy))
         {
             foreach (Projectile projectile in projectiles)
             {
                 if (projectile.UseDirectAttack())
-                {
-                    Projectile clone = MemoryPool.Instance(MemoryPoolType.Weapon)
-                                            .ActivatePoolItem(projectile.gameObject, IncaData.UserRightHandPosition, Quaternion.LookRotation(IncaData.UserRightHandTrasnform.forward))
-                                            .GetComponent<Projectile>();
+                    DirectAttack(projectile, enemy);
 
-                    clone.DirectAttack(this, enemy, IncaInput.HitPoint);
-                    Destroy(clone.gameObject);
-                }
                 // If this projectile doesn't support direct attack, it will be created.
                 else
                     SpawnProjectile(projectile, enemy);
@@ -66,11 +63,23 @@ public class PlayerWeapon : Weapon
         StartCoroutine(StopVibrationAfterTime(vibrationTime));
     }
 
-
     IEnumerator StopVibrationAfterTime(float time)
     {
         yield return new WaitForSeconds(time);
         OVRInput.SetControllerVibration(0, 0, OVRInput.Controller.RHand); // 진동 중지
+    }
+
+    protected virtual void DirectAttack(Projectile projectile, Character target)
+    {
+        // Activate new projectile game object.
+        Projectile clone = MemoryPool.Instance(MemoryPoolType.Weapon)
+                                        .ActivatePoolItem(projectile.gameObject, IncaData.UserRightHandPosition, Quaternion.LookRotation(IncaData.UserRightHandTrasnform.forward))
+                                        .GetComponent<Projectile>();
+        // Attack target directly.
+        clone.DirectAttack(this, target, IncaInput.HitPoint);
+
+        // Deactivate the projectile game object.
+        MemoryPool.Instance(MemoryPoolType.Weapon).DeactivatePoolItem(clone.gameObject);
     }
 
     protected virtual void SpawnProjectile(Projectile projectile, Character target)
@@ -85,11 +94,34 @@ public class PlayerWeapon : Weapon
             clone.transform.SetParent(IncaData.UserCarTransform);
 
         // Initialize the projectile.
-        clone.Init(this, IncaData.UserRightHandTrasnform.forward, target);
+        clone.Init(this, GetJitteredDirection(), target);
+    }
+
+    public Vector3 GetJitteredDirection()
+    {
+        Vector3 targetPoint = IncaData.UserRightHandPosition
+                                + IncaData.UserRightHandTrasnform.forward.normalized * IncaInputManager.Instance.DefaultCursorDistance
+                                + Random.insideUnitSphere * jitterRadius;
+
+        Vector3 result = (targetPoint - IncaData.UserRightHandPosition).normalized;
+
+        return result;
     }
 
     public void SetAim()
     {
         IncaInputManager.Instance.SetCursorSprite(aimSprite);
+    }
+
+    private void OnDrawGizmos()
+    {
+        try
+        {
+            Gizmos.color = Color.yellow;
+            Vector3 targetPoint = IncaData.UserRightHandPosition
+                                    + IncaData.UserRightHandTrasnform.forward.normalized * IncaInputManager.Instance.DefaultCursorDistance;
+            Gizmos.DrawWireSphere(targetPoint, jitterRadius);
+        }
+        catch { }
     }
 }

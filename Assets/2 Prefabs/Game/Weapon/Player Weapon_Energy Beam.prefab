@@ -49,8 +49,8 @@ MonoBehaviour:
   maxAmmoPerMagazine: 50
   defaultAmmoPerMagazine: 10
   currentAmmoPerMagazine: 0
-  maxShootDelay: 5
-  defaultShootDelay: 0
+  maxShootDelay: 10000
+  defaultShootDelay: 10000
   currentShootDelay: 0
   maxReloadDelay: 100000
   defaultReloadDelay: 100000
@@ -78,6 +78,7 @@ MonoBehaviour:
   currentAmmoInMagazine: 0
   timer: 0
   setUserCarAsParent: 1
+  jitterRadius: 0
   aimSprite: {fileID: 0}
   vibrationTime: 0.1
   shootClip: {fileID: 8300000, guid: e38046b5fa61849dfbbfb1b7208983c6, type: 3}

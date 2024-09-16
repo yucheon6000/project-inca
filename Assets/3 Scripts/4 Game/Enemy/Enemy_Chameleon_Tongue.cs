@@ -29,7 +29,7 @@ public class Enemy_Chameleon_Tongue : NonDamagableEnemy
 
     protected override void FixedUpdate() { }   // To prevent call StateMachine.Excute().
     private void Update()
-        => stateMachine.Execute();
+        => stateMachine?.Execute();
 
     protected override void GetMyComponents()
     {

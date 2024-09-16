@@ -106,21 +106,22 @@ public class MemoryPoolBase
         if (maxCount == activeCount) InstatiateObjects();
 
         foreach (var item in poolItems)
+            if (item == null)
+                poolItems.Remove(item);
+
+        foreach (var item in poolItems)
         {
-            if (item == null) continue; ///!!!!!!
+            if (item.isActive) continue;
 
-            if (item.isActive == false)
-            {
-                activeCount++;
+            activeCount++;
 
-                item.isActive = true;
-                item.gameObject.SetActive(true);
+            item.isActive = true;
+            item.gameObject.SetActive(true);
 
-                item.gameObject.transform.position = position;
-                item.gameObject.transform.rotation = rotation;
+            item.gameObject.transform.position = position;
+            item.gameObject.transform.rotation = rotation;
 
-                return item.gameObject;
-            }
+            return item.gameObject;
         }
 
         return null;

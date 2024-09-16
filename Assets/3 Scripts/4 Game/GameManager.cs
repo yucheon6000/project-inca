@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject enemySapwnRange;
 
+    public bool IsGameStarted { get; private set; } = false;
+
     private void Awake()
     {
         if (Instance == null)
@@ -30,5 +32,7 @@ public class GameManager : MonoBehaviour
         IncaInputManager.Instance.SetDefaultCursorDistance(10f);
 
         enemySapwnRange.SetActive(true);
+
+        IsGameStarted = true;
     }
 }
