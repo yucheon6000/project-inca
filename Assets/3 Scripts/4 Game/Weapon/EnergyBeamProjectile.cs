@@ -28,7 +28,6 @@ public class EnergyBeamProjectile : PlayerProjectile
 
     public override void Init(Weapon owner, Vector3 moveDirection, Character target = null)
     {
-
         base.Init(owner, moveDirection, target);
 
         StartCoroutine(AttackRoutine());

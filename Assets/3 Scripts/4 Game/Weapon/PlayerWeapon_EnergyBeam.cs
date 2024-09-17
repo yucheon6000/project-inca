@@ -21,7 +21,7 @@ public class PlayerWeapon_EnergyBeam : PlayerWeapon
         Projectile clone = Instantiate(projectile, IncaData.UserCarTransform.position, Quaternion.identity);
 
         // Set the user car transform as parent of the projectile.
-        if (setUserCarAsParent)
+        if (setUserCarAsParentOfProjectiles)
             clone.transform.SetParent(IncaData.UserCarTransform);
 
         // Initialize the projectile.

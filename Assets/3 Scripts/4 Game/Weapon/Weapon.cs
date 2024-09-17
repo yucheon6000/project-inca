@@ -8,6 +8,8 @@ public class Weapon : MonoBehaviour
 {
     private Character Owner { get; set; }
     public WeaponStatus Status { get; private set; }
+    protected bool IsInitialized { get; private set; } = false;
+    protected bool IsInstalled { get; private set; } = false;
 
     [Header("[Projectiles]")]
     [SerializeField]
@@ -31,6 +33,18 @@ public class Weapon : MonoBehaviour
         Status = GetComponent<WeaponStatus>();
     }
 
+    public virtual void Install()
+    {
+        gameObject.SetActive(true);
+        IsInstalled = true;
+    }
+
+    public virtual void Uninstall()
+    {
+        gameObject.SetActive(false);
+        IsInstalled = false;
+    }
+
     public virtual void Init(Character owner)
     {
         Owner = owner;
@@ -41,6 +55,8 @@ public class Weapon : MonoBehaviour
 
         Status.Init();
         currentAmmoInMagazine = Status.CurrentAmmoPerMagazine;
+
+        IsInitialized = true;
     }
 
     private void Update()
@@ -56,7 +72,7 @@ public class Weapon : MonoBehaviour
         if (ShouldReload /* && Shaking controller? */)
             Reload();
 
-        if (IsReadyToShoot() && IsShootInputReceived())
+        if (IsInitialized && IsInstalled && IsReadyToShoot() && IsShootInputReceived())
             Shoot();
     }
 

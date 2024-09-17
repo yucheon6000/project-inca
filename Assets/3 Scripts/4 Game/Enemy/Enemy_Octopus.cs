@@ -112,7 +112,7 @@ public class Enemy_Octopus : DamagableEnemy
         {
             owner.Attack_MiniOctopus();
             owner.CanAttack(false);
-            owner.PlayAudioClip(AudioType.Attack1);
+            owner.PlayAudioClip(AudioTypeForChracter.Attack1);
         }
     }
 
@@ -141,7 +141,7 @@ public class Enemy_Octopus : DamagableEnemy
         {
             owner.Attack_Bubble();
             owner.CanAttack(false);
-            owner.PlayAudioClip(AudioType.Attack1);
+            owner.PlayAudioClip(AudioTypeForChracter.Attack1);
         }
     }
 }

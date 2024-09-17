@@ -27,7 +27,7 @@ public class Enemy_MorningGlory_Speaker : DamagableEnemy
     {
         if (gameObject.activeSelf == false) return;
 
-        PlayAudioClip(AudioType.TakeDamage0);
+        PlayAudioClip(AudioTypeForChracter.TakeDamage0);
         emissionEffector.Play(0.4f, 10f, 0f, Color.red);
     }
 }

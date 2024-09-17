@@ -34,7 +34,7 @@ public abstract class Character : MonoBehaviour
     [SerializeField]
     protected AudioSource audioSource;
     [SerializeField]
-    private AudioStorage audioStorage;
+    private AudioStorageForCharacter audioStorage;
 
     protected virtual void Awake()
     {
@@ -74,7 +74,7 @@ public abstract class Character : MonoBehaviour
 
     protected virtual void PlayAnimationByValue(int animationValue) { }
 
-    protected virtual void PlayAudioClip(AudioType audioType)
+    protected virtual void PlayAudioClip(AudioTypeForChracter audioType)
     {
         if (audioSource == null) return;
 

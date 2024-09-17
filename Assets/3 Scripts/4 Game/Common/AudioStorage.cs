@@ -1,25 +1,8 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class AudioStorage
-{
-    [SerializeField]
-    private List<AudioInformation> audios;
-
-    public AudioClip FindAudioClip(AudioType type)
-    {
-        foreach (AudioInformation audio in audios)
-        {
-            if (audio.type == type) return audio.clip;
-        }
-
-        return null;
-    }
-}
-
-public enum AudioType
+public enum AudioTypeForChracter
 {
     Spawn,
     Idle,
@@ -28,10 +11,39 @@ public enum AudioType
     TakeDamage0, TakeDamage1, TakeDamage2, TakeDamage3,
     Die,
 }
+[Serializable]
+public class AudioStorageForCharacter : AudioStorage<AudioTypeForChracter> { }
 
-[System.Serializable]
-public class AudioInformation
+[Serializable]
+public class AudioStorage<T> where T : Enum
 {
-    public AudioType type;
+    [SerializeField]
+    private List<AudioInformation<T>> audios;
+    public int AudioCount => audios.Count;
+
+    public AudioClip FindAudioClip(T type)
+    {
+        foreach (var audio in audios)
+            if (audio.IsSameType(type))
+                return audio.clip;
+
+        return null;
+    }
+
+    public AudioClip GetAudioClip(int index)
+    {
+        if (index < 0 || index >= AudioCount) return null;
+
+        return audios[index].clip;
+    }
+}
+
+[Serializable]
+public class AudioInformation<T> where T : Enum
+{
+    public T type;
     public AudioClip clip;
+
+    public bool IsSameType(T type)
+        => this.type.Equals(type);
 }

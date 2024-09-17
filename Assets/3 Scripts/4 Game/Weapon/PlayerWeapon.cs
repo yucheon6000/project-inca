@@ -7,7 +7,7 @@ public class PlayerWeapon : Weapon
 {
     [Header("[[Player Weapon]]")]
     [SerializeField]
-    protected bool setUserCarAsParent = true;
+    protected bool setUserCarAsParentOfProjectiles = true;
 
     [SerializeField]
     protected float jitterRadius = 0;
@@ -90,7 +90,7 @@ public class PlayerWeapon : Weapon
                                             .GetComponent<Projectile>();
 
         // Set the user car transform as parent of the projectile.
-        if (setUserCarAsParent)
+        if (setUserCarAsParentOfProjectiles)
             clone.transform.SetParent(IncaData.UserCarTransform);
 
         // Initialize the projectile.
@@ -108,9 +108,15 @@ public class PlayerWeapon : Weapon
         return result;
     }
 
-    public void SetAim()
+    private void SetAim()
     {
         IncaInputManager.Instance.SetCursorSprite(aimSprite);
+    }
+
+    public override void Install()
+    {
+        base.Install();
+        SetAim();
     }
 
     private void OnDrawGizmos()
