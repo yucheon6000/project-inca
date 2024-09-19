@@ -223,8 +223,8 @@ MonoBehaviour:
   miniOctopusAttackSpawnTransforms: {fileID: 8303794655575403262}
   bubbleBulletPrefab: {fileID: 4657252473636324481, guid: 0fe1def4a67264cafb70626f8eadd849,
     type: 3}
-  minBubbleAttackSpawnCount: 5
-  maxBubbleAttackSpawnCount: 10
+  minBubbleAttackSpawnCount: 1
+  maxBubbleAttackSpawnCount: 5
   bulletAttackSpawnTransforms:
   - {fileID: 293962157163276540}
   - {fileID: 644327283767991722}
@@ -287,7 +287,7 @@ AudioSource:
   m_GameObject: {fileID: 1658766927241364544}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 243366450046692526, guid: ec12f7772c03e4c4c9e4c2f1643595ad,
+  OutputAudioMixerGroup: {fileID: 4148573567598672970, guid: a8ec3926f785c9d41b2fadafc5eae2e7,
     type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
@@ -391,7 +391,7 @@ MonoBehaviour:
   drawingMode: 1
   outlineLayer: 0
   outlineTargets:
-  - IsVisible: 0
+  - IsVisible: 1
     CutoutMask: 8
     edgeDilateAmount: 5
     frontEdgeDilateAmount: 5

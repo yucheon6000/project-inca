@@ -5,34 +5,47 @@ using UnityEngine;
 
 public class LinearProjectile : PlayerProjectile
 {
-    [SerializeField]
-    protected Trail trailPrefab;
-
     protected Trail trail;
+    [SerializeField]
+    protected float deactiveProjectileDelay = 0;
 
     protected override void Awake()
     {
+        trail = GetComponentInChildren<Trail>();
+
         base.Awake();
     }
 
     public override void Init(Weapon owner, Vector3 moveDirection, Character target = null)
     {
         base.Init(owner, moveDirection, target);
+
         rigidbody.velocity = IncaData.UserCarVelocity + moveDirection * Status.CurrentMoveSpeed;
 
-        if (trailPrefab != null)
-        {
-            trail = Instantiate(trailPrefab);
+        if (trail)
             trail.Init(this);
-        }
+
+        if (deactiveProjectileDelay > 0)
+            Invoke(nameof(DeactivateGameObject), deactiveProjectileDelay);
+    }
+
+    protected void DeactivateGameObject()
+    {
+        MemoryPool.Instance(MemoryPoolType.Weapon).DeactivatePoolItem(this.gameObject);
     }
 
     protected override void AfterAttack(Collider collider)
     {
         base.AfterAttack(collider);
-        Destroy(this.gameObject);
 
-        if (trail != null)
+        DeactivateGameObject();
+
+        if (trail)
             trail.Finish();
+    }
+
+    protected virtual void OnDisable()
+    {
+        CancelInvoke();
     }
 }

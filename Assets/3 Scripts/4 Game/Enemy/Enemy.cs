@@ -106,7 +106,6 @@ public abstract class Enemy : Character
     public virtual void Init(DetectedObject detectedObject = null)
     {
         RegisterInDetectedObject(detectedObject);
-
         base.Init();
 
         canAttack = false;
@@ -119,13 +118,12 @@ public abstract class Enemy : Character
 
     private void RegisterInDetectedObject(DetectedObject detectedObject)
     {
+        if (detectedObject == null) return;
+
         // If the detectedObject is hiden, call OnHideDetectedObject method.
         // Basically, OnHideDetectedObject call ForceKill method.
-        if (detectedObject != null)
-        {
-            this.detectedObject = detectedObject;
-            detectedObject.OnHideDetectedObject.AddListener(OnHideDetectedObject);
-        }
+        this.detectedObject = detectedObject;
+        detectedObject.OnHideDetectedObject.AddListener(OnHideDetectedObject);
     }
 
     private void ResetAnimator()
@@ -233,7 +231,7 @@ public abstract class Enemy : Character
         if (emissionEffector)
             emissionEffector.Play(0.4f, 10f, 0f, Color.red);
 
-        PlayAudioClip(AudioType.TakeDamage0);
+        PlayAudioClip(AudioTypeForChracter.TakeDamage0);
 
     }
 
@@ -409,7 +407,7 @@ public abstract class Enemy : Character
             entity.PlayAppearEffect(() => OnAppear(entity));
 
             entity.PlayAnimationByName(EnemyAnimation.Spawn);
-            entity.PlayAudioClip(AudioType.Spawn);
+            entity.PlayAudioClip(AudioTypeForChracter.Spawn);
         }
         public virtual void Execute(Enemy entity) { }
         public virtual void Exit(Enemy entity) { }
@@ -449,7 +447,7 @@ public abstract class Enemy : Character
         public virtual void Enter(Enemy entity)
         {
             entity.PlayAnimationByName(EnemyAnimation.Move);
-            entity.PlayAudioClip(AudioType.Move);
+            entity.PlayAudioClip(AudioTypeForChracter.Move);
         }
         public virtual void Execute(Enemy entity) { }
         public virtual void Exit(Enemy entity) { }
@@ -484,7 +482,7 @@ public abstract class Enemy : Character
         {
             entity.Attack();
             entity.CanAttack(false);
-            entity.PlayAudioClip(AudioType.Attack0);
+            entity.PlayAudioClip(AudioTypeForChracter.Attack0);
         }
 
         public virtual void OnFinishAttackAnimation(Enemy entity)
@@ -542,7 +540,7 @@ public abstract class Enemy : Character
             entity.PlayDisappearEffect(() => OnDisappear(entity));
 
             entity.PlayAnimationByName(EnemyAnimation.Die);
-            entity.PlayAudioClip(AudioType.Die);
+            entity.PlayAudioClip(AudioTypeForChracter.Die);
         }
         public virtual void Execute(Enemy entity) { }
         public virtual void Exit(Enemy entity) { }

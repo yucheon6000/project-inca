@@ -20,6 +20,7 @@ namespace Inca
         [Header("[Cursor]")]
         [SerializeField]
         private float defaultCursorDistance;
+        public float DefaultCursorDistance => defaultCursorDistance;
         [SerializeField]
         private float cursorOffset = 0.1f;      // Amount to position the cursor in front of the hit point
         private Transform rightHand;

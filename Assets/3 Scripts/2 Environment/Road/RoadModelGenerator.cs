@@ -19,6 +19,7 @@ public class RoadModelGenerator : MonoBehaviour
     [SerializeField]
     private Vector3 rotation;
 
+#if UNITY_EDITOR
     [ContextMenu("Generate Road Model")]
     private void GenerateRoadModel()
     {
@@ -32,4 +33,5 @@ public class RoadModelGenerator : MonoBehaviour
             clone.transform.SetParent(transform);
         }
     }
+#endif
 }

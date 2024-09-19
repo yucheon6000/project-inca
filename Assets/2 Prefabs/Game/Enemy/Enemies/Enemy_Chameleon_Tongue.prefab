@@ -49,8 +49,8 @@ MonoBehaviour:
   maxHp: 999
   defaultHp: 999
   currentHp: 0
-  maxAttack: 0
-  defaultAttack: 0
+  maxAttack: 30
+  defaultAttack: 30
   currentAttack: 0
 --- !u!114 &3831162233000076280
 MonoBehaviour:
@@ -96,6 +96,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   useDisappearEmissionEffect: 0
   attackEnemyCount: 5
+  targetBoxCollider: {fileID: 0}
   moveTime: 1
   moveCurve:
     serializedVersion: 2

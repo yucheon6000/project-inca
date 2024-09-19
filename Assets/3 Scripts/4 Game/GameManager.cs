@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Inca;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -13,6 +14,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private GameObject enemySapwnRange;
+
+    public bool IsGameStarted { get; private set; } = false;
 
     private void Awake()
     {
@@ -30,5 +33,7 @@ public class GameManager : MonoBehaviour
         IncaInputManager.Instance.SetDefaultCursorDistance(10f);
 
         enemySapwnRange.SetActive(true);
+
+        IsGameStarted = true;
     }
 }

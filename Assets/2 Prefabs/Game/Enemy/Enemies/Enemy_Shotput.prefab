@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8745386112834273858}
   - component: {fileID: 1949191029098204953}
   - component: {fileID: -6001167537813813777}
+  - component: {fileID: 297497552392147511}
   - component: {fileID: 4967641807694529452}
   m_Layer: 15
   m_Name: Enemy_Shotput
@@ -51,8 +52,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae662e9ba09c940798245bcffc268986, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 5
-  defaultHp: 5
+  maxHp: 30
+  defaultHp: 20
   currentHp: 0
   maxAttack: 1
   defaultAttack: 1
@@ -211,6 +212,69 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   emissionColor: {r: 0, g: 0.4468634, b: 1, a: 0}
+--- !u!114 &297497552392147511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3337080805184279109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fe91dc294731a9428c0941ea7579110, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  complexMaskingMode: 0
+  drawingMode: 1
+  outlineLayer: 0
+  outlineTargets:
+  - IsVisible: 1
+    CutoutMask: 8
+    edgeDilateAmount: 5
+    frontEdgeDilateAmount: 5
+    backEdgeDilateAmount: 5
+    renderer: {fileID: 4591573760453112250}
+    SubmeshIndex: 0
+    BoundsMode: 0
+    Bounds:
+      m_Center: {x: 0, y: 0, z: 0}
+      m_Extent: {x: 0.5, y: 0.5, z: 0.5}
+    CutoutThreshold: 0.5
+    CullMode: 2
+    cutoutTextureName: 
+    DilateRenderingMode: 0
+    cutoutTextureIndex: 0
+  renderStyle: 2
+  outlineParameters:
+    enabled: 1
+    color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+    dilateShift: 1
+    blurShift: 1
+    fillPass:
+      shader: {fileID: 0}
+      serializedProperties: []
+  backParameters:
+    enabled: 0
+    color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+    dilateShift: 1
+    blurShift: 1
+    fillPass:
+      shader: {fileID: 0}
+      serializedProperties: []
+  frontParameters:
+    enabled: 1
+    color: {r: 0, g: 0, b: 0, a: 0}
+    dilateShift: 0
+    blurShift: 0
+    fillPass:
+      shader: {fileID: 4800000, guid: 213090e563021044c92d1c27258b93f0, type: 3}
+      serializedProperties:
+      - PropertyName: _PublicColor
+        Property:
+          ColorValue: {r: 1, g: 0, b: 0, a: 0}
+          FloatValue: 0
+          VectorValue: {x: 0, y: 0, z: 0, w: 0}
+          PropertyType: 0
 --- !u!82 &4967641807694529452
 AudioSource:
   m_ObjectHideFlags: 0
@@ -220,7 +284,7 @@ AudioSource:
   m_GameObject: {fileID: 3337080805184279109}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 243366450046692526, guid: ec12f7772c03e4c4c9e4c2f1643595ad,
+  OutputAudioMixerGroup: {fileID: 4148573567598672970, guid: a8ec3926f785c9d41b2fadafc5eae2e7,
     type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
@@ -2021,6 +2085,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 2427830280314435059}
+    - targetCorrespondingSourceObject: {fileID: 4238509924709601523, guid: f63c07a5cf11fc24ab3fbe7d2b76943e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5440599079974898229}
   m_SourcePrefab: {fileID: 100100000, guid: f63c07a5cf11fc24ab3fbe7d2b76943e, type: 3}
 --- !u!4 &4591573760441114778 stripped
 Transform:
@@ -2047,9 +2115,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 6888520781720584837}
+--- !u!1 &4591573760441547998 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4238509924709601523, guid: f63c07a5cf11fc24ab3fbe7d2b76943e,
+    type: 3}
+  m_PrefabInstance: {fileID: 390329187129879597}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5440599079974898229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4591573760441547998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 034bc47afcbf5e141a58d5c20b7808e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!95 &4591573760448794490 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 4238509924719125335, guid: f63c07a5cf11fc24ab3fbe7d2b76943e,
+    type: 3}
+  m_PrefabInstance: {fileID: 390329187129879597}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &4591573760453112250 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4238509924714814871, guid: f63c07a5cf11fc24ab3fbe7d2b76943e,
     type: 3}
   m_PrefabInstance: {fileID: 390329187129879597}
   m_PrefabAsset: {fileID: 0}

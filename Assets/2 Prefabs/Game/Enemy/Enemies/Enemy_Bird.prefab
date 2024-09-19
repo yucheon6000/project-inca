@@ -85,7 +85,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHp: 100
-  defaultHp: 100
+  defaultHp: 10
   currentHp: 0
   maxAttack: 1
   defaultAttack: 1
@@ -299,7 +299,7 @@ AudioSource:
   m_GameObject: {fileID: 6107386718842632941}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 243366450046692526, guid: ec12f7772c03e4c4c9e4c2f1643595ad,
+  OutputAudioMixerGroup: {fileID: 4148573567598672970, guid: a8ec3926f785c9d41b2fadafc5eae2e7,
     type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
@@ -2423,6 +2423,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lookAtPlayerTargetPoint: 1
   lookAtPlayerHead: 0
+  lookAtUserCar: 0
 --- !u!1 &4837703715353902791 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1464745901521549465, guid: 3b2bc9ea12bebd34db0ea2d87f964288,

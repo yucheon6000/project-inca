@@ -73,13 +73,15 @@ public class TrafficLightSetting
 
     public void Activate()
     {
-        meshRenderer.material = activatedMaterial;
+        if (meshRenderer != null)
+            meshRenderer.material = activatedMaterial;
         onActivate.Invoke();
     }
 
     public void Deactivate()
     {
-        meshRenderer.material = deactivatedMeterial;
+        if (meshRenderer != null)
+            meshRenderer.material = deactivatedMeterial;
         onDeactivate.Invoke();
     }
 }

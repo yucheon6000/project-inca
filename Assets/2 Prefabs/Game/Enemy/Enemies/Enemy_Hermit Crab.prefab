@@ -77,6 +77,7 @@ GameObject:
   - component: {fileID: 7393422787603782205}
   - component: {fileID: -2674618303147539989}
   - component: {fileID: 7986636889124070663}
+  - component: {fileID: 2670618550710097510}
   - component: {fileID: 8296575540226136344}
   m_Layer: 15
   m_Name: Enemy_Hermit Crab
@@ -117,8 +118,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae662e9ba09c940798245bcffc268986, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 5
-  defaultHp: 5
+  maxHp: 20
+  defaultHp: 20
   currentHp: 0
   maxAttack: 5
   defaultAttack: 5
@@ -308,6 +309,69 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetTransform: {fileID: 7600273428235861298}
   originalScale: {x: 0, y: 0, z: 0}
+--- !u!114 &2670618550710097510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1225610506173856677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fe91dc294731a9428c0941ea7579110, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  complexMaskingMode: 0
+  drawingMode: 1
+  outlineLayer: 0
+  outlineTargets:
+  - IsVisible: 1
+    CutoutMask: 8
+    edgeDilateAmount: 5
+    frontEdgeDilateAmount: 5
+    backEdgeDilateAmount: 5
+    renderer: {fileID: 7600273428221897746}
+    SubmeshIndex: 0
+    BoundsMode: 0
+    Bounds:
+      m_Center: {x: 0, y: 0, z: 0}
+      m_Extent: {x: 0.5, y: 0.5, z: 0.5}
+    CutoutThreshold: 0.5
+    CullMode: 2
+    cutoutTextureName: 
+    DilateRenderingMode: 0
+    cutoutTextureIndex: 0
+  renderStyle: 2
+  outlineParameters:
+    enabled: 1
+    color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+    dilateShift: 1
+    blurShift: 1
+    fillPass:
+      shader: {fileID: 0}
+      serializedProperties: []
+  backParameters:
+    enabled: 0
+    color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+    dilateShift: 1
+    blurShift: 1
+    fillPass:
+      shader: {fileID: 0}
+      serializedProperties: []
+  frontParameters:
+    enabled: 1
+    color: {r: 0, g: 0, b: 0, a: 0}
+    dilateShift: 0
+    blurShift: 0
+    fillPass:
+      shader: {fileID: 4800000, guid: 213090e563021044c92d1c27258b93f0, type: 3}
+      serializedProperties:
+      - PropertyName: _PublicColor
+        Property:
+          ColorValue: {r: 1, g: 0, b: 0, a: 0}
+          FloatValue: 0
+          VectorValue: {x: 0, y: 0, z: 0, w: 0}
+          PropertyType: 0
 --- !u!82 &8296575540226136344
 AudioSource:
   m_ObjectHideFlags: 0
@@ -317,7 +381,7 @@ AudioSource:
   m_GameObject: {fileID: 1225610506173856677}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 243366450046692526, guid: ec12f7772c03e4c4c9e4c2f1643595ad,
+  OutputAudioMixerGroup: {fileID: 24300002, guid: a8ec3926f785c9d41b2fadafc5eae2e7,
     type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
@@ -1509,13 +1573,41 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 8246178334193431477}
+    - targetCorrespondingSourceObject: {fileID: 7817129395019653382, guid: dbcc8d6ff0d6aa1439146455fea9d413,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5852211368591180782}
   m_SourcePrefab: {fileID: 100100000, guid: dbcc8d6ff0d6aa1439146455fea9d413, type: 3}
+--- !u!137 &7600273428221897746 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 7817129395024931844, guid: dbcc8d6ff0d6aa1439146455fea9d413,
+    type: 3}
+  m_PrefabInstance: {fileID: 361868718620803094}
+  m_PrefabAsset: {fileID: 0}
 --- !u!95 &7600273428226003666 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 7817129395029037764, guid: dbcc8d6ff0d6aa1439146455fea9d413,
     type: 3}
   m_PrefabInstance: {fileID: 361868718620803094}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &7600273428235493648 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7817129395019653382, guid: dbcc8d6ff0d6aa1439146455fea9d413,
+    type: 3}
+  m_PrefabInstance: {fileID: 361868718620803094}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5852211368591180782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7600273428235493648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 034bc47afcbf5e141a58d5c20b7808e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7600273428235493650 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7817129395019653380, guid: dbcc8d6ff0d6aa1439146455fea9d413,
@@ -1536,6 +1628,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lookAtPlayerTargetPoint: 1
   lookAtPlayerHead: 0
+  lookAtUserCar: 0
 --- !u!4 &7600273428235861298 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7817129395020021028, guid: dbcc8d6ff0d6aa1439146455fea9d413,

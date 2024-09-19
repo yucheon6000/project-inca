@@ -4,6 +4,10 @@ using UnityEngine;
 public class Enemy_Chameleon : DamagableEnemy
 {
     [Header("[[Chameleon]]")]
+    [Header("[Move]")]
+    [SerializeField]
+    private float startMoveDistance = 3f;
+
     [Header("[Attack]")]
     [SerializeField]
     private float attackDelayTime;
@@ -31,9 +35,14 @@ public class Enemy_Chameleon : DamagableEnemy
         states[EnemyState.Global] = new State_Move(this);
     }
 
+    private bool IsWithinMoveDistance() => Vector3.Distance(transform.position, IncaData.UserCarPosition) <= startMoveDistance;
+
     private void UpdateVelocity()
     {
-        rigidbody.velocity = transform.forward * Vector3.Dot(IncaData.UserCarVelocity, transform.forward);
+        if (IsWithinMoveDistance() == false)
+            rigidbody.velocity = Vector3.zero;
+        else
+            rigidbody.velocity = transform.forward * Vector3.Dot(IncaData.UserCarVelocity, transform.forward);
     }
 
     protected override void PlayAnimationByName(string animationName)
@@ -61,6 +70,12 @@ public class Enemy_Chameleon : DamagableEnemy
         tongue.Init(null);
     }
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, startMoveDistance);
+    }
+
     private class State_Idle : EnemyState_Idle
     {
         Enemy_Chameleon owner;
@@ -71,7 +86,7 @@ public class Enemy_Chameleon : DamagableEnemy
         {
             base.Execute(entity);
 
-            if (owner.CanPlayAttackAnimation())
+            if (owner.CanPlayAttackAnimation() && owner.IsWithinMoveDistance())
                 owner.ChangeState(EnemyState.Attack);
         }
     }
@@ -93,7 +108,7 @@ public class Enemy_Chameleon : DamagableEnemy
 
             if (owner.CanAttack())
                 Attack(owner);
-            if (owner.IsAnimationFinished("Attack", 1))
+            if (owner.IsAnimationFinished(EnemyAnimation.Attack0, 1))
                 OnFinishAttackAnimation(owner);
         }
 
@@ -110,11 +125,11 @@ public class Enemy_Chameleon : DamagableEnemy
         public State_Move(Enemy entity) : base(entity)
             => owner = (Enemy_Chameleon)entity;
 
-        // public override void Enter(Enemy entity)
-        // {
-        //     base.Enter(entity);
-        //     owner.animator.Play("Move", 1);
-        // }
+        public override void Enter(Enemy entity)
+        {
+            base.Enter(entity);
+            owner.animator.Play(EnemyAnimation.Move);
+        }
 
         public override void Execute(Enemy entity)
         {

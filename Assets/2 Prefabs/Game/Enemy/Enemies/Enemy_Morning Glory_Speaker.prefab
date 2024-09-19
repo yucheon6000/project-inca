@@ -151,11 +151,11 @@ AudioSource:
   m_GameObject: {fileID: 5629663153813199047}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 243366450046692526, guid: ec12f7772c03e4c4c9e4c2f1643595ad,
+  OutputAudioMixerGroup: {fileID: 4148573567598672970, guid: a8ec3926f785c9d41b2fadafc5eae2e7,
     type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.6
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -274,6 +274,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lookAtPlayerTargetPoint: 0
   lookAtPlayerHead: 1
+  lookAtUserCar: 0
 --- !u!114 &2662329007200425275
 MonoBehaviour:
   m_ObjectHideFlags: 0

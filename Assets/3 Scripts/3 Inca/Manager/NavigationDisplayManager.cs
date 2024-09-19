@@ -104,7 +104,9 @@ public class NavigationDisplayManager : IncaManager
         if (!detectedObjects.ContainsKey(detectedObject)) return;
 
         Transform clone = detectedObjects[detectedObject];
-        MemoryPool.Instance(MemoryPoolType.Inca_Navigation).DeactivatePoolItem(clone.gameObject);
+
+        if (clone != null)
+            MemoryPool.Instance(MemoryPoolType.Inca_Navigation).DeactivatePoolItem(clone.gameObject);
 
         detectedObjects.Remove(detectedObject);
     }
