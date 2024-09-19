@@ -976,6 +976,11 @@ PrefabInstance:
       objectReference: {fileID: 2684821335574529269}
     - target: {fileID: 9062211379088740084, guid: 420519fe49767444c98bfc71b42e4852,
         type: 3}
+      propertyPath: onAwakeInVRMode.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: SetActive
+      objectReference: {fileID: 0}
+    - target: {fileID: 9062211379088740084, guid: 420519fe49767444c98bfc71b42e4852,
+        type: 3}
       propertyPath: onAwakeInMonitorAndMouseMode.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 2684821335574529269}
@@ -984,6 +989,11 @@ PrefabInstance:
       propertyPath: onAwakeInMonitorAndMouseMode.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 6130120200351697649}
+    - target: {fileID: 9062211379088740084, guid: 420519fe49767444c98bfc71b42e4852,
+        type: 3}
+      propertyPath: onAwakeInVRMode.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_BoolArgument
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -23,8 +23,8 @@ public class EmissionEffector : Effector
     private void SaveMaterials()
     {
         // Find all mesh renderers.
-        List<SkinnedMeshRenderer> meshRenderers = new List<SkinnedMeshRenderer>(GetComponents<SkinnedMeshRenderer>());
-        meshRenderers.AddRange(GetComponentsInChildren<SkinnedMeshRenderer>());
+        List<Renderer> meshRenderers = new List<Renderer>(GetComponents<Renderer>());
+        meshRenderers.AddRange(GetComponentsInChildren<Renderer>());
 
         // Find all materials.
         List<Material> materials = new List<Material>();
@@ -43,6 +43,9 @@ public class EmissionEffector : Effector
     public void Play(float time, float startIntensity, float endIntensity, Color emissionColor, UnityAction onFinishEffect = null)
     {
         if (gameObject.activeSelf == false) return;
+
+        if (coroutine != null)
+            StopCoroutine(coroutine);
 
         coroutine = StartCoroutine(EmissionEffectRoutine(time, startIntensity, endIntensity, emissionColor, onFinishEffect));
     }

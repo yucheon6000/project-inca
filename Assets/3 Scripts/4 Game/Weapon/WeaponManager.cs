@@ -82,7 +82,7 @@ public class WeaponManager : MonoBehaviour
     {
         if (IncaInput.GetButtonDown(IncaButtonCode.A) == false) return;
 
-        currentNormalWeapon.gameObject.SetActive(false);
+        currentNormalWeapon.Uninstall();
 
         currentNormalWeaponIndex++;
         if (currentNormalWeaponIndex >= normalWeapons.Length)

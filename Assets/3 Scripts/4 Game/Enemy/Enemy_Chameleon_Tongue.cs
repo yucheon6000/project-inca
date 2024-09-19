@@ -60,7 +60,11 @@ public class Enemy_Chameleon_Tongue : NonDamagableEnemy
     {
         List<GameObject> enemies = new List<GameObject>(MemoryPool.Instance(MemoryPoolType.Enemy).GetAllActivatedItems());
 
-        enemies.RemoveAll(item => item == null || !EnemyIsInFrontOfPlayer(item.transform));
+        enemies.RemoveAll(
+            item => item == null
+            || !EnemyIsInFrontOfPlayer(item.transform)
+            || item.TryGetComponent(out Enemy_MorningGlory_Speaker _)
+        );
 
         int count = Mathf.Min(attackEnemyCount, enemies.Count);
         if (count == 0) return;

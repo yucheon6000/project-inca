@@ -110,6 +110,8 @@ public class PlayerWeapon : Weapon
 
     private void SetAim()
     {
+        if (!aimSprite) return;
+
         IncaInputManager.Instance.SetCursorSprite(aimSprite);
     }
 

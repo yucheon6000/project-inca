@@ -68,6 +68,7 @@ GameObject:
   - component: {fileID: 4928223566308267930}
   - component: {fileID: 7925037384660700355}
   - component: {fileID: 2371691314167106735}
+  - component: {fileID: 7543186744197421675}
   - component: {fileID: 2492933106324162565}
   m_Layer: 15
   m_Name: Enemy_Chameleon
@@ -278,6 +279,53 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   emissionColor: {r: 0, g: 0.44705883, b: 1, a: 0}
+--- !u!114 &7543186744197421675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8847400774869534370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fe91dc294731a9428c0941ea7579110, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  complexMaskingMode: 0
+  drawingMode: 1
+  outlineLayer: 0
+  outlineTargets: []
+  renderStyle: 2
+  outlineParameters:
+    enabled: 1
+    color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+    dilateShift: 1
+    blurShift: 1
+    fillPass:
+      shader: {fileID: 0}
+      serializedProperties: []
+  backParameters:
+    enabled: 0
+    color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+    dilateShift: 1
+    blurShift: 1
+    fillPass:
+      shader: {fileID: 0}
+      serializedProperties: []
+  frontParameters:
+    enabled: 1
+    color: {r: 0, g: 0, b: 0, a: 0}
+    dilateShift: 0
+    blurShift: 0
+    fillPass:
+      shader: {fileID: 4800000, guid: 213090e563021044c92d1c27258b93f0, type: 3}
+      serializedProperties:
+      - PropertyName: _PublicColor
+        Property:
+          ColorValue: {r: 1, g: 0, b: 0, a: 0}
+          FloatValue: 0
+          VectorValue: {x: 0, y: 0, z: 0, w: 0}
+          PropertyType: 0
 --- !u!82 &2492933106324162565
 AudioSource:
   m_ObjectHideFlags: 0
